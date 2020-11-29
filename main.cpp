@@ -8,11 +8,18 @@ LazyFooTimer capTimer;
 int main (int argc, char* argv[])
 {
 	Visuals v;
-	auto sheet = v.getSpritesheet("spritesheet1");
+	auto sheet1 = v.getSpritesheet("spritesheet1");
+	auto sheet2 = v.getSpritesheet("spritesheet2");
 
 	std::vector<Sprite*> sprites = {
-		new Sprite(sheet, {0, 0, 32, 32}, {0, 0, 100, 100})
+		new Sprite(sheet1, {0, 0, 32, 32}, {0, 0, 100, 100}),
 	};
+
+	int i = 0;
+	int w = 32;
+	for (int i = 0; i < SCREEN_W; i += w){
+		sprites.push_back(new Sprite(sheet2, {0, 0, 32, 32}, {i, 300, 32, 32}));
+	}
 
 	for (auto s : sprites){
 		v.addSprite(s);
