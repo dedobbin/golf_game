@@ -14,10 +14,10 @@
 class Sprite 
 {
 	public:
-		Sprite(SDL_Texture* spritesheet, SDL_Rect src, SDL_Rect pos);
+		Sprite(SDL_Texture* spritesheet, SDL_Rect src);
+		~Sprite();
 		SDL_Texture* spritesheet;
 		SDL_Rect src;
-		SDL_Rect pos;
 };
 
 class Visuals

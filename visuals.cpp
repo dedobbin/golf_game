@@ -1,10 +1,17 @@
 #include <iostream>
 #include <dirent.h>
 #include "visuals.hpp"
+#include <iostream>
 
-Sprite::Sprite(SDL_Texture* spritesheet, SDL_Rect src, SDL_Rect pos)
-: spritesheet(spritesheet), src(src), pos(pos)
+
+Sprite::Sprite(SDL_Texture* spritesheet, SDL_Rect src)
+: spritesheet(spritesheet), src(src)
 {}
+
+Sprite::~Sprite()
+{
+	std::cout << "DEBUG: Sprite deconstructor" << std::endl;
+}
 
 Visuals::Visuals()
 {
@@ -152,9 +159,10 @@ void Visuals::render()
 
 	for (auto sprite : sprites){
 		//if (SDL_RenderCopyEx( renderer, sprite->texture, &sprite->src, &sprite->pos , NULL, NULL, sprite->flip) < 0){
-		if (SDL_RenderCopy( renderer, sprite->spritesheet, &sprite->src, &sprite->pos) < 0){
-			std::cerr << "Failed to render sprite " << std::endl;
-		}
+		// TODO: get pos
+		// if (SDL_RenderCopy( renderer, sprite->spritesheet, &sprite->src, &pos) < 0){
+		// 	std::cerr << "Failed to render sprite " << std::endl;
+		// }
 	}
 
 	SDL_RenderPresent(renderer);

@@ -1,10 +1,7 @@
 #include "entity.hpp"
-
-Entity::Entity(Sprite* sprite)
-: sprite(sprite)
-{}
+#include <iostream>
 
 Entity::~Entity()
 {
-	delete(sprite);
+	std::cout << "DEBUG: Entity deconstructor" << std::endl;
 }
