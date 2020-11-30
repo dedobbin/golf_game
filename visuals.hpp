@@ -7,18 +7,10 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
 #include <unordered_map>
+#include "sprite.hpp"
 
 #define SCREEN_W 920
 #define SCREEN_H 640
-
-class Sprite 
-{
-	public:
-		Sprite(SDL_Texture* spritesheet, SDL_Rect src);
-		~Sprite();
-		SDL_Texture* spritesheet;
-		SDL_Rect src;
-};
 
 class Visuals
 {
