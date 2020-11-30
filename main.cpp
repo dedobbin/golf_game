@@ -15,8 +15,7 @@ int main (int argc, char* argv[])
 	auto sheet2 = v.getSpritesheet("spritesheet2");
 
 	auto e = std::make_unique<Entity>();
-	e->sprite = std::unique_ptr<Sprite>(new Sprite(sheet1, {0, 0, 32, 32}));
-
+	e->sprite = std::unique_ptr<Sprite>(new Sprite(sheet1, {0, 0, 32, 32}, e.get()));
 
 	// Visuals v;
 	// auto sheet1 = v.getSpritesheet("spritesheet1");
