@@ -17,10 +17,11 @@ class Visuals
 	public:
 		Visuals();
 		~Visuals();
-		void renderSprite(Sprite* sprite);
-		void render();
+		void renderStart();
 		SDL_Texture* getSpritesheet(std::string);
-		int addSprite(Sprite* sprite);
+		void renderEnd();
+		void combineTextures();
+		void renderSprite(Sprite* sprite);
 	private:
 		bool initSDL();
 		bool loadSpritesheets(std::string dir);
@@ -29,7 +30,6 @@ class Visuals
 		const int renderText(std::string text, SDL_Color color, int x, int y, int h) const;
 		SDL_Texture* loadTexture( std::string path) const;
 		std::unordered_map<std::string, SDL_Texture*> spritesheets;
-		std::vector<Sprite*> sprites;
 
 		std::string defaultSpritesheetPath = ".";
 

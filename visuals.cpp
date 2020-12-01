@@ -15,6 +15,7 @@ Visuals::Visuals()
 
 Visuals::~Visuals()
 {
+	// TODO: deinit SDL and subsystems.
 	for (auto sheet : spritesheets){
 		SDL_DestroyTexture(sheet.second);
 	}
@@ -142,25 +143,24 @@ SDL_Texture* Visuals::loadTexture( std::string path) const
     return newTexture;
 }
 
-void Visuals::render()
+
+void Visuals::renderStart()
 {
-    SDL_SetRenderDrawColor( renderer, 148, 62, 62, 255 );
+	SDL_SetRenderDrawColor( renderer, 148, 62, 62, 255 );
     SDL_RenderClear( renderer );
-
-	for (auto sprite : sprites){
-		//if (SDL_RenderCopyEx( renderer, sprite->texture, &sprite->src, &sprite->pos , NULL, NULL, sprite->flip) < 0){
-		// TODO: get pos
-		// if (SDL_RenderCopy( renderer, sprite->spritesheet, &sprite->src, &pos) < 0){
-		// 	std::cerr << "Failed to render sprite " << std::endl;
-		// }
-	}
-
-	SDL_RenderPresent(renderer);
-
 }
 
-int Visuals::addSprite(Sprite* sprite)
+void Visuals::renderSprite(Sprite* sprite)
 {
-	sprites.push_back(sprite);
-	return sprites.size() - 1;
+	//if (SDL_RenderCopyEx( renderer, sprite->texture, &sprite->src, &sprite->pos , NULL, NULL, sprite->flip) < 0){
+	auto pos = sprite->getPos();
+	if (SDL_RenderCopy( renderer, sprite->spritesheet, &sprite->src, &pos) < 0){
+		std::cerr << "Failed to render sprite " << std::endl;
+	}
+		
+}
+
+void Visuals::renderEnd()
+{
+	SDL_RenderPresent(renderer);
 }
