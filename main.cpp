@@ -16,6 +16,7 @@ int main (int argc, char* argv[])
 
 	auto e = std::make_unique<Entity>();
 	e->sprite = std::unique_ptr<Sprite>(new Sprite(sheet1, {0, 0, 32, 32}, e.get()));
+	e->behavior = std::unique_ptr<Behavior>(new Behavior(e.get()));
 
 	std::vector<std::unique_ptr<Entity>> entities;
 	entities.push_back(std::move(e));
@@ -41,10 +42,18 @@ int main (int argc, char* argv[])
 		
 			}
 		}
+
+		for (auto& e : entities){
+			if (e->behavior){
+				e->behavior->behave();
+			}
+		}
 		
 		v.renderStart();
 		for (auto& e : entities){
-			v.renderSprite(e->sprite.get());
+			if (e->sprite){
+				v.renderSprite(e->sprite.get());
+			}
 		}
 		v.renderEnd();
 

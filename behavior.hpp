@@ -8,6 +8,8 @@ class Behavior
 {
 	public:
 		Behavior(Entity* owner);
+		~Behavior();
+		void behave();
 	private:
 		Entity* owner;
 };
