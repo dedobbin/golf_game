@@ -39,6 +39,7 @@ int main (int argc, char* argv[])
 	while(keepGoing){
 		capTimer.start();
 
+		// Gather inputs and apply to player behavior
 		SDL_Event e;
 		while( SDL_PollEvent( &e ) != 0 ){
 			if (e.type == SDL_QUIT){
@@ -50,8 +51,12 @@ int main (int argc, char* argv[])
 			}
 		}
 		if (keysPressed[SDL_SCANCODE_RIGHT]){
-			player->behavior->addXSpeed(0.3);
+			player->behavior->addXSpeed(player->behavior->walkAcc);
 		}
+		if (keysPressed[SDL_SCANCODE_LEFT]){
+			player->behavior->addXSpeed(-player->behavior->walkAcc);
+		}
+		//TODO: slow down
 
 
 		for (auto& e : entities){
