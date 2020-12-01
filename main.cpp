@@ -11,16 +11,21 @@ LazyFooTimer capTimer;
 int main (int argc, char* argv[])
 {
 	Visuals v;
+	// Get all spritesheets
 	auto sheet1 = v.getSpritesheet("spritesheet1");
 	auto sheet2 = v.getSpritesheet("spritesheet2");
+
+	// Setup entities
+	std::vector<std::unique_ptr<Entity>> entities;
 
 	auto e = std::make_unique<Entity>();
 	e->sprite = std::unique_ptr<Sprite>(new Sprite(sheet1, {0, 0, 32, 32}, e.get()));
 	e->behavior = std::unique_ptr<Behavior>(new Behavior(e.get()));
+	Entity* player = e.get();
 
-	std::vector<std::unique_ptr<Entity>> entities;
 	entities.push_back(std::move(e));
-
+	
+	// Get to actual game loop stuff
 	int countedFrames = 0;
 	const int FPS = 60;
 	const int SCREEN_TICK_PER_FRAME = 1000 / FPS;
@@ -37,7 +42,7 @@ int main (int argc, char* argv[])
 			if (e.type == SDL_QUIT){
 				keepGoing = false;
 			} else if (e.type == SDL_KEYDOWN){
-		
+				player->behavior->addXSpeed(0.5);
 			} else {
 		
 			}
