@@ -34,6 +34,8 @@ int main (int argc, char* argv[])
 
 	fpsTimer.start();
 	
+	bool keysPressed[322] = {false};
+
 	while(keepGoing){
 		capTimer.start();
 
@@ -42,11 +44,15 @@ int main (int argc, char* argv[])
 			if (e.type == SDL_QUIT){
 				keepGoing = false;
 			} else if (e.type == SDL_KEYDOWN){
-				player->behavior->addXSpeed(0.5);
-			} else {
-		
+				keysPressed[e.key.keysym.scancode] = true;
+			} else  if (e.type == SDL_KEYUP){
+				keysPressed[e.key.keysym.scancode] = false;
 			}
 		}
+		if (keysPressed[SDL_SCANCODE_RIGHT]){
+			player->behavior->addXSpeed(0.3);
+		}
+
 
 		for (auto& e : entities){
 			if (e->behavior){
