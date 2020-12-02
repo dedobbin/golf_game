@@ -11,6 +11,7 @@ class Collision
 		~Collision();
 		static bool checkCollision(Entity* a, Entity* b);
 		bool solid;
+		void effect(Entity* collider);
 	private:
 		Entity* owner;
 };

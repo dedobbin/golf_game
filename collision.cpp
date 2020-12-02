@@ -10,7 +10,7 @@ Collision::Collision(Entity* owner, bool solid)
 
 Collision::~Collision()
 {
-	std::cout << "DEBUG: Collision deconstructor" << std::endl;
+	//std::cout << "DEBUG: Collision deconstructor" << std::endl;
 }
 
 bool Collision::checkCollision(Entity* a, Entity* b)
@@ -58,5 +58,13 @@ bool Collision::checkCollision(Entity* a, Entity* b)
 			}
 		}
 	}
+
+	b->collision->effect(a);
+
 	return true; 
+}
+
+void Collision::effect(Entity* collider)
+{
+	//TODO: effects like damage, i guess make child classes so don't dump everything here
 }
