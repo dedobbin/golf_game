@@ -3,6 +3,7 @@
 
 #include "visuals.hpp"
 #include "behavior.hpp"
+#include "collision.hpp"
 #include <memory>
 
 class Entity 
@@ -15,6 +16,7 @@ class Entity
 		int h = 100;
 		std::unique_ptr<Sprite> sprite;
 		std::unique_ptr<Behavior> behavior;
+		std::unique_ptr<Collision> collision;
 };
 
 #endif

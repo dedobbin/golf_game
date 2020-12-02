@@ -33,16 +33,17 @@ void Behavior::addYSpeed(float n)
 void Behavior::behave()
 {
 	if (gravity){
+		//TODO: dont use magic number, should be defined in world
 		addYSpeed(0.2);
 	}
 
 	owner->x += xSpeed;
 	owner->y += ySpeed;
 
-	std::cout << "DEBUG: y speed: " << ySpeed << std::endl;
+	//std::cout << "DEBUG: y speed: " << ySpeed << std::endl;
 }
 
 Behavior::~Behavior()
 {
-	std::cout << "DEBUG: Behavior deconstructor" << std::endl;
+	//std::cout << "DEBUG: Behavior deconstructor" << std::endl;
 }

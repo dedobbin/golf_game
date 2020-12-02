@@ -73,13 +73,23 @@ int main (int argc, char* argv[])
 			player->behavior->addXSpeed(0.1);
 		}
 
-
+		//Move etc all entities, collision etc
 		for (auto& e : entities){
+			
+			//Collision
+			for (auto& collidee : entities){
+				if (e == collidee) continue;
+
+				Collision::checkCollision(e.get(), collidee.get());
+			}
+
+			
 			if (e->behavior){
 				e->behavior->behave();
 			}
 		}
 		
+		// Render everything
 		v.renderStart();
 		for (auto& e : entities){
 			if (e->sprite){

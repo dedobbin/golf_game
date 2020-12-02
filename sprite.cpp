@@ -12,8 +12,8 @@ SDL_Rect Sprite::getPos()
 {
 	// TODO: base on camera etc
 	return {
-		owner->x % SCREEN_W,
-		owner->y % SCREEN_H,
+		owner->x,
+		owner->y,
 		owner->w,
 		owner->h
 	};
@@ -21,5 +21,5 @@ SDL_Rect Sprite::getPos()
 
 Sprite::~Sprite()
 {
-	std::cout << "DEBUG: Sprite deconstructor" << std::endl;
+	//std::cout << "DEBUG: Sprite deconstructor" << std::endl;
 }

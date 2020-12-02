@@ -3,5 +3,5 @@
 
 Entity::~Entity()
 {
-	std::cout << "DEBUG: Entity deconstructor" << std::endl;
+	//std::cout << "DEBUG: Entity deconstructor" << std::endl;
 }
