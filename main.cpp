@@ -24,6 +24,18 @@ int main (int argc, char* argv[])
 	Entity* player = e.get();
 
 	entities.push_back(std::move(e));
+
+	int blockW = 100;
+	int blockH = 100;
+	for (int i = 0; i < 10; i++){
+		auto b = std::make_unique<Entity>();
+		b->x = i * blockW;
+		b->y = 300;
+		b->w = blockW;
+		b->h = blockH;
+		b->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b.get()));
+		entities.push_back(std::move(b));
+	}
 	
 	// Get to actual game loop stuff
 	int countedFrames = 0;
