@@ -77,17 +77,15 @@ int main (int argc, char* argv[])
 
 		//Move etc all entities, collision etc
 		for (auto& e : entities){
-			
+
+			if (e->behavior){
+				e->behavior->behave();
+			}
+
 			//Collision
 			for (auto& collidee : entities){
 				if (e == collidee) continue;
-
 				Collision::checkCollision(e.get(), collidee.get());
-			}
-
-			
-			if (e->behavior){
-				e->behavior->behave();
 			}
 		}
 		

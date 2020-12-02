@@ -29,22 +29,22 @@ bool Collision::checkCollision(Entity* a, Entity* b)
     int topB = b->y;
     int bottomB = b->y + b->h;
 
-    if( bottomA <= topB )
+    if( bottomA < topB )
     {
         return false;
     }
     
-    if( topA >= bottomB )
+    if( topA > bottomB )
     {
         return false;
     }
     
-    if( rightA <= leftB )
+    if( rightA < leftB )
     {
         return false;
     }
     
-    if( leftA >= rightB )
+    if( leftA > rightB )
     {
         return false;
     }
@@ -54,7 +54,7 @@ bool Collision::checkCollision(Entity* a, Entity* b)
 		if (a->behavior){
 			if (a->behavior->ySpeed > 0){
 				a->y = b->y - a->h;
-				a->behavior->ySpeed = 0;
+				a->behavior->setGrounded();
 			}
 		}
 	}

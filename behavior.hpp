@@ -12,6 +12,7 @@ class Behavior
 		void behave();
 		void addXSpeed(float n);
 		void addYSpeed(float n);
+		void setGrounded(bool grounded = true);
 		float walkAcc = 0.3;
 		float xSpeed = 0; //should be set through addXSpeed() 
 		float ySpeed = 0; //should be set through addXSpeed() 
@@ -19,6 +20,8 @@ class Behavior
 		float maxYSpeed = 20.0;
 		bool gravity = true;
 		Entity* owner;
+	private:
+		bool grounded = false;
 
 };
 

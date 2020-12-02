@@ -32,7 +32,7 @@ void Behavior::addYSpeed(float n)
 
 void Behavior::behave()
 {
-	if (gravity){
+	if (gravity && !grounded){
 		//TODO: dont use magic number, should be defined in world
 		addYSpeed(0.2);
 	}
@@ -46,4 +46,9 @@ void Behavior::behave()
 Behavior::~Behavior()
 {
 	//std::cout << "DEBUG: Behavior deconstructor" << std::endl;
+}
+
+void Behavior::setGrounded(bool grounded){
+	grounded = true;
+	ySpeed = 0;
 }
