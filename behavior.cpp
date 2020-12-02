@@ -22,7 +22,7 @@ void Behavior::addXSpeed(float n)
 void Behavior::addYSpeed(float n)
 {
 	if (ySpeed + n > maxYSpeed){
-		ySpeed = maxXSpeed;
+		ySpeed = maxYSpeed;
 	} else if (ySpeed + n < -maxYSpeed){
 		ySpeed = -maxYSpeed;
 	} else {
@@ -32,10 +32,14 @@ void Behavior::addYSpeed(float n)
 
 void Behavior::behave()
 {
+	if (gravity){
+		addYSpeed(0.2);
+	}
+
 	owner->x += xSpeed;
 	owner->y += ySpeed;
 
-	std::cout << "DEBUG: x speed: " << xSpeed << std::endl;
+	std::cout << "DEBUG: y speed: " << ySpeed << std::endl;
 }
 
 Behavior::~Behavior()
