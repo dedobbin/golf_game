@@ -52,11 +52,14 @@ int main (int argc, char* argv[])
 		}
 		if (keysPressed[SDL_SCANCODE_RIGHT]){
 			player->behavior->addXSpeed(player->behavior->walkAcc);
+		} else if (player->behavior->xSpeed > 0){
+			player->behavior->addXSpeed(-0.1);
 		}
 		if (keysPressed[SDL_SCANCODE_LEFT]){
 			player->behavior->addXSpeed(-player->behavior->walkAcc);
+		} else if (player->behavior->xSpeed < 0){
+			player->behavior->addXSpeed(0.1);
 		}
-		//TODO: slow down
 
 
 		for (auto& e : entities){

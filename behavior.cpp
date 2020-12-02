@@ -10,12 +10,24 @@ Behavior::Behavior(Entity* owner)
 
 void Behavior::addXSpeed(float n)
 {
-	xSpeed = xSpeed + n > maxXSpeed ? maxXSpeed : xSpeed + n;
+	if (xSpeed + n > maxXSpeed){
+		xSpeed = maxXSpeed;
+	} else if (xSpeed + n < -maxXSpeed){
+		xSpeed = -maxXSpeed;
+	} else {
+		xSpeed += n;
+	}
 }
 
 void Behavior::addYSpeed(float n)
 {
-	ySpeed = ySpeed + n > maxYSpeed ? maxYSpeed : ySpeed + n;
+	if (ySpeed + n > maxYSpeed){
+		ySpeed = maxXSpeed;
+	} else if (ySpeed + n < -maxYSpeed){
+		ySpeed = -maxYSpeed;
+	} else {
+		ySpeed += n;
+	}
 }
 
 void Behavior::behave()
