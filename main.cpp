@@ -21,6 +21,7 @@ int main (int argc, char* argv[])
 	auto e = std::make_unique<Entity>();
 	e->sprite = std::unique_ptr<Sprite>(new Sprite(sheet1, {0, 0, 32, 32}, e.get()));
 	e->behavior = std::unique_ptr<Behavior>(new Behavior(e.get()));
+	e->collision = std::unique_ptr<Collision>(new Collision(e.get(), true));
 	Entity* player = e.get();
 
 	entities.push_back(std::move(e));
@@ -34,6 +35,7 @@ int main (int argc, char* argv[])
 		b->w = blockW;
 		b->h = blockH;
 		b->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b.get()));
+		b->collision = std::unique_ptr<Collision>(new Collision(e.get(), true));
 		entities.push_back(std::move(b));
 	}
 	

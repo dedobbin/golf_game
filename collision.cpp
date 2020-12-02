@@ -4,8 +4,8 @@
 //circ dep
 #include "entity.hpp"
 
-Collision::Collision(Entity* owner)
-:owner(owner)
+Collision::Collision(Entity* owner, bool solid)
+:owner(owner), solid(solid)
 {}
 
 Collision::~Collision()
@@ -15,6 +15,10 @@ Collision::~Collision()
 
 bool Collision::checkCollision(Entity* a, Entity* b)
 {
+	if (!a->collision || !b->collision){
+		return false;
+	}
+
     int leftA = a->x;
     int rightA = a->x + a->w;
     int topA = a->y;
@@ -45,6 +49,14 @@ bool Collision::checkCollision(Entity* a, Entity* b)
         return false;
     }
     
-	std::cout << "DEBUG: collision!!!" << std::endl;
+	// 'push' out
+	if (a->collision->solid && b->collision->solid){
+		if (a->behavior){
+			if (a->behavior->ySpeed > 0){
+				a->y = b->y - a->h;
+				a->behavior->ySpeed = 0;
+			}
+		}
+	}
 	return true; 
 }

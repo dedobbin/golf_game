@@ -7,9 +7,10 @@ class Entity;
 class Collision
 {
 	public:
-		Collision(Entity* owner);
+		Collision(Entity* owner, bool solid = true);
 		~Collision();
 		static bool checkCollision(Entity* a, Entity* b);
+		bool solid;
 	private:
 		Entity* owner;
 };
