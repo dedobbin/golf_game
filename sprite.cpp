@@ -12,8 +12,8 @@ SDL_Rect Sprite::getPos()
 {
 	// TODO: base on camera etc
 	return {
-		owner->x,
-		owner->y,
+		owner->x % SCREEN_W,
+		owner->y % SCREEN_H,
 		owner->w,
 		owner->h
 	};
