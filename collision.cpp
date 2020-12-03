@@ -18,49 +18,45 @@ bool Collision::checkCollision(Entity* a, Entity* b)
 	if (!a->collision || !b->collision){
 		return false;
 	}
+	
+	//Based on SDL_IntersectRect
+	int intersect[4] = {0, 0, 0, 0}; //x,y,w,h
+    int Amin, Amax, Bmin, Bmax;	
+	/* Horizontal intersection */
+    Amin = a->x;
+    Amax = Amin + a->w;
+    Bmin = b->x;
+    Bmax = Bmin + b->w;
+    if (Bmin > Amin)
+        Amin = Bmin;
+    intersect[0] = Amin;
+    if (Bmax < Amax)
+        Amax = Bmax;
+    intersect[2] = Amax - Amin;
 
-    int leftA = a->x;
-    int rightA = a->x + a->w;
-    int topA = a->y;
-    int bottomA = a->y + a->h;
-        
-    int leftB = b->x;
-    int rightB = b->x + b->w;
-    int topB = b->y;
-    int bottomB = b->y + b->h;
+    /* Vertical intersection */
+    Amin = a->y;
+    Amax = Amin + a->h;
+    Bmin = b->y;
+    Bmax = Bmin + b->h;
+    if (Bmin > Amin)
+        Amin = Bmin;
+    intersect[1] = Amin;
+    if (Bmax < Amax)
+        Amax = Bmax;
+    intersect[3] = Amax - Amin;
 
-    if( bottomA < topB )
-    {
-        return false;
-    }
-    
-    if( topA > bottomB )
-    {
-        return false;
-    }
-    
-    if( rightA < leftB )
-    {
-        return false;
-    }
-    
-    if( leftA > rightB )
-    {
-        return false;
-    }
-    
-	// 'push' out
-	if (a->collision->solid && b->collision->solid){
-		if (a->behavior){
-			if (a->behavior->ySpeed > 0){
-				a->y = b->y - a->h;
-				a->behavior->setGrounded();
-			}
-		}
+	bool collision = intersect[2] > 0 && intersect[3] > 0;
+
+	if (collision){
+		b->collision->effect(a);
 	}
 
-	b->collision->effect(a);
-
+	//'push' out
+	if (collision && a->collision->solid && b->collision->solid){
+		std::cout << "TODO: push out" << std::endl;
+		
+	}
 	return true; 
 }
 
