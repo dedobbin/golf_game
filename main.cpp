@@ -18,10 +18,9 @@ int main (int argc, char* argv[])
 	// Setup entities
 	std::vector<std::unique_ptr<Entity>> entities;
 
-	auto e = std::make_unique<Entity>();
+	auto e = std::make_unique<Entity>("player", 200, 0, 100, 100);
 	e->sprite = std::unique_ptr<Sprite>(new Sprite(sheet1, {0, 0, 32, 32}, e.get()));
 	e->behavior = std::unique_ptr<Behavior>(new Behavior(e.get()));
-	e->x = 200;
 	//e->behavior->gravity = false;
 	e->collision = std::unique_ptr<Collision>(new Collision(e.get(), true));
 	Entity* player = e.get();
@@ -30,49 +29,30 @@ int main (int argc, char* argv[])
 
 	int blockW = 100;
 	int blockH = 100;
-	for (int i = 0; i < 10; i++){
-		auto b = std::make_unique<Entity>();
-		b->x = i * blockW;
-		b->y = 300;
-		b->w = blockW;
-		b->h = blockH;
+	int i = 0;
+	for (i = 0; i < 10; i++){
+		auto b = std::make_unique<Entity>("block" + std::to_string(i), i * blockW, 300, blockW, blockH);
 		b->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b.get()));
 		b->collision = std::unique_ptr<Collision>(new Collision(e.get(), true));
 		entities.push_back(std::move(b));
 	}
 
-	auto b = std::make_unique<Entity>();
-	b->x = 700;
-	b->y = 200;
-	b->w = 100;
-	b->h = 100;
+	auto b = std::make_unique<Entity>("block" + std::to_string(++i), 700, 200, 100, 100);
 	b->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b.get()));
 	b->collision = std::unique_ptr<Collision>(new Collision(b.get(), true));
 	entities.push_back(std::move(b));
 
-	auto b2 = std::make_unique<Entity>();
-	b2->x = 700;
-	b2->y = 0;
-	b2->w = 100;
-	b2->h = 100;
+	auto b2 = std::make_unique<Entity>("block" + std::to_string(++i), 700, 0, 100, 100);
 	b2->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b2.get()));
 	b2->collision = std::unique_ptr<Collision>(new Collision(b2.get(), true));
 	entities.push_back(std::move(b2));
 
-	auto b3 = std::make_unique<Entity>();
-	b3->x = 0;
-	b3->y = 200;
-	b3->w = 100;
-	b3->h = 100;
+	auto b3 = std::make_unique<Entity>("block" + std::to_string(++i), 0, 200, 100, 100);
 	b3->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b3.get()));
 	b3->collision = std::unique_ptr<Collision>(new Collision(b3.get(), true));
 	entities.push_back(std::move(b3));
 
-	auto b4 = std::make_unique<Entity>();
-	b4->x = 0;
-	b4->y = 0;
-	b4->w = 100;
-	b4->h = 100;
+	auto b4 = std::make_unique<Entity>("block" + std::to_string(++i), 0, 0, 100, 100);
 	b4->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b4.get()));
 	b4->collision = std::unique_ptr<Collision>(new Collision(b4.get(), true));
 	entities.push_back(std::move(b4));
