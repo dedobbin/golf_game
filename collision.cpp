@@ -49,7 +49,7 @@ bool Collision::checkCollision(Entity* a, Entity* b)
 	bool collision = intersect[2] > 0 && intersect[3] > 0;
 
 	if (collision){
-        std::cout << "DEBUG: " << a->name << " collides with " << b->name << std::endl;
+        //std::cout << "DEBUG: " << a->name << " collides with " << b->name << std::endl;
 		b->collision->effect(a, intersect[0], intersect[1], intersect[2], intersect[3]);
 	}
 	return collision; 
@@ -57,5 +57,16 @@ bool Collision::checkCollision(Entity* a, Entity* b)
 
 void Collision::effect(Entity* collider, int intersectX, int intersectY, int intersectW, int intersectH)
 {
-
+    // if (intersectH > intersectW){
+    //     //horizontal collision
+    //     std::cout << "horizontal collision" << std::endl;
+    //     if (collider->behavior){
+    //         collider->y = owner->y - collider->h;
+    //         collider->behavior->ySpeed = 0;
+    //     }
+        
+    // } else {
+    //     //vertical collision
+    //     std::cout << "vertical collision" << std::endl;
+    // }
 }

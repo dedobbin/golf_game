@@ -40,7 +40,7 @@ void Behavior::behave()
 	owner->x += xSpeed;
 	owner->y += ySpeed;
 
-	//std::cout << "DEBUG: y speed: " << ySpeed << std::endl;
+	//std::cout << "DEBUG: x speed: " << xSpeed << std::endl;
 }
 
 Behavior::~Behavior()
