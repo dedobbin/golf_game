@@ -21,6 +21,7 @@ int main (int argc, char* argv[])
 	auto e = std::make_unique<Entity>();
 	e->sprite = std::unique_ptr<Sprite>(new Sprite(sheet1, {0, 0, 32, 32}, e.get()));
 	e->behavior = std::unique_ptr<Behavior>(new Behavior(e.get()));
+	e->x = 200;
 	//e->behavior->gravity = false;
 	e->collision = std::unique_ptr<Collision>(new Collision(e.get(), true));
 	Entity* player = e.get();
@@ -41,7 +42,7 @@ int main (int argc, char* argv[])
 	}
 
 	auto b = std::make_unique<Entity>();
-	b->x = 300;
+	b->x = 700;
 	b->y = 200;
 	b->w = 100;
 	b->h = 100;
@@ -50,14 +51,32 @@ int main (int argc, char* argv[])
 	entities.push_back(std::move(b));
 
 	auto b2 = std::make_unique<Entity>();
-	b2->x = 200;
+	b2->x = 700;
 	b2->y = 0;
 	b2->w = 100;
 	b2->h = 100;
 	b2->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b2.get()));
-	b2->collision = std::unique_ptr<Collision>(new Collision(b.get(), true));
+	b2->collision = std::unique_ptr<Collision>(new Collision(b2.get(), true));
 	entities.push_back(std::move(b2));
-	
+
+	auto b3 = std::make_unique<Entity>();
+	b3->x = 0;
+	b3->y = 200;
+	b3->w = 100;
+	b3->h = 100;
+	b3->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b3.get()));
+	b3->collision = std::unique_ptr<Collision>(new Collision(b3.get(), true));
+	entities.push_back(std::move(b3));
+
+	auto b4 = std::make_unique<Entity>();
+	b4->x = 0;
+	b4->y = 0;
+	b4->w = 100;
+	b4->h = 100;
+	b4->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b4.get()));
+	b4->collision = std::unique_ptr<Collision>(new Collision(b4.get(), true));
+	entities.push_back(std::move(b4));
+
 	// Get to actual game loop stuff
 	int countedFrames = 0;
 	const int FPS = 60;

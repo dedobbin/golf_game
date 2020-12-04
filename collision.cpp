@@ -49,18 +49,32 @@ bool Collision::checkCollision(Entity* a, Entity* b)
 	bool collision = intersect[2] > 0 && intersect[3] > 0;
 
 	if (collision){
-		b->collision->effect(a);
+		b->collision->effect(a, intersect[0], intersect[1], intersect[2], intersect[3]);
 	}
-
-	//'push' out
-	if (collision && a->collision->solid && b->collision->solid){
-		std::cout << "TODO: push out" << std::endl;
-		
-	}
-	return true; 
+	return collision; 
 }
 
-void Collision::effect(Entity* collider)
+void Collision::effect(Entity* collider, int intersectX, int intersectY, int intersectW, int intersectH)
 {
 	//TODO: effects like damage, i guess make child classes so don't dump everything here
+    
+    //'push' out
+	if (collider->collision->solid && solid){
+        //std::cout << "TODO: push out" << std::endl;
+        // if (intersectW > 0){
+        //     if (intersectX == owner->x){
+        //         if (collider->behavior && collider->behavior->xSpeed != 0){
+        //             //comes from left side
+        //             //std::cout << "collision left " << std::endl;
+        //             collider->x = owner->x - collider->w;
+        //         }
+        //     } else {
+        //         if (collider->behavior && collider->behavior->xSpeed != 0){
+        //             //comes from right side
+        //             //std::cout << "collision right " << std::endl;
+        //             collider->x = owner->x + owner->w;
+        //         }
+        //     }
+        // }
+	}
 }
