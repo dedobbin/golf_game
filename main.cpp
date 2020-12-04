@@ -37,7 +37,7 @@ int main (int argc, char* argv[])
 	for (i = 0; i < 10; i++){
 		auto b = std::make_unique<Entity>("block" + std::to_string(i), i * blockW, 300, blockW, blockH);
 		b->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b.get()));
-		b->collision = std::unique_ptr<Collision>(new Collision(e.get(), true));
+		b->collision = std::unique_ptr<Collision>(new Collision(b.get(), true));
 		entities.push_back(std::move(b));
 	}
 
@@ -60,6 +60,10 @@ int main (int argc, char* argv[])
 	b4->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b4.get()));
 	b4->collision = std::unique_ptr<Collision>(new Collision(b4.get(), true));
 	entities.push_back(std::move(b4));
+
+	for (auto& e : entities){
+		std::cout << e->debugString() << std::endl;
+	}
 
 	// Get to actual game loop stuff
 	int countedFrames = 0;
