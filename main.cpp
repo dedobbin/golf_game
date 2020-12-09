@@ -8,8 +8,6 @@
 LazyFooTimer fpsTimer;
 LazyFooTimer capTimer;
 
-#define DEBUG_CONTROLS
-
 int main (int argc, char* argv[])
 {
 	Visuals v;
@@ -23,9 +21,7 @@ int main (int argc, char* argv[])
 	auto e = std::make_unique<Entity>("player", 200, 0, 100, 100);
 	e->sprite = std::unique_ptr<Sprite>(new Sprite(sheet1, {0, 0, 32, 32}, e.get()));
 	e->behavior = std::unique_ptr<Behavior>(new Behavior(e.get()));
-#ifdef DEBUG_CONTROLS
-	e->behavior->gravity = false;
-#endif
+	//e->behavior->gravity = false;
 	e->collision = std::unique_ptr<Collision>(new Collision(e.get(), true));
 	Entity* player = e.get();
 
@@ -96,19 +92,6 @@ int main (int argc, char* argv[])
 		} else if (player->behavior->xSpeed < 0){
 			player->behavior->addXSpeed(0.1, true);
 		}
-
-#ifdef DEBUG_CONTROLS
-		if (keysPressed[SDL_SCANCODE_DOWN]){
-			player->behavior->addYSpeed(player->behavior->walkAcc);
-		} else if (player->behavior->ySpeed > 0){
-			player->behavior->addYSpeed(-0.1);
-		}
-		if (keysPressed[SDL_SCANCODE_UP]){
-			player->behavior->addYSpeed(-player->behavior->walkAcc);
-		} else if (player->behavior->ySpeed < 0){
-			player->behavior->addYSpeed(0.1);
-		}
-#endif
 
 		//Move etc all entities, collision etc
 		for (auto& e : entities){

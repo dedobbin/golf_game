@@ -50,7 +50,6 @@ bool Collision::checkCollision(Entity* a, Entity* b)
 	bool collision = intersect[2] > 0 && intersect[3] > 0;
 
 	if (collision){
-        //std::cout << "DEBUG: " << a->name << " collides with " << b->name << std::endl;
 		b->collision->effect(a, intersect[0], intersect[1], intersect[2], intersect[3]);
 	}
 	return collision; 
