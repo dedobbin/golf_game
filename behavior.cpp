@@ -49,12 +49,17 @@ void Behavior::behave()
 	//std::cout << "DEBUG: x speed: " << xSpeed << std::endl;
 }
 
+void Behavior::jump(){
+	if (!grounded){
+		return;
+	}
+
+	grounded = false;
+	addYSpeed(-7.5);
+
+}
+
 Behavior::~Behavior()
 {
 	//std::cout << "DEBUG: Behavior deconstructor" << std::endl;
-}
-
-void Behavior::setGrounded(bool grounded){
-	grounded = true;
-	ySpeed = 0;
 }

@@ -51,7 +51,7 @@ bool Collision::checkCollision(Entity* a, Entity* b)
 
 	if (collision){
 		b->collision->effect(a, intersect[0], intersect[1], intersect[2], intersect[3]);
-	}
+	} 
 	return collision; 
 }
 
@@ -74,6 +74,7 @@ void Collision::effect(Entity* collider, int intersectX, int intersectY, int int
             } else if (collider->behavior->ySpeed > 0 && collider->y < owner->y){
                 collider->y -= intersectH;
                 collider->behavior->ySpeed = 0;
+                collider->behavior->grounded = true;
             }
         }
     }

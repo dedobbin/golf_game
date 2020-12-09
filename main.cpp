@@ -31,13 +31,13 @@ int main (int argc, char* argv[])
 	int blockH = 100;
 	int i = 0;
 	for (i = 0; i < 10; i++){
-		auto b = std::make_unique<Entity>("block" + std::to_string(i), i * blockW, 300, blockW, blockH);
+		auto b = std::make_unique<Entity>("block" + std::to_string(i), i * blockW, 400, blockW, blockH);
 		b->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b.get()));
 		b->collision = std::unique_ptr<Collision>(new Collision(b.get(), true));
 		entities.push_back(std::move(b));
 	}
 
-	auto b = std::make_unique<Entity>("block" + std::to_string(++i), 700, 200, 100, 100);
+	auto b = std::make_unique<Entity>("block" + std::to_string(++i), 700, 300, 100, 100);
 	b->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b.get()));
 	b->collision = std::unique_ptr<Collision>(new Collision(b.get(), true));
 	entities.push_back(std::move(b));
@@ -47,7 +47,7 @@ int main (int argc, char* argv[])
 	b2->collision = std::unique_ptr<Collision>(new Collision(b2.get(), true));
 	entities.push_back(std::move(b2));
 
-	auto b3 = std::make_unique<Entity>("block" + std::to_string(++i), 0, 200, 100, 100);
+	auto b3 = std::make_unique<Entity>("block" + std::to_string(++i), 0, 300, 100, 100);
 	b3->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b3.get()));
 	b3->collision = std::unique_ptr<Collision>(new Collision(b3.get(), true));
 	entities.push_back(std::move(b3));
@@ -82,15 +82,20 @@ int main (int argc, char* argv[])
 				keysPressed[e.key.keysym.scancode] = false;
 			}
 		}
+		#define SLOW_DOWN_AMOUNT 0.2
 		if (keysPressed[SDL_SCANCODE_RIGHT]){
 			player->behavior->addXSpeed(player->behavior->walkAcc);
 		} else if (player->behavior->xSpeed > 0){
-			player->behavior->addXSpeed(-0.1, true);
+			player->behavior->addXSpeed(-SLOW_DOWN_AMOUNT, true);
 		}
 		if (keysPressed[SDL_SCANCODE_LEFT]){
 			player->behavior->addXSpeed(-player->behavior->walkAcc);
 		} else if (player->behavior->xSpeed < 0){
-			player->behavior->addXSpeed(0.1, true);
+			player->behavior->addXSpeed(SLOW_DOWN_AMOUNT, true);
+		}
+
+		if (keysPressed[SDL_SCANCODE_UP]){
+			player->behavior->jump();
 		}
 
 		//Move etc all entities, collision etc

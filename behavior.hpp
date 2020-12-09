@@ -10,11 +10,11 @@ class Behavior
 		Behavior(Entity* owner);
 		~Behavior();
 		void behave();
+		void jump();
 		/* When slowing down, clampZero should be true so rounds to 0 eventually */
 		void addXSpeed(float n, bool clampZero = false);
 		/* When slowing down, clampZero should be true so rounds to 0 eventually */
 		void addYSpeed(float n, bool clampZero = false);
-		void setGrounded(bool grounded = true);
 		float walkAcc = 0.3;
 		float xSpeed = 0; //should be set through addXSpeed() 
 		float ySpeed = 0; //should be set through addXSpeed() 
@@ -22,7 +22,6 @@ class Behavior
 		float maxYSpeed = 20.0;
 		bool gravity = true;
 		Entity* owner;
-	private:
 		bool grounded = false;
 
 };
