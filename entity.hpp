@@ -11,7 +11,6 @@ class Entity
 	public:
 		Entity(std::string name, int x = 0, int y = 0, int w = 100, int h = 100);
 		~Entity();
-		std::string debugString();
 		int x = 0;
 		int y = 0;
 		int w = 100;

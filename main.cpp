@@ -61,10 +61,6 @@ int main (int argc, char* argv[])
 	b4->collision = std::unique_ptr<Collision>(new Collision(b4.get(), true));
 	entities.push_back(std::move(b4));
 
-	for (auto& e : entities){
-		std::cout << e->debugString() << std::endl;
-	}
-
 	// Get to actual game loop stuff
 	int countedFrames = 0;
 	const int FPS = 60;
@@ -93,12 +89,12 @@ int main (int argc, char* argv[])
 		if (keysPressed[SDL_SCANCODE_RIGHT]){
 			player->behavior->addXSpeed(player->behavior->walkAcc);
 		} else if (player->behavior->xSpeed > 0){
-			player->behavior->addXSpeed(-0.1);
+			player->behavior->addXSpeed(-0.1, true);
 		}
 		if (keysPressed[SDL_SCANCODE_LEFT]){
 			player->behavior->addXSpeed(-player->behavior->walkAcc);
 		} else if (player->behavior->xSpeed < 0){
-			player->behavior->addXSpeed(0.1);
+			player->behavior->addXSpeed(0.1, true);
 		}
 
 #ifdef DEBUG_CONTROLS
@@ -114,11 +110,8 @@ int main (int argc, char* argv[])
 		}
 #endif
 
-		
-
 		//Move etc all entities, collision etc
 		for (auto& e : entities){
-
 			if (e->behavior){
 				e->behavior->behave();
 			}

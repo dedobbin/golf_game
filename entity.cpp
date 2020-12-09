@@ -9,18 +9,3 @@ Entity::~Entity()
 {
 	//std::cout << "DEBUG: Entity deconstructor" << std::endl;
 }
-
-std::string Entity::debugString()
-{
-	std::string res = name + ": ";
-	if (sprite){
-		res += "sprite|";
-	}
-	if (behavior){
-		res += "behavior|";
-	}
-	if (collision){
-		res += "collision|";
-	}
-	return res;
-}

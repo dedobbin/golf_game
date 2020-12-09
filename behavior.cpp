@@ -8,7 +8,7 @@ Behavior::Behavior(Entity* owner)
 : owner(owner)
 {}
 
-void Behavior::addXSpeed(float n)
+void Behavior::addXSpeed(float n, bool clampZero)
 {
 	if (xSpeed + n > maxXSpeed){
 		xSpeed = maxXSpeed;
@@ -17,9 +17,12 @@ void Behavior::addXSpeed(float n)
 	} else {
 		xSpeed += n;
 	}
+	if (clampZero && round(xSpeed) == 0){
+		xSpeed = 0;
+	}
 }
 
-void Behavior::addYSpeed(float n)
+void Behavior::addYSpeed(float n, bool clampZero)
 {
 	if (ySpeed + n > maxYSpeed){
 		ySpeed = maxYSpeed;
@@ -27,6 +30,9 @@ void Behavior::addYSpeed(float n)
 		ySpeed = -maxYSpeed;
 	} else {
 		ySpeed += n;
+	}
+	if (clampZero && round(ySpeed) == 0){
+		ySpeed = 0;
 	}
 }
 

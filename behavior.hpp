@@ -10,8 +10,10 @@ class Behavior
 		Behavior(Entity* owner);
 		~Behavior();
 		void behave();
-		void addXSpeed(float n);
-		void addYSpeed(float n);
+		/* When slowing down, clampZero should be true so rounds to 0 eventually */
+		void addXSpeed(float n, bool clampZero = false);
+		/* When slowing down, clampZero should be true so rounds to 0 eventually */
+		void addYSpeed(float n, bool clampZero = false);
 		void setGrounded(bool grounded = true);
 		float walkAcc = 0.3;
 		float xSpeed = 0; //should be set through addXSpeed() 

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <SDL2/SDL.h>
+#include <cmath>
 
 //circ dep
 #include "entity.hpp"
@@ -57,16 +58,24 @@ bool Collision::checkCollision(Entity* a, Entity* b)
 
 void Collision::effect(Entity* collider, int intersectX, int intersectY, int intersectW, int intersectH)
 {
-    // if (intersectH > intersectW){
-    //     //horizontal collision
-    //     std::cout << "horizontal collision" << std::endl;
-    //     if (collider->behavior){
-    //         collider->y = owner->y - collider->h;
-    //         collider->behavior->ySpeed = 0;
-    //     }
-        
-    // } else {
-    //     //vertical collision
-    //     std::cout << "vertical collision" << std::endl;
-    // }
+    bool bothSolid = collider->collision->solid && owner->collision->solid;
+    if (collider->behavior && bothSolid){
+        if (intersectH > intersectW){
+            if (collider->behavior->xSpeed < 0 && collider->x > owner->x){
+                collider->x += intersectW;
+                collider->behavior->xSpeed = 0;
+            } else if (collider->behavior->xSpeed > 0 && collider->x < owner->x){
+                collider->x -= intersectW;
+                collider->behavior->xSpeed = 0;
+            }
+        } else {
+            if (collider->behavior->ySpeed < 0 && collider->y > owner->y){
+                collider->y += intersectH;
+                collider->behavior->ySpeed = 0;
+            } else if (collider->behavior->ySpeed > 0 && collider->y < owner->y){
+                collider->y -= intersectH;
+                collider->behavior->ySpeed = 0;
+            }
+        }
+    }
 }
