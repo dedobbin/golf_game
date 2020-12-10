@@ -78,7 +78,6 @@ void Collision::effect(Entity* collider, rect intersect)
                 collider->y -= intersect.h;
                 collider->behavior->ySpeed = 0;
                 collider->behavior->grounded = true;
-                std::cout << "DEBUG: landed" << std::endl; 
             }
         }
     }

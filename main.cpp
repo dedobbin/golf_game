@@ -31,6 +31,7 @@ int main (int argc, char* argv[])
 	int blockH = 100;
 	int i = 0;
 	for (i = 0; i < 10; i++){
+		if (i == 3 || i == 5 || i == 6) continue;
 		auto b = std::make_unique<Entity>("block" + std::to_string(i), i * blockW, 400, blockW, blockH);
 		b->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b.get()));
 		b->collision = std::unique_ptr<Collision>(new Collision(b.get(), true));
