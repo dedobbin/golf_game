@@ -4,6 +4,12 @@
 // circ dep
 class Entity;
 
+struct rect {
+	int x = 0;
+	int y = 0;
+	int w = 0;
+	int h = 0;
+};
 class Collision
 {
 	public:
@@ -11,7 +17,7 @@ class Collision
 		~Collision();
 		static bool checkCollision(Entity* a, Entity* b);
 		bool solid;
-		void effect(Entity* collider, int intersectX, int intersectY, int intersectW, int intersectH);
+		void effect(Entity* collider, struct rect);
 	private:
 		Entity* owner;
 };

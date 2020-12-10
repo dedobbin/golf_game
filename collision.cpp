@@ -21,7 +21,7 @@ bool Collision::checkCollision(Entity* a, Entity* b)
 	}
 	
 	//Based on SDL_IntersectRect
-	int intersect[4] = {0, 0, 0, 0}; //x,y,w,h
+	rect intersect;
     int Amin, Amax, Bmin, Bmax;	
 	/* Horizontal intersection */
     Amin = a->x;
@@ -30,10 +30,10 @@ bool Collision::checkCollision(Entity* a, Entity* b)
     Bmax = Bmin + b->w;
     if (Bmin > Amin)
         Amin = Bmin;
-    intersect[0] = Amin;
+    intersect.x = Amin;
     if (Bmax < Amax)
         Amax = Bmax;
-    intersect[2] = Amax - Amin;
+    intersect.w = Amax - Amin;
 
     /* Vertical intersection */
     Amin = a->y;
@@ -42,38 +42,38 @@ bool Collision::checkCollision(Entity* a, Entity* b)
     Bmax = Bmin + b->h;
     if (Bmin > Amin)
         Amin = Bmin;
-    intersect[1] = Amin;
+    intersect.y = Amin;
     if (Bmax < Amax)
         Amax = Bmax;
-    intersect[3] = Amax - Amin;
+    intersect.h = Amax - Amin;
 
-	bool collision = intersect[2] > 0 && intersect[3] > 0;
+	bool collision = intersect.w > 0 && intersect.h > 0;
 
 	if (collision){
-		b->collision->effect(a, intersect[0], intersect[1], intersect[2], intersect[3]);
+		b->collision->effect(a, intersect);
 	} 
 
 	return collision; 
 }
 
-void Collision::effect(Entity* collider, int intersectX, int intersectY, int intersectW, int intersectH)
+void Collision::effect(Entity* collider, rect intersect)
 {
     bool bothSolid = collider->collision->solid && owner->collision->solid;
     if (collider->behavior && bothSolid){
-        if (intersectH > intersectW){
+        if (intersect.h > intersect.w){
             if (collider->behavior->xSpeed < 0 && collider->x > owner->x){
-                collider->x += intersectW;
+                collider->x += intersect.w;
                 collider->behavior->xSpeed = 0;
             } else if (collider->behavior->xSpeed > 0 && collider->x < owner->x){
-                collider->x -= intersectW;
+                collider->x -= intersect.w;
                 collider->behavior->xSpeed = 0;
             }
         } else {
             if (collider->behavior->ySpeed < 0 && collider->y > owner->y){
-                collider->y += intersectH;
+                collider->y += intersect.h;
                 collider->behavior->ySpeed = 0;
             } else if (collider->behavior->ySpeed > 0 && collider->y < owner->y){
-                collider->y -= intersectH;
+                collider->y -= intersect.h;
                 collider->behavior->ySpeed = 0;
                 collider->behavior->grounded = true;
                 std::cout << "DEBUG: landed" << std::endl; 
