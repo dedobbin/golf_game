@@ -105,6 +105,8 @@ int main (int argc, char* argv[])
 			}
 
 			//Collision
+			bool hasGroundUnderneath = false;
+
 			for (auto& collidee : entities){
 				if (e == collidee) continue;
 				
@@ -113,7 +115,25 @@ int main (int argc, char* argv[])
 
 				if (collision){
 					collidee->collision->effect(e.get(), intersect);
-				} 
+				}
+
+				// Check if ground underneath so flip grounded to false 
+				if (collidee->collision->solid && e->collision->solid){
+					int originalY = e->y;
+
+					e->y += 1;
+					auto intersect = Collision::checkCollision(e.get(), collidee.get());
+					bool collision = intersect.w > 0 && intersect.h > 0;
+					if (collision){
+						hasGroundUnderneath = true;
+					}
+
+					e->y = originalY;
+				}
+			}
+
+			if (!hasGroundUnderneath && e->behavior && e->behavior->gravity){
+				e->behavior->grounded = false;
 			}
 		}
 		
