@@ -39,8 +39,7 @@ void Behavior::addYSpeed(float n, bool clampZero)
 void Behavior::behave()
 {
 	if (gravity && !grounded){
-		//TODO: dont use magic number, should be defined in world
-		addYSpeed(0.5);
+		addYSpeed(GRAVITY);
 	}
 
 	owner->x += xSpeed;

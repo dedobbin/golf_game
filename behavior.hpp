@@ -4,6 +4,8 @@
 // circ dep
 class Entity;
 
+#define GRAVITY 0.5
+
 class Behavior
 {
 	public:
