@@ -14,14 +14,16 @@ Collision::~Collision()
 	//std::cout << "DEBUG: Collision deconstructor" << std::endl;
 }
 
-bool Collision::checkCollision(Entity* a, Entity* b)
+rect Collision::checkCollision(Entity* a, Entity* b)
 {
+	rect intersect = {0,0,0,0};
+
 	if (!a->collision || !b->collision){
-		return false;
+		return intersect;
 	}
 	
 	//Based on SDL_IntersectRect
-	rect intersect;
+
     int Amin, Amax, Bmin, Bmax;	
 	/* Horizontal intersection */
     Amin = a->x;
@@ -47,13 +49,13 @@ bool Collision::checkCollision(Entity* a, Entity* b)
         Amax = Bmax;
     intersect.h = Amax - Amin;
 
-	bool collision = intersect.w > 0 && intersect.h > 0;
+	// bool collision = intersect.w > 0 && intersect.h > 0;
 
-	if (collision){
-		b->collision->effect(a, intersect);
-	} 
+	// if (collision){
+	// 	b->collision->effect(a, intersect);
+	// } 
 
-	return collision; 
+	return intersect; 
 }
 
 void Collision::effect(Entity* collider, rect intersect)

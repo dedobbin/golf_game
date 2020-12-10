@@ -15,7 +15,8 @@ class Collision
 	public:
 		Collision(Entity* owner, bool solid = true);
 		~Collision();
-		static bool checkCollision(Entity* a, Entity* b);
+		/* returns intersect of collision */
+		static rect checkCollision(Entity* a, Entity* b);
 		bool solid;
 		void effect(Entity* collider, struct rect);
 	private:

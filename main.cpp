@@ -107,7 +107,13 @@ int main (int argc, char* argv[])
 			//Collision
 			for (auto& collidee : entities){
 				if (e == collidee) continue;
-				Collision::checkCollision(e.get(), collidee.get());
+				
+				auto intersect = Collision::checkCollision(e.get(), collidee.get());
+				bool collision = intersect.w > 0 && intersect.h > 0;
+
+				if (collision){
+					collidee->collision->effect(e.get(), intersect);
+				} 
 			}
 		}
 		
