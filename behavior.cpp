@@ -40,7 +40,7 @@ void Behavior::behave()
 {
 	if (gravity && !grounded){
 		//TODO: dont use magic number, should be defined in world
-		addYSpeed(0.2);
+		addYSpeed(0.5);
 	}
 
 	owner->x += xSpeed;
@@ -55,7 +55,7 @@ void Behavior::jump(){
 	}
 
 	grounded = false;
-	addYSpeed(-7.5);
+	addYSpeed(-10.5);
 
 }
 
