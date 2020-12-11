@@ -27,9 +27,15 @@ void generateEntities()
 	//e->behavior->gravity = false;
 	e->collision = std::unique_ptr<Collision>(new Collision(e, true));
 	player = e;
-
 	entities.emplace_back(std::unique_ptr<Entity>(e));
 
+	int blockW = 100;
+	for (int i = 0; i < 10; i++){
+		Entity* b = new Entity("block" + std::to_string(i), i * blockW, 400, 100, 100);
+		b->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b));
+		b->collision = std::unique_ptr<Collision>(new Collision(b, true));
+		entities.emplace_back(std::unique_ptr<Entity>(b));
+	}
 }
 int main (int argc, char* argv[])
 {
