@@ -135,8 +135,7 @@ int main (int argc, char* argv[])
 
 			if (!hasGroundUnderneath && e->behavior && e->behavior->gravity){
 				e->behavior->grounded = false;
-			}
-			if (hasGroundUnderneath && e->behavior && e->behavior->gravity && e->behavior->ySpeed > 0){
+			} else if (hasGroundUnderneath && e->behavior && e->behavior->gravity && e->behavior->ySpeed > 0){
 				e->behavior->grounded = true;
 				e->behavior->ySpeed = 0;
 			}
