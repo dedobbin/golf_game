@@ -107,6 +107,7 @@ int main (int argc, char* argv[])
 
 			//Collision
 			bool hasGroundUnderneath = false;
+			rect groundIntersect = {0, 0, 0, 0};
 
 			for (auto& collidee : entities){
 				if (e == collidee) continue;
@@ -127,6 +128,7 @@ int main (int argc, char* argv[])
 					bool collision = intersect.w > 0 && intersect.h > 0;
 					if (collision){
 						hasGroundUnderneath = true;
+						groundIntersect = intersect;
 					}
 
 					e->y = originalY;
@@ -138,6 +140,7 @@ int main (int argc, char* argv[])
 			} else if (hasGroundUnderneath && e->behavior && e->behavior->gravity && e->behavior->ySpeed > 0){
 				e->behavior->grounded = true;
 				e->behavior->ySpeed = 0;
+                e->y -= groundIntersect.h;
 			}
 		}
 		
