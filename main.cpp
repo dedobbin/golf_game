@@ -3,6 +3,9 @@
 #include "visuals.hpp"
 #include "sdl_utils.hpp"
 #include "entity.hpp"
+#include "rect.hpp"
+#include "camera.hpp"
+
 #include <vector>
 
 LazyFooTimer fpsTimer;
@@ -40,6 +43,7 @@ void generateEntities()
 int main (int argc, char* argv[])
 {
 	generateEntities();
+	Camera camera(0, 0, SCREEN_W, SCREEN_H);
 	int countedFrames = 0;
 	const int FPS = 60;
 	const int SCREEN_TICK_PER_FRAME = 1000 / FPS;
