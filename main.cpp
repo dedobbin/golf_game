@@ -150,6 +150,10 @@ int main (int argc, char* argv[])
 		for (auto& e : entities){
 			if (e->sprite){
 				v.renderSprite(e->sprite.get());
+				if (e->collision){
+					rect collisionRect = e->collision->getRect();
+					v.renderRect(collisionRect.x, collisionRect.y, collisionRect.w, collisionRect.h);
+				}
 			}
 		}
 		v.renderEnd();

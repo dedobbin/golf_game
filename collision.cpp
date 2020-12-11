@@ -75,3 +75,13 @@ void Collision::effect(Entity* collider, rect intersect)
         }
     }
 }
+
+rect Collision::getRect()
+{
+    return {
+        owner->x + 10,
+        owner->y + 10,
+        owner->w - 20,
+        owner->h - 20
+    };
+}

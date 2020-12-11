@@ -157,7 +157,13 @@ void Visuals::renderSprite(Sprite* sprite)
 	if (SDL_RenderCopy( renderer, sprite->spritesheet, &sprite->src, &pos) < 0){
 		std::cerr << "Failed to render sprite " << std::endl;
 	}
-		
+}
+
+void Visuals::renderRect(int x, int y, int w, int h)
+{
+	SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
+	SDL_Rect rect = {x, y, w, h};
+	SDL_RenderFillRect(renderer, &rect);
 }
 
 void Visuals::renderEnd()

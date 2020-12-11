@@ -10,6 +10,7 @@ struct rect {
 	int w = 0;
 	int h = 0;
 };
+
 class Collision
 {
 	public:
@@ -19,6 +20,7 @@ class Collision
 		static rect checkCollision(Entity* a, Entity* b);
 		bool solid;
 		void effect(Entity* collider, struct rect);
+		rect getRect();
 	private:
 		Entity* owner;
 };

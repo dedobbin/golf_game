@@ -22,6 +22,8 @@ class Visuals
 		void renderEnd();
 		void combineTextures();
 		void renderSprite(Sprite* sprite);
+		void renderRect(int x, int y, int w, int h);
+
 	private:
 		bool initSDL();
 		bool loadSpritesheets(std::string dir);
