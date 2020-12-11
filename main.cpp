@@ -14,8 +14,8 @@ Visuals v;
 Entity* player = NULL;
 std::vector<std::unique_ptr<Entity>> entities;
 
-#define DEBUG_DRAW
-
+//#define DEBUG_DRAW
+#define DEBUG_CAMERA
 void generateEntities()
 {
 	// Get all spritesheets
@@ -43,7 +43,7 @@ void generateEntities()
 int main (int argc, char* argv[])
 {
 	generateEntities();
-	Camera camera(0, 0, SCREEN_W / 2, SCREEN_H);
+	Camera camera(0, 0, 400, 400);
 	int countedFrames = 0;
 	const int FPS = 60;
 	const int SCREEN_TICK_PER_FRAME = 1000 / FPS;
@@ -79,10 +79,25 @@ int main (int argc, char* argv[])
 		} else if (player->behavior->xSpeed < 0){
 			player->behavior->addXSpeed(SLOW_DOWN_AMOUNT, true);
 		}
-
 		if (keysPressed[SDL_SCANCODE_UP]){
 			player->behavior->jump();
 		}
+
+#ifdef DEBUG_CAMERA
+		int camSpeed = 5;
+		if (keysPressed[SDL_SCANCODE_D]){
+			camera.camRect.x += camSpeed;
+		} 
+		if (keysPressed[SDL_SCANCODE_A]){
+			camera.camRect.x -= camSpeed;
+		} 
+		if (keysPressed[SDL_SCANCODE_W]){
+			camera.camRect.y -= camSpeed;
+		} 
+		if (keysPressed[SDL_SCANCODE_S]){
+			camera.camRect.y += camSpeed;
+		} 
+#endif
 
 		//Move etc all entities, collision etc
 		for (auto& e : entities){
@@ -136,7 +151,7 @@ int main (int argc, char* argv[])
 			if (e->sprite){
 				if (camera.inView(e->x, e->y, e->w, e->h)){
 					v.renderSprite(e->sprite.get());
-#ifdef DEBUG_DRAW
+#ifdef DEBUG_DRAW 
 					if (e->collision){
 						rect collisionRect = e->collision->getRect();
 						v.renderRect(collisionRect.x, collisionRect.y, collisionRect.w, collisionRect.h);
@@ -145,7 +160,7 @@ int main (int argc, char* argv[])
 				}
 			}
 		}
-#ifdef DEBUG_DRAW
+#if defined(DEBUG_DRAW) || defined(DEBUG_CAMERA)
 		v.renderRect(camera.camRect.x, camera.camRect.y, camera.camRect.w, camera.camRect.h);
 #endif
 		v.renderEnd();
