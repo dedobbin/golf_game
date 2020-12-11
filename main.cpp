@@ -7,66 +7,31 @@
 
 LazyFooTimer fpsTimer;
 LazyFooTimer capTimer;
+Visuals v;
+Entity* player = NULL;
+std::vector<std::unique_ptr<Entity>> entities;
 
 //#define DEBUG_DRAW_COLLISION
 
-int main (int argc, char* argv[])
+void generateEntities()
 {
-	Visuals v;
 	// Get all spritesheets
 	auto sheet1 = v.getSpritesheet("spritesheet1");
 	auto sheet2 = v.getSpritesheet("spritesheet2");
 	auto sheet3 = v.getSpritesheet("spritesheet3");
 
 	// Setup entities
-	std::vector<std::unique_ptr<Entity>> entities;
-
-	auto e = std::make_unique<Entity>("player", 200, 0, 70, 100);
+	entities.emplace_back(std::make_unique<Entity>("player", 200, 0, 70, 100));
+	auto& e = entities.back();
 	e->sprite = std::unique_ptr<Sprite>(new Sprite(sheet1, {0, 0, 32, 32}, e.get()));
 	e->behavior = std::unique_ptr<Behavior>(new Behavior(e.get()));
 	//e->behavior->gravity = false;
 	e->collision = std::unique_ptr<Collision>(new Collision(e.get(), true));
-	Entity* player = e.get();
-
-	entities.push_back(std::move(e));
-
-	int blockW = 100;
-	int blockH = 100;
-	int i = 0;
-	for (i = 0; i < 10; i++){
-		if (i == 3 || i == 6) continue;
-		auto b = std::make_unique<Entity>("block" + std::to_string(i), i * blockW, 400, blockW, blockH);
-		b->collision = std::unique_ptr<Collision>(new Collision(b.get(), true));
-		if (i == 5){
-			b->sprite = std::unique_ptr<Sprite>(new Sprite(sheet3, {0, 0, 32, 32}, b.get()));
-			b->collision->solid = false;
-		} else {
-			b->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b.get()));
-		}
-		entities.push_back(std::move(b));
-	}
-
-	auto b = std::make_unique<Entity>("block" + std::to_string(++i), 700, 300, 100, 100);
-	b->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b.get()));
-	b->collision = std::unique_ptr<Collision>(new Collision(b.get(), true));
-	entities.push_back(std::move(b));
-
-	auto b2 = std::make_unique<Entity>("block" + std::to_string(++i), 700, 0, 100, 100);
-	b2->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b2.get()));
-	b2->collision = std::unique_ptr<Collision>(new Collision(b2.get(), true));
-	entities.push_back(std::move(b2));
-
-	auto b3 = std::make_unique<Entity>("block" + std::to_string(++i), 0, 300, 100, 100);
-	b3->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b3.get()));
-	b3->collision = std::unique_ptr<Collision>(new Collision(b3.get(), true));
-	entities.push_back(std::move(b3));
-
-	auto b4 = std::make_unique<Entity>("block" + std::to_string(++i), 0, 0, 100, 100);
-	b4->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b4.get()));
-	b4->collision = std::unique_ptr<Collision>(new Collision(b4.get(), true));
-	entities.push_back(std::move(b4));
-
-	// Get to actual game loop stuff
+	player = e.get();
+}
+int main (int argc, char* argv[])
+{
+	generateEntities();
 	int countedFrames = 0;
 	const int FPS = 60;
 	const int SCREEN_TICK_PER_FRAME = 1000 / FPS;
