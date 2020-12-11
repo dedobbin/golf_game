@@ -49,12 +49,6 @@ rect Collision::checkCollision(Entity* a, Entity* b)
         Amax = Bmax;
     intersect.h = Amax - Amin;
 
-	// bool collision = intersect.w > 0 && intersect.h > 0;
-
-	// if (collision){
-	// 	b->collision->effect(a, intersect);
-	// } 
-
 	return intersect; 
 }
 

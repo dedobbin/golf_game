@@ -120,6 +120,7 @@ int main (int argc, char* argv[])
 				}
 
 				// Check if ground underneath so flip grounded to false 
+				// TODO: would be nice if isolated 'pushout' collision from Collision::effect and also used it here
 				if (collidee->collision->solid && e->collision->solid){
 					int originalY = e->y;
 
