@@ -136,6 +136,11 @@ int main (int argc, char* argv[])
 			if (!hasGroundUnderneath && e->behavior && e->behavior->gravity){
 				e->behavior->grounded = false;
 			}
+			if (hasGroundUnderneath && e->behavior && e->behavior->gravity && e->behavior->ySpeed > 0){
+				std::cout << "DEBUG: landed" <<std::endl;
+				e->behavior->grounded = true;
+				e->behavior->ySpeed = 0;
+			}
 		}
 		
 		// Render everything

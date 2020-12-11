@@ -25,7 +25,6 @@ class Behavior
 		bool gravity = true;
 		Entity* owner;
 		bool grounded = false;
-
 };
 
 #endif
