@@ -14,7 +14,7 @@ Visuals v;
 Entity* player = NULL;
 std::vector<std::unique_ptr<Entity>> entities;
 
-//#define DEBUG_DRAW_COLLISION
+#define DEBUG_DRAW
 
 void generateEntities()
 {
@@ -43,7 +43,7 @@ void generateEntities()
 int main (int argc, char* argv[])
 {
 	generateEntities();
-	Camera camera(0, 0, SCREEN_W, SCREEN_H);
+	Camera camera(0, 0, SCREEN_W / 2, SCREEN_H);
 	int countedFrames = 0;
 	const int FPS = 60;
 	const int SCREEN_TICK_PER_FRAME = 1000 / FPS;
@@ -134,15 +134,20 @@ int main (int argc, char* argv[])
 		v.renderStart();
 		for (auto& e : entities){
 			if (e->sprite){
-				v.renderSprite(e->sprite.get());
-#ifdef DEBUG_DRAW_COLLISION
-				if (e->collision){
-					rect collisionRect = e->collision->getRect();
-					v.renderRect(collisionRect.x, collisionRect.y, collisionRect.w, collisionRect.h);
-				}
+				if (camera.inView(e->x, e->y, e->w, e->h)){
+					v.renderSprite(e->sprite.get());
+#ifdef DEBUG_DRAW
+					if (e->collision){
+						rect collisionRect = e->collision->getRect();
+						v.renderRect(collisionRect.x, collisionRect.y, collisionRect.w, collisionRect.h);
+					}
 #endif
+				}
 			}
 		}
+#ifdef DEBUG_DRAW
+		v.renderRect(camera.camRect.x, camera.camRect.y, camera.camRect.w, camera.camRect.h);
+#endif
 		v.renderEnd();
 
 		float avgFps = countedFrames / ( fpsTimer.getTicks() / 1000.f );

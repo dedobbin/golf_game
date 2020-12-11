@@ -163,7 +163,7 @@ void Visuals::renderRect(int x, int y, int w, int h)
 {
 	SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
 	SDL_Rect rect = {x, y, w, h};
-	SDL_RenderFillRect(renderer, &rect);
+	SDL_RenderDrawRect(renderer, &rect);
 }
 
 void Visuals::renderEnd()
