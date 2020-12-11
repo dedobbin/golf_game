@@ -81,10 +81,14 @@ void Collision::effect(Entity* collider, rect intersect)
 
 rect Collision::getRect()
 {
+    // TODO: make dynamic
+    int wMargin = 3;
+    int hMargin = 0;
+
     return {
-        owner->x + 10,
-        owner->y + 10,
-        owner->w - 20,
-        owner->h - 20
+        owner->x + wMargin,
+        owner->y + hMargin,
+        owner->w - wMargin * 2,
+        owner->h - hMargin * 2
     };
 }

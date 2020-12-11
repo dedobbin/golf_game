@@ -8,6 +8,8 @@
 LazyFooTimer fpsTimer;
 LazyFooTimer capTimer;
 
+//#define DEBUG_DRAW_COLLISION
+
 int main (int argc, char* argv[])
 {
 	Visuals v;
@@ -18,7 +20,7 @@ int main (int argc, char* argv[])
 	// Setup entities
 	std::vector<std::unique_ptr<Entity>> entities;
 
-	auto e = std::make_unique<Entity>("player", 200, 0, 100, 100);
+	auto e = std::make_unique<Entity>("player", 200, 0, 70, 100);
 	e->sprite = std::unique_ptr<Sprite>(new Sprite(sheet1, {0, 0, 32, 32}, e.get()));
 	e->behavior = std::unique_ptr<Behavior>(new Behavior(e.get()));
 	//e->behavior->gravity = false;
@@ -150,10 +152,12 @@ int main (int argc, char* argv[])
 		for (auto& e : entities){
 			if (e->sprite){
 				v.renderSprite(e->sprite.get());
+#ifdef DEBUG_DRAW_COLLISION
 				if (e->collision){
 					rect collisionRect = e->collision->getRect();
 					v.renderRect(collisionRect.x, collisionRect.y, collisionRect.w, collisionRect.h);
 				}
+#endif
 			}
 		}
 		v.renderEnd();
