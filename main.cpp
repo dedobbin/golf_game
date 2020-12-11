@@ -21,13 +21,15 @@ void generateEntities()
 	auto sheet3 = v.getSpritesheet("spritesheet3");
 
 	// Setup entities
-	entities.emplace_back(std::make_unique<Entity>("player", 200, 0, 70, 100));
-	auto& e = entities.back();
-	e->sprite = std::unique_ptr<Sprite>(new Sprite(sheet1, {0, 0, 32, 32}, e.get()));
-	e->behavior = std::unique_ptr<Behavior>(new Behavior(e.get()));
+	Entity* e = new Entity("player", 200, 0, 70, 100);
+	e->sprite = std::unique_ptr<Sprite>(new Sprite(sheet1, {0, 0, 32, 32}, e));
+	e->behavior = std::unique_ptr<Behavior>(new Behavior(e));
 	//e->behavior->gravity = false;
-	e->collision = std::unique_ptr<Collision>(new Collision(e.get(), true));
-	player = e.get();
+	e->collision = std::unique_ptr<Collision>(new Collision(e, true));
+	player = e;
+
+	entities.emplace_back(std::unique_ptr<Entity>(e));
+
 }
 int main (int argc, char* argv[])
 {
