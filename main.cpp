@@ -14,8 +14,7 @@ Entity* player = NULL;
 std::vector<std::unique_ptr<Entity>> entities;
 
 #define DEBUG_DRAW
-#define DEBUG_CAMERA
-#define DEBUG_CONTROLS
+//#define DEBUG_CAMERA
 
 void generateEntities()
 {
@@ -170,6 +169,10 @@ int main (int argc, char* argv[])
 #endif	
 			}
 		}
+#ifdef DEBUG_DRAW 
+	v.renderRectOverlay(0, 0, v.camera->camRect.w, v.camera->camRect.w);
+#endif	
+
 		v.renderEnd();
 
 		float avgFps = countedFrames / ( fpsTimer.getTicks() / 1000.f );

@@ -25,6 +25,8 @@ class Visuals
 		void renderEnd();
 		void renderEntity(Entity* entity);
 		void renderRect(int x, int y, int w, int h);
+		// Overlay implies 'behind' the camera
+		void renderRectOverlay(int x, int y, int w, int h);
 		std::unique_ptr<Camera> camera;
 
 	private:

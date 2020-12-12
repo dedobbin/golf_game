@@ -152,6 +152,11 @@ void Visuals::renderStart()
     SDL_RenderClear( renderer );
 }
 
+void Visuals::renderEnd()
+{
+	SDL_RenderPresent(renderer);
+}
+
 void Visuals::renderEntity(Entity* entity)
 {
 	if (!camera->inView(entity->x,entity->y,entity->w,entity->h))
@@ -175,7 +180,9 @@ void Visuals::renderRect(int x, int y, int w, int h)
 	SDL_RenderDrawRect(renderer, &rect);
 }
 
-void Visuals::renderEnd()
+void Visuals::renderRectOverlay(int x, int y, int w, int h)
 {
-	SDL_RenderPresent(renderer);
+	SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
+	SDL_Rect rect = {x, y, w, h};
+	SDL_RenderDrawRect(renderer, &rect);
 }
