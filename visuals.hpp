@@ -25,6 +25,7 @@ class Visuals
 		void renderEnd();
 		void renderEntity(Entity* entity);
 		void renderRect(int x, int y, int w, int h);
+		std::unique_ptr<Camera> camera;
 
 	private:
 		bool initSDL();
@@ -34,7 +35,6 @@ class Visuals
 		const int renderText(std::string text, SDL_Color color, int x, int y, int h) const;
 		SDL_Texture* loadTexture( std::string path) const;
 		std::unordered_map<std::string, SDL_Texture*> spritesheets;
-		std::unique_ptr<Camera> camera;
 
 		std::string defaultSpritesheetPath = ".";
 

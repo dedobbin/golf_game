@@ -8,12 +8,19 @@ Sprite::Sprite(SDL_Texture* spritesheet, SDL_Rect src, Entity* owner)
 : spritesheet(spritesheet), src(src), owner(owner)
 {}
 
-SDL_Rect Sprite::getPos()
+SDL_Rect Sprite::getPos(Camera* camera)
 {
-	// TODO: base on camera etc
+	if (!camera){
+		return {
+			owner->x,
+			owner->y,
+			owner->w,
+			owner->h
+		};
+	}
 	return {
-		owner->x,
-		owner->y,
+		owner->x - camera->camRect.x,
+		owner->y + camera->camRect.y,
 		owner->w,
 		owner->h
 	};
