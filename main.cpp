@@ -4,7 +4,6 @@
 #include "sdl_utils.hpp"
 #include "entity.hpp"
 #include "rect.hpp"
-#include "camera.hpp"
 
 #include <vector>
 
@@ -50,7 +49,6 @@ void generateEntities()
 int main (int argc, char* argv[])
 {
 	generateEntities();
-	Camera camera(200, 0, 700, 700);
 	int countedFrames = 0;
 	const int FPS = 60;
 	const int SCREEN_TICK_PER_FRAME = 1000 / FPS;
@@ -140,20 +138,15 @@ int main (int argc, char* argv[])
 		v.renderStart();
 		for (auto& e : entities){
 			if (e->sprite){
-				if (camera.inView(e->x, e->y, e->w, e->h)){
-					v.renderSprite(e->sprite.get());
+				v.renderSprite(e->sprite.get());
 #ifdef DEBUG_DRAW 
-					if (e->collision){
-						rect collisionRect = e->collision->getRect();
-						v.renderRect(collisionRect.x, collisionRect.y, collisionRect.w, collisionRect.h);
-					}
-#endif
+				if (e->collision){
+					rect collisionRect = e->collision->getRect();
+					v.renderRect(collisionRect.x, collisionRect.y, collisionRect.w, collisionRect.h);
 				}
+#endif	
 			}
 		}
-#ifdef DEBUG_DRAW 
-		v.renderRect(camera.camRect.x, camera.camRect.y, camera.camRect.w, camera.camRect.h);
-#endif
 		v.renderEnd();
 
 		float avgFps = countedFrames / ( fpsTimer.getTicks() / 1000.f );

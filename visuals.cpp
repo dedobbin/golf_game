@@ -11,6 +11,8 @@ Visuals::Visuals()
 
 	defaultSpritesheetPath = "./assets/spritesheets";
 	loadSpritesheets(defaultSpritesheetPath);
+
+	camera = std::make_unique<Camera>(200, 0, 700, 700);
 }
 
 Visuals::~Visuals()
