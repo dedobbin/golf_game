@@ -152,8 +152,12 @@ void Visuals::renderStart()
     SDL_RenderClear( renderer );
 }
 
-void Visuals::renderSprite(Sprite* sprite)
+void Visuals::renderEntity(Entity* entity)
 {
+	if (!camera->inView(entity->x,entity->y,entity->w,entity->h))
+		return;
+	Sprite* sprite = entity->sprite.get();
+
 	//if (SDL_RenderCopyEx( renderer, sprite->texture, &sprite->src, &sprite->pos , NULL, NULL, sprite->flip) < 0){
 	auto pos = sprite->getPos();
 	if (SDL_RenderCopy( renderer, sprite->spritesheet, &sprite->src, &pos) < 0){
@@ -163,6 +167,8 @@ void Visuals::renderSprite(Sprite* sprite)
 
 void Visuals::renderRect(int x, int y, int w, int h)
 {
+	if (!camera->inView(x, y, w, h))
+		return;
 	SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
 	SDL_Rect rect = {x, y, w, h};
 	SDL_RenderDrawRect(renderer, &rect);

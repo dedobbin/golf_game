@@ -10,6 +10,7 @@
 #include <memory>
 #include "sprite.hpp"
 #include "camera.hpp"
+#include "entity.hpp"
 
 #define SCREEN_W 920
 #define SCREEN_H 640
@@ -22,8 +23,7 @@ class Visuals
 		void renderStart();
 		SDL_Texture* getSpritesheet(std::string);
 		void renderEnd();
-		void combineTextures();
-		void renderSprite(Sprite* sprite);
+		void renderEntity(Entity* entity);
 		void renderRect(int x, int y, int w, int h);
 
 	private:

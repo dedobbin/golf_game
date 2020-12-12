@@ -138,7 +138,7 @@ int main (int argc, char* argv[])
 		v.renderStart();
 		for (auto& e : entities){
 			if (e->sprite){
-				v.renderSprite(e->sprite.get());
+				v.renderEntity(e.get());
 #ifdef DEBUG_DRAW 
 				if (e->collision){
 					rect collisionRect = e->collision->getRect();
