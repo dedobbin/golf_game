@@ -20,7 +20,7 @@ SDL_Rect Sprite::getPos(Camera* camera)
 	}
 	return {
 		owner->x - camera->camRect.x,
-		owner->y + camera->camRect.y,
+		owner->y - camera->camRect.y,
 		owner->w,
 		owner->h
 	};
