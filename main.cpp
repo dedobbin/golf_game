@@ -14,8 +14,8 @@ Visuals v;
 Entity* player = NULL;
 std::vector<std::unique_ptr<Entity>> entities;
 
-//#define DEBUG_DRAW
-#define DEBUG_CAMERA
+#define DEBUG_DRAW
+
 void generateEntities()
 {
 	// Get all spritesheets
@@ -33,17 +33,24 @@ void generateEntities()
 	entities.emplace_back(std::unique_ptr<Entity>(e));
 
 	int blockW = 100;
+	int blockH = 100;
 	for (int i = 0; i < 10; i++){
-		Entity* b = new Entity("block" + std::to_string(i), i * blockW, 400, 100, 100);
+		Entity* b = new Entity("block" + std::to_string(i), i * blockW, 400, blockW, blockH);
 		b->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b));
 		b->collision = std::unique_ptr<Collision>(new Collision(b, true));
 		entities.emplace_back(std::unique_ptr<Entity>(b));
+		for (int j = 0; j < i ; j++){
+			Entity* bv = new Entity("block" + std::to_string(i), i * blockW, 300 - (blockH/5) * j, blockW, blockH/5);
+			bv->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, bv));
+			bv->collision = std::unique_ptr<Collision>(new Collision(bv, true));
+			entities.emplace_back(std::unique_ptr<Entity>(bv));
+		}
 	}
 }
 int main (int argc, char* argv[])
 {
 	generateEntities();
-	Camera camera(0, 0, 400, 400);
+	Camera camera(200, 0, 700, 700);
 	int countedFrames = 0;
 	const int FPS = 60;
 	const int SCREEN_TICK_PER_FRAME = 1000 / FPS;
@@ -82,22 +89,6 @@ int main (int argc, char* argv[])
 		if (keysPressed[SDL_SCANCODE_UP]){
 			player->behavior->jump();
 		}
-
-#ifdef DEBUG_CAMERA
-		int camSpeed = 5;
-		if (keysPressed[SDL_SCANCODE_D]){
-			camera.camRect.x += camSpeed;
-		} 
-		if (keysPressed[SDL_SCANCODE_A]){
-			camera.camRect.x -= camSpeed;
-		} 
-		if (keysPressed[SDL_SCANCODE_W]){
-			camera.camRect.y -= camSpeed;
-		} 
-		if (keysPressed[SDL_SCANCODE_S]){
-			camera.camRect.y += camSpeed;
-		} 
-#endif
 
 		//Move etc all entities, collision etc
 		for (auto& e : entities){
@@ -160,7 +151,7 @@ int main (int argc, char* argv[])
 				}
 			}
 		}
-#if defined(DEBUG_DRAW) || defined(DEBUG_CAMERA)
+#ifdef DEBUG_DRAW 
 		v.renderRect(camera.camRect.x, camera.camRect.y, camera.camRect.w, camera.camRect.h);
 #endif
 		v.renderEnd();
