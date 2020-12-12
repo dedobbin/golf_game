@@ -63,6 +63,11 @@ int main (int argc, char* argv[])
 	while(keepGoing){
 		capTimer.start();
 
+#ifndef CAMERA_DEBUG
+		v.camera->camRect.x = player->x - v.camera->camRect.w / 2;
+		v.camera->camRect.y = player->y - v.camera->camRect.h / 2;
+#endif
+
 		// Gather inputs and apply to player behavior
 		SDL_Event e;
 		while( SDL_PollEvent( &e ) != 0 ){
