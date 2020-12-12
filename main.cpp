@@ -15,6 +15,7 @@ std::vector<std::unique_ptr<Entity>> entities;
 
 #define DEBUG_DRAW
 #define DEBUG_CAMERA
+#define DEBUG_CONTROLS
 
 void generateEntities()
 {
@@ -63,7 +64,7 @@ int main (int argc, char* argv[])
 	while(keepGoing){
 		capTimer.start();
 
-#ifndef CAMERA_DEBUG
+#ifndef DEBUG_CAMERA
 		v.camera->camRect.x = player->x - v.camera->camRect.w / 2;
 		v.camera->camRect.y = player->y - v.camera->camRect.h / 2;
 #endif
