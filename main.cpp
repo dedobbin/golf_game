@@ -14,6 +14,7 @@ Entity* player = NULL;
 std::vector<std::unique_ptr<Entity>> entities;
 
 #define DEBUG_DRAW
+#define DEBUG_CAMERA
 
 void generateEntities()
 {
@@ -87,6 +88,22 @@ int main (int argc, char* argv[])
 		if (keysPressed[SDL_SCANCODE_UP]){
 			player->behavior->jump();
 		}
+
+#ifdef DEBUG_CAMERA
+		int camSpeed = 5;
+		if (keysPressed[SDL_SCANCODE_D]){
+			v.camera->camRect.x += camSpeed;
+		} 
+		if (keysPressed[SDL_SCANCODE_A]){
+			v.camera->camRect.x -= camSpeed;
+		} 
+		if (keysPressed[SDL_SCANCODE_W]){
+			v.camera->camRect.y -= camSpeed;
+		} 
+		if (keysPressed[SDL_SCANCODE_S]){
+			v.camera->camRect.y += camSpeed;
+		} 
+#endif
 
 		//Move etc all entities, collision etc
 		for (auto& e : entities){
