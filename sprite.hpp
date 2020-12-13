@@ -11,11 +11,9 @@ class Entity;
 class Sprite 
 {
 	public:
-		Sprite(SDL_Texture* spritesheet, SDL_Rect src, Entity* owner);
+		Sprite(Entity* owner);
 		~Sprite();
 		SDL_Rect getPos(Camera* camera = NULL);
-		SDL_Texture* spritesheet;
-		SDL_Rect src;
 		Entity* owner;
 };
 

@@ -25,7 +25,7 @@ void generateEntities()
 
 	// Setup entities
 	Entity* e = new Entity("player", 200, 0, 70, 100);
-	e->sprite = std::unique_ptr<Sprite>(new Sprite(sheet1, {0, 0, 32, 32}, e));
+	e->sprite = std::unique_ptr<Sprite>(new Sprite(e));
 	e->behavior = std::unique_ptr<Behavior>(new Behavior(e));
 	//e->behavior->gravity = false;
 	e->collision = std::unique_ptr<Collision>(new Collision(e, true));
@@ -36,12 +36,12 @@ void generateEntities()
 	int blockH = 100;
 	for (int i = 0; i < 10; i++){
 		Entity* b = new Entity("block" + std::to_string(i), i * blockW, 400, blockW, blockH);
-		b->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b));
+		b->sprite = std::unique_ptr<Sprite>(new Sprite(b));
 		b->collision = std::unique_ptr<Collision>(new Collision(b, true));
 		entities.emplace_back(std::unique_ptr<Entity>(b));
 		for (int j = 0; j < i ; j++){
 			Entity* bv = new Entity("block" + std::to_string(i), i * blockW, 300 - (blockH/5) * j, blockW, blockH/5);
-			bv->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, bv));
+			bv->sprite = std::unique_ptr<Sprite>(new Sprite(bv));
 			bv->collision = std::unique_ptr<Collision>(new Collision(bv, true));
 			entities.emplace_back(std::unique_ptr<Entity>(bv));
 		}
@@ -127,18 +127,20 @@ int main (int argc, char* argv[])
 				bool collision = intersect.w > 0 && intersect.h > 0;
 
 				if (collision){
+					std::cout << "DEBUG: collision: " << e->name << " and " << collidee->name << std::endl;
 					collidee->collision->effect(e.get(), intersect);
 				}
 
 				// Check if ground underneath so flip grounded to false 
 				// TODO: would be nice if isolated 'pushout' collision from Collision::effect and also used it here
-				if (collidee->collision->solid && e->collision->solid){
+				if (e->behavior && collidee->collision->solid && e->collision->solid){
 					int originalY = e->y;
 
 					e->y += 1;
 					auto intersect = Collision::checkCollision(e.get(), collidee.get());
 					bool collision = intersect.w > 0 && intersect.h > 0;
 					if (collision){
+						std::cout << "DEBUG: has ground underneath: " << e->name << " and " << collidee->name << std::endl;
 						hasGroundUnderneath = true;
 						groundIntersect = intersect;
 					}
