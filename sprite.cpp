@@ -33,11 +33,11 @@ Sprite::~Sprite()
 
 void Sprite::frameTick()
 {
-	//TODO: wait longer
 	if (animations.find(activeAnimation) == animations.end()){
 		return;
 	}
 	auto animation = animations[activeAnimation].get();
+	if (animation->no) return;
 
 	if (animation->curFrameTick++ < 20 - animation->animationSpeed){
 		return;

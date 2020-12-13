@@ -27,11 +27,15 @@ void generateEntities()
 	Entity* e = new Entity("player", 200, 0, 70, 100);
 	e->sprite = std::unique_ptr<Sprite>(new Sprite(e));
 
-	auto animation = new Animation(sheet1);
-	animation->frames.push_back(std::make_unique<Frame>(0, 0, 32, 32));
-	animation->frames.push_back(std::make_unique<Frame>(32, 0, 32, 32));
-	animation->frames.push_back(std::make_unique<Frame>(64, 0, 32, 32));
-	e->sprite->animations.insert({0, std::unique_ptr<Animation>(animation)});
+	auto walkAnimation = new Animation(sheet1);
+	walkAnimation->frames.push_back(std::make_unique<Frame>(32, 0, 32, 32));
+	walkAnimation->frames.push_back(std::make_unique<Frame>(64, 0, 32, 32));
+	e->sprite->animations.insert({ANIMATION_WALK_INDEX, std::unique_ptr<Animation>(walkAnimation)});
+
+	auto idleAnimation = new Animation(sheet1);
+	idleAnimation->frames.push_back(std::make_unique<Frame>(0, 0, 32, 32));
+	idleAnimation->no = true;
+	e->sprite->animations.insert({ANIMATION_IDLE_INDEX, std::unique_ptr<Animation>(idleAnimation)});
 
 	e->behavior = std::unique_ptr<Behavior>(new Behavior(e));
 	//e->behavior->gravity = false;

@@ -1,8 +1,8 @@
 #include "animation.hpp"
 #include <iostream>
 
-Animation::Animation(SDL_Texture* spritesheet)
-: spritesheet(spritesheet)
+Animation::Animation(SDL_Texture* spritesheet, bool no)
+: spritesheet(spritesheet), no(no)
 {}
 
 Frame::Frame(int x, int y, int w, int h)
