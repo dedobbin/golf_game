@@ -39,6 +39,12 @@ void Sprite::frameTick()
 	}
 	auto animation = animations[activeAnimation].get();
 
+	if (animation->curFrameTick++ < 20 - animation->animationSpeed){
+		return;
+	}
+
+	animation->curFrameTick = 0;
+
 	if (animation->curFrame + 1 >= animation->frames.size()){
 		if (animation->loop){
 			animation->curFrame = 0;

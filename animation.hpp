@@ -19,6 +19,10 @@ class Animation
 		~Animation();
 		std::vector<std::unique_ptr<Frame>> frames;
 		int curFrame = 0;
+		/*0 - 20 */
+		int animationSpeed = 10;
+		/* stores for how many frames cur animation has been shown */
+		int curFrameTick = 0;
 		bool loop = true;
 		SDL_Texture* spritesheet;
 };
