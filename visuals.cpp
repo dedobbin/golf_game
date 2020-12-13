@@ -170,6 +170,12 @@ void Visuals::renderEntity(Entity* entity)
 	
 		auto pos = sprite->getPos(camera.get());
 		//if (SDL_RenderCopyEx( renderer, sprite->texture, &sprite->src, &sprite->pos , NULL, NULL, sprite->flip) < 0){
+		
+		auto lastStateFlags = entity->lastStateFlags;
+		auto newStateFlags =  entity->getStateFlags();
+		if (lastStateFlags != newStateFlags){
+			std::cout << "DEBUG: state changed to " << newStateFlags << std::endl;
+		}
 
 		if (SDL_RenderCopy( renderer, animation->spritesheet, &curFrame->src, &pos) < 0){
 			std::cerr << "Failed to render sprite " << std::endl;

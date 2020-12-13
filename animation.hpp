@@ -4,10 +4,6 @@
 #include <vector>
 #include <memory>
 
-#define ANIMATION_IDLE_INDEX 0
-#define ANIMATION_WALK_INDEX 1
-#define ANIMATION_JUMP_INDEX 2
-#define ANIMATION_ATTACK_INDEX 3
 class Frame 
 {
 	public:
