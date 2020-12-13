@@ -26,6 +26,12 @@ void generateEntities()
 	// Setup entities
 	Entity* e = new Entity("player", 200, 0, 70, 100);
 	e->sprite = std::unique_ptr<Sprite>(new Sprite(e));
+
+	auto animation = new Animation();
+	animation->frames.push_back(std::make_unique<Frame>(0, 0, 32, 32));
+	animation->frames.push_back(std::make_unique<Frame>(32, 0, 32, 32));
+	e->sprite->animations.insert({0, std::unique_ptr<Animation>(animation)});
+
 	e->behavior = std::unique_ptr<Behavior>(new Behavior(e));
 	//e->behavior->gravity = false;
 	e->collision = std::unique_ptr<Collision>(new Collision(e, true));
@@ -127,7 +133,7 @@ int main (int argc, char* argv[])
 				bool collision = intersect.w > 0 && intersect.h > 0;
 
 				if (collision){
-					std::cout << "DEBUG: collision: " << e->name << " and " << collidee->name << std::endl;
+					//std::cout << "DEBUG: collision: " << e->name << " and " << collidee->name << std::endl;
 					collidee->collision->effect(e.get(), intersect);
 				}
 
@@ -140,7 +146,7 @@ int main (int argc, char* argv[])
 					auto intersect = Collision::checkCollision(e.get(), collidee.get());
 					bool collision = intersect.w > 0 && intersect.h > 0;
 					if (collision){
-						std::cout << "DEBUG: has ground underneath: " << e->name << " and " << collidee->name << std::endl;
+						//std::cout << "DEBUG: has ground underneath: " << e->name << " and " << collidee->name << std::endl;
 						hasGroundUnderneath = true;
 						groundIntersect = intersect;
 					}
@@ -163,6 +169,7 @@ int main (int argc, char* argv[])
 		for (auto& e : entities){
 			if (e->sprite){
 				v.renderEntity(e.get());
+				e->sprite->frameTick();
 #ifdef DEBUG_DRAW 
 				if (e->collision){
 					rect collisionRect = e->collision->getRect();
