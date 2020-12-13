@@ -163,13 +163,19 @@ void Visuals::renderEntity(Entity* entity)
 		return;
 	Sprite* sprite = entity->sprite.get();
 
-	//if (SDL_RenderCopyEx( renderer, sprite->texture, &sprite->src, &sprite->pos , NULL, NULL, sprite->flip) < 0){
-	auto pos = sprite->getPos(camera.get());
-
 	if (sprite->animations.find(sprite->activeAnimation) != sprite->animations.end()){
 		auto animation = sprite->animations[sprite->activeAnimation].get();
 		std::cout << "DEBUG: animation " <<  animation->curFrame << std::endl;
+		auto curFrame = animation->frames[animation->curFrame].get();
+	
+		auto pos = sprite->getPos(camera.get());
+		//if (SDL_RenderCopyEx( renderer, sprite->texture, &sprite->src, &sprite->pos , NULL, NULL, sprite->flip) < 0){
+
+		if (SDL_RenderCopy( renderer, animation->spritesheet, &curFrame->src, &pos) < 0){
+			std::cerr << "Failed to render sprite " << std::endl;
+		}
 	}
+
 
 	// if (SDL_RenderCopy( renderer, sprite->spritesheet, &sprite->src, &pos) < 0){
 	// 	std::cerr << "Failed to render sprite " << std::endl;

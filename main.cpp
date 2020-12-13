@@ -27,9 +27,10 @@ void generateEntities()
 	Entity* e = new Entity("player", 200, 0, 70, 100);
 	e->sprite = std::unique_ptr<Sprite>(new Sprite(e));
 
-	auto animation = new Animation();
+	auto animation = new Animation(sheet1);
 	animation->frames.push_back(std::make_unique<Frame>(0, 0, 32, 32));
 	animation->frames.push_back(std::make_unique<Frame>(32, 0, 32, 32));
+	animation->frames.push_back(std::make_unique<Frame>(64, 0, 32, 32));
 	e->sprite->animations.insert({0, std::unique_ptr<Animation>(animation)});
 
 	e->behavior = std::unique_ptr<Behavior>(new Behavior(e));
