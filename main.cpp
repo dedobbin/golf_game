@@ -174,7 +174,6 @@ int main (int argc, char* argv[])
 		for (auto& e : entities){
 			if (e->sprite){
 				v.renderEntity(e.get());
-				e->sprite->frameTick();
 #ifdef DEBUG_DRAW 
 				if (e->collision){
 					rect collisionRect = e->collision->getRect();
