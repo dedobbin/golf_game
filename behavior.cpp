@@ -22,6 +22,11 @@ void Behavior::addXSpeed(float n, bool clampZero)
 	}
 }
 
+Behavior::~Behavior()
+{
+	//std::cout << "DEBUG: Behavior deconstructor" << std::endl;
+}
+
 void Behavior::addYSpeed(float n, bool clampZero)
 {
 	if (ySpeed + n > maxYSpeed){
@@ -58,7 +63,19 @@ void Behavior::jump(){
 
 }
 
-Behavior::~Behavior()
+int Behavior::getState()
 {
-	//std::cout << "DEBUG: Behavior deconstructor" << std::endl;
+	int result = lastState;
+	
+	//std::cout << "DEBUG: " << (xSpeed != 0) << grounded << std::endl;
+
+	if (gravity && ySpeed < 0){
+		result = ENTITY_STATE_JUMP;
+	} else if (xSpeed != 0 && grounded){
+		result = ENTITY_STATE_WALK;
+	} else {
+		result = ENTITY_STATE_DEFAULT;
+	}
+	lastState = result;
+	return result;
 }

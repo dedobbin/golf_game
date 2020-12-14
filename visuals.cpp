@@ -171,10 +171,19 @@ void Visuals::renderEntity(Entity* entity)
 		auto pos = sprite->getPos(camera.get());
 		//if (SDL_RenderCopyEx( renderer, sprite->texture, &sprite->src, &sprite->pos , NULL, NULL, sprite->flip) < 0){
 		
-		auto lastStateFlags = entity->lastStateFlags;
-		auto newStateFlags =  entity->getStateFlags();
-		if (lastStateFlags != newStateFlags){
-			std::cout << "DEBUG: state changed to " << newStateFlags << std::endl;
+		if (entity->behavior){
+			auto lastState = entity->behavior->lastState;
+			auto currentState =  entity->behavior->getState();
+			if (lastState != currentState){
+				//std::cout << "DEBUG: state changed to " << currentState << std::endl;
+				//TODO: check if exists
+				if (sprite->animations.find(currentState) == sprite->animations.end()){
+					std::cout << "DEBUG: no animation for state " << currentState << std::endl;
+					sprite->activeAnimation = ENTITY_STATE_DEFAULT;
+				} else {
+					sprite->activeAnimation = currentState;
+				}
+			}
 		}
 
 		if (SDL_RenderCopy( renderer, animation->spritesheet, &curFrame->src, &pos) < 0){

@@ -35,7 +35,12 @@ void generateEntities()
 	auto idleAnimation = new Animation(sheet1);
 	idleAnimation->frames.push_back(std::make_unique<Frame>(0, 0, 32, 32));
 	idleAnimation->no = true;
-	e->sprite->animations.insert({ENTITY_STATE_IDLE, std::unique_ptr<Animation>(idleAnimation)});
+	e->sprite->animations.insert({ENTITY_STATE_DEFAULT, std::unique_ptr<Animation>(idleAnimation)});
+
+	auto jumpAnimation = new Animation(sheet1);
+	jumpAnimation->frames.push_back(std::make_unique<Frame>(0, 0, 32, 32));
+	jumpAnimation->no = true;
+	e->sprite->animations.insert({ENTITY_STATE_JUMP, std::unique_ptr<Animation>(jumpAnimation)});
 
 	e->behavior = std::unique_ptr<Behavior>(new Behavior(e));
 	//e->behavior->gravity = false;
@@ -50,12 +55,12 @@ void generateEntities()
 		b->sprite = std::unique_ptr<Sprite>(new Sprite(b));
 		b->collision = std::unique_ptr<Collision>(new Collision(b, true));
 		entities.emplace_back(std::unique_ptr<Entity>(b));
-		for (int j = 0; j < i ; j++){
-			Entity* bv = new Entity("block" + std::to_string(i), i * blockW, 300 - (blockH/5) * j, blockW, blockH/5);
-			bv->sprite = std::unique_ptr<Sprite>(new Sprite(bv));
-			bv->collision = std::unique_ptr<Collision>(new Collision(bv, true));
-			entities.emplace_back(std::unique_ptr<Entity>(bv));
-		}
+		// for (int j = 0; j < i ; j++){
+		// 	Entity* bv = new Entity("block" + std::to_string(i), i * blockW, 300 - (blockH/5) * j, blockW, blockH/5);
+		// 	bv->sprite = std::unique_ptr<Sprite>(new Sprite(bv));
+		// 	bv->collision = std::unique_ptr<Collision>(new Collision(bv, true));
+		// 	entities.emplace_back(std::unique_ptr<Entity>(bv));
+		// }
 	}
 }
 int main (int argc, char* argv[])

@@ -9,10 +9,3 @@ Entity::~Entity()
 {
 	//std::cout << "DEBUG: Entity deconstructor" << std::endl;
 }
-
-int Entity::getStateFlags()
-{
-	int result = ENTITY_STATE_WALK;
-	lastStateFlags = result;
-	return ENTITY_STATE_WALK;
-}
