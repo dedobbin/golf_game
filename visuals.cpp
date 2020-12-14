@@ -17,10 +17,10 @@ Visuals::Visuals()
 
 Visuals::~Visuals()
 {
-	// TODO: deinit SDL and subsystems.
 	for (auto sheet : spritesheets){
 		SDL_DestroyTexture(sheet.second);
 	}
+	SDL_Quit();
 }
 
 bool Visuals::loadSpritesheets(std::string path)
@@ -175,7 +175,7 @@ void Visuals::renderEntity(Entity* entity)
 			auto lastState = entity->behavior->lastState;
 			auto currentState =  entity->behavior->getState();
 			if (lastState != currentState){
-				std::cout << "DEBUG: state changed to " << currentState << std::endl;
+				//std::cout << "DEBUG: state changed to " << currentState << std::endl;
 				if (sprite->animations.find(currentState) == sprite->animations.end()){
 					std::cout << "DEBUG: no animation for state " << currentState << std::endl;
 					sprite->activeAnimation = ENTITY_STATE_DEFAULT;
