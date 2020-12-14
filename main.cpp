@@ -4,6 +4,7 @@
 #include "sdl_utils.hpp"
 #include "entity.hpp"
 #include "rect.hpp"
+#include "animated_sprite.hpp"
 
 #include <vector>
 
@@ -25,7 +26,7 @@ void generateEntities()
 
 	// Setup entities
 	Entity* e = new Entity("player", 200, 0, 70, 100);
-	e->sprite = std::unique_ptr<Sprite>(new Sprite(e));
+	e->sprite = std::unique_ptr<Sprite>(new AnimatedSprite(e));
 
 	auto walkAnimation = new Animation(sheet1);
 	walkAnimation->frames.push_back(std::make_unique<Frame>(32, 0, 32, 32));
