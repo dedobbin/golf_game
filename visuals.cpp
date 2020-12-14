@@ -185,6 +185,8 @@ void Visuals::renderEntity(Entity* entity)
 			}
 		}
 
+		entity->sprite->render(renderer);
+
 		if (SDL_RenderCopy( renderer, animation->spritesheet, &curFrame->src, &pos) < 0){
 			std::cerr << "Failed to render sprite " << std::endl;
 		}

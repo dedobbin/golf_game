@@ -9,4 +9,6 @@ class AnimatedSprite : public Sprite
 {
 	public:
 		AnimatedSprite(Entity* owner);
+		void render(SDL_Renderer* renderer);
+
 };

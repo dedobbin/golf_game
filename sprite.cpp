@@ -31,6 +31,11 @@ Sprite::~Sprite()
 	//std::cout << "DEBUG: Sprite deconstructor" << std::endl;
 }
 
+void Sprite::render(SDL_Renderer* renderer)
+{
+	//std::cout << "DEBUG: Sprite::render()" << std::endl;
+}
+
 void Sprite::frameTick()
 {
 	if (animations.find(activeAnimation) == animations.end()){

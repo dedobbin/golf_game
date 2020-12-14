@@ -16,6 +16,7 @@ class Sprite
 	public:
 		Sprite(Entity* owner);
 		~Sprite();
+		virtual void render(SDL_Renderer* renderer);
 		void frameTick();
 		SDL_Rect getPos(Camera* camera = NULL);
 		Entity* owner;
