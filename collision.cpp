@@ -74,7 +74,7 @@ void Collision::effect(Entity* collider, rect intersect)
             } else if (collider->behavior->ySpeed > 0 && collider->y < owner->y){
                 collider->y -= intersect.h;
                 collider->behavior->ySpeed = 0;
-                //collider->behavior->grounded = true;
+                collider->behavior->grounded = true;
             }
         }
     }

@@ -175,8 +175,7 @@ void Visuals::renderEntity(Entity* entity)
 			auto lastState = entity->behavior->lastState;
 			auto currentState =  entity->behavior->getState();
 			if (lastState != currentState){
-				//std::cout << "DEBUG: state changed to " << currentState << std::endl;
-				//TODO: check if exists
+				std::cout << "DEBUG: state changed to " << currentState << std::endl;
 				if (sprite->animations.find(currentState) == sprite->animations.end()){
 					std::cout << "DEBUG: no animation for state " << currentState << std::endl;
 					sprite->activeAnimation = ENTITY_STATE_DEFAULT;
