@@ -5,7 +5,6 @@
 #include "camera.hpp"
 #include <map>
 #include <memory>
-#include "animation.hpp"
 #include "camera.hpp"
 // #include <SDL2/SDL_image.h>
 
