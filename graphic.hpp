@@ -10,18 +10,24 @@
 // circ dep
 class Entity;
 
+struct Sprite 
+{
+	SDL_Texture* spritesheet = NULL;
+	SDL_Rect src = {0,0,0,0};
+};
+
 class Graphic 
 {
 	public:
 		Graphic(Entity* owner);
 		Graphic(SDL_Texture* spritesheet, SDL_Rect src, Entity* owner);
 		~Graphic();
+		virtual Sprite getSprite();
 		virtual void render(SDL_Renderer* renderer, Camera* camera);
 		SDL_Rect getPos(Camera* camera = NULL);
 		Entity* owner;
 
 		//Not used by animated sprite child class
-		SDL_Texture* spritesheet = NULL;
-		SDL_Rect src = {0,0,0,0};
+		Sprite sprite;
 
 };
