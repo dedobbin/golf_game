@@ -27,16 +27,25 @@ AnimatedGraphic::AnimatedGraphic(Entity* owner)
 :Graphic(owner)
 {}
 
-void AnimatedGraphic::render(SDL_Renderer* renderer, Camera* camera)
+Sprite AnimatedGraphic::getSprite()
 {
 	auto animation = animations[activeAnimation].get();
-	//std::cout << "DEBUG: animation " <<  animation->curFrame << std::endl;
 	auto curFrame = animation->frames[animation->curFrame].get();
+	return {animation->spritesheet, curFrame->src};
+}
 
-	auto pos = getPos(camera);
-	//if (SDL_RenderCopyEx( renderer, sprite->texture, &sprite->src, &sprite->pos , NULL, NULL, sprite->flip) < 0){
+void AnimatedGraphic::render(SDL_Renderer* renderer, Camera* camera)
+{	
+	auto sprite = getSprite();
 	
+	auto pos = getPos(camera);
+	if (SDL_RenderCopy( renderer, sprite.spritesheet, &sprite.src, &pos) < 0){
+		std::cerr << "Failed to render sprite " + owner->name << std::endl;
+	}
+
+	//TODO: wrap in function updateAnimation or something
 	if (owner->behavior){
+		auto animation = animations[activeAnimation].get();
 		auto lastState = owner->behavior->lastState;
 		auto curState =  owner->behavior->getState();
 		if (lastState != curState){
@@ -49,10 +58,6 @@ void AnimatedGraphic::render(SDL_Renderer* renderer, Camera* camera)
 				animation->curFrame = 0;
 			}
 		}
-	}
-
-	if (SDL_RenderCopy( renderer, animation->spritesheet, &curFrame->src, &pos) < 0){
-		std::cerr << "Failed to render sprite " + owner->name << std::endl;
 	}
 
 	frameTick();
