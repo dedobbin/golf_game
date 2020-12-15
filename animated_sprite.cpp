@@ -38,14 +38,15 @@ void AnimatedSprite::render(SDL_Renderer* renderer, Camera* camera)
 	
 	if (owner->behavior){
 		auto lastState = owner->behavior->lastState;
-		auto currentState =  owner->behavior->getState();
-		if (lastState != currentState){
-			//std::cout << "DEBUG: state changed to " << currentState << std::endl;
-			if (animations.find(currentState) == animations.end()){
-				std::cout << "DEBUG: no animation for state " << owner->name << "(" << currentState << ")" << std::endl;
+		auto curState =  owner->behavior->getState();
+		if (lastState != curState){
+			//std::cout << "DEBUG: state changed to " << curState << std::endl;
+			if (animations.find(curState) == animations.end()){
+				std::cout << "DEBUG: no animation for state " << owner->name << "(" << curState << ")" << std::endl;
 				activeAnimation = ENTITY_STATE_DEFAULT;
 			} else {
-				activeAnimation = currentState;
+				activeAnimation = curState;
+				animation->curFrame = 0;
 			}
 		}
 	}
