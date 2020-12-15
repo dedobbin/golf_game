@@ -62,10 +62,12 @@ void Collision::effect(Entity* collider, rect intersect)
         if (intersect.h > intersect.w){
             if (collider->behavior->xSpeed < 0 && collider->x > owner->x){
                 collider->x += intersect.w;
-                collider->behavior->xSpeed = 0;
+                // This is a bit of a hack. set speed to 0.1 so get trunced to 0 (no movement), yet there is x speed, so animation 'etc' know entity is still walking 
+                collider->behavior->xSpeed = 0.1;
             } else if (collider->behavior->xSpeed > 0 && collider->x < owner->x){
                 collider->x -= intersect.w;
-                collider->behavior->xSpeed = 0;
+                // same hack as mentioned above
+                collider->behavior->xSpeed = 0.1;
             }
         } else {
             if (collider->behavior->ySpeed < 0 && collider->y > owner->y){
