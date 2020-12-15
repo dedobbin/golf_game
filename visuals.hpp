@@ -8,7 +8,7 @@
 #include <SDL2/SDL_image.h>
 #include <unordered_map>
 #include <memory>
-#include "sprite.hpp"
+#include "graphic.hpp"
 #include "camera.hpp"
 #include "entity.hpp"
 

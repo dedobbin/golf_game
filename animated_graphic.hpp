@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "sprite.hpp"
+#include "graphic.hpp"
 
 // circ dep
 class Entity;
@@ -31,10 +31,10 @@ class Animation
 		bool no = false;
 };
 
-class AnimatedSprite : public Sprite
+class AnimatedGraphic : public Graphic
 {
 	public:
-		AnimatedSprite(Entity* owner);
+		AnimatedGraphic(Entity* owner);
 		void render(SDL_Renderer* renderer, Camera* camera);
 		void frameTick();
 		std::map<int, std::unique_ptr<Animation>> animations;

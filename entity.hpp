@@ -16,7 +16,7 @@ class Entity
 		int w = 100;
 		int h = 100;
 		std::string name;
-		std::unique_ptr<Sprite> sprite;
+		std::unique_ptr<Graphic> graphic;
 		std::unique_ptr<Behavior> behavior;
 		std::unique_ptr<Collision> collision;
 };

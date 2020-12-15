@@ -1,5 +1,4 @@
-#ifndef __SPRITE_HPP__
-#define __SPRITE_HPP__
+#pragma once
 
 #include <SDL2/SDL.h>
 #include "camera.hpp"
@@ -11,12 +10,12 @@
 // circ dep
 class Entity;
 
-class Sprite 
+class Graphic 
 {
 	public:
-		Sprite(Entity* owner);
-		Sprite(SDL_Texture* spritesheet, SDL_Rect src, Entity* owner);
-		~Sprite();
+		Graphic(Entity* owner);
+		Graphic(SDL_Texture* spritesheet, SDL_Rect src, Entity* owner);
+		~Graphic();
 		virtual void render(SDL_Renderer* renderer, Camera* camera);
 		SDL_Rect getPos(Camera* camera = NULL);
 		Entity* owner;
@@ -26,5 +25,3 @@ class Sprite
 		SDL_Rect src = {0,0,0,0};
 
 };
-
-#endif

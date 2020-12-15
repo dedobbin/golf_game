@@ -161,8 +161,7 @@ void Visuals::renderEntity(Entity* entity)
 {
 	if (!camera->inView(entity->x,entity->y,entity->w,entity->h))
 		return;
-	Sprite* sprite = entity->sprite.get();
- 	entity->sprite->render(renderer, camera.get());
+ 	entity->graphic->render(renderer, camera.get());
 }
 
 void Visuals::renderRect(int x, int y, int w, int h)

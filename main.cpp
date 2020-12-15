@@ -4,7 +4,7 @@
 #include "sdl_utils.hpp"
 #include "entity.hpp"
 #include "rect.hpp"
-#include "animated_sprite.hpp"
+#include "animated_graphic.hpp"
 
 #include <vector>
 
@@ -26,24 +26,24 @@ void generateEntities()
 
 	// Setup entities
 	Entity* e = new Entity("player", 200, 0, 70, 100);
-	e->sprite = std::unique_ptr<Sprite>(new AnimatedSprite(e));
+	e->graphic = std::unique_ptr<Graphic>(new AnimatedGraphic(e));
 
-	auto animatedSprite = (AnimatedSprite*)e->sprite.get();
+	auto animatedGraphic = (AnimatedGraphic*)e->graphic.get();
 
 	auto walkAnimation = new Animation(sheet1);
 	walkAnimation->frames.push_back(std::make_unique<Frame>(32, 0, 32, 32));
 	walkAnimation->frames.push_back(std::make_unique<Frame>(64, 0, 32, 32));
-	animatedSprite->animations.insert({ENTITY_STATE_WALK, std::unique_ptr<Animation>(walkAnimation)});
+	animatedGraphic->animations.insert({ENTITY_STATE_WALK, std::unique_ptr<Animation>(walkAnimation)});
 
 	auto idleAnimation = new Animation(sheet1);
 	idleAnimation->frames.push_back(std::make_unique<Frame>(0, 0, 32, 32));
 	idleAnimation->no = true;
-	animatedSprite->animations.insert({ENTITY_STATE_DEFAULT, std::unique_ptr<Animation>(idleAnimation)});
+	animatedGraphic->animations.insert({ENTITY_STATE_DEFAULT, std::unique_ptr<Animation>(idleAnimation)});
 
 	auto jumpAnimation = new Animation(sheet1);
 	jumpAnimation->frames.push_back(std::make_unique<Frame>(0, 0, 32, 32));
 	jumpAnimation->no = true;
-	animatedSprite->animations.insert({ENTITY_STATE_JUMP, std::unique_ptr<Animation>(jumpAnimation)});
+	animatedGraphic->animations.insert({ENTITY_STATE_JUMP, std::unique_ptr<Animation>(jumpAnimation)});
 
 	e->behavior = std::unique_ptr<Behavior>(new Behavior(e));
 	//e->behavior->gravity = false;
@@ -55,12 +55,12 @@ void generateEntities()
 	int blockH = 100;
 	for (int i = 0; i < 10; i++){
 		Entity* b = new Entity("block" + std::to_string(i), i * blockW, 400, blockW, blockH);
-		b->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b));
+		b->graphic = std::unique_ptr<Graphic>(new Graphic(sheet2, {0, 0, 32, 32}, b));
 		b->collision = std::unique_ptr<Collision>(new Collision(b, true));
 		entities.emplace_back(std::unique_ptr<Entity>(b));
 		for (int j = 0; j < i ; j++){
 			Entity* bv = new Entity("block" + std::to_string(i), i * blockW, 300 - (blockH/5) * j, blockW, blockH/5);
-			bv->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, bv));
+			bv->graphic = std::unique_ptr<Graphic>(new Graphic(sheet2, {0, 0, 32, 32}, bv));
 			bv->collision = std::unique_ptr<Collision>(new Collision(bv, true));
 			entities.emplace_back(std::unique_ptr<Entity>(bv));
 		}
@@ -176,7 +176,7 @@ int main (int argc, char* argv[])
 		// Render everything
 		v.renderStart();
 		for (auto& e : entities){
-			if (e->sprite){
+			if (e->graphic){
 				v.renderEntity(e.get());
 #ifdef DEBUG_DRAW 
 				if (e->collision){

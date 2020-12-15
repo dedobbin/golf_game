@@ -1,4 +1,4 @@
-#include "animated_sprite.hpp"
+#include "animated_graphic.hpp"
 #include <iostream>
 
 // circ dep
@@ -23,11 +23,11 @@ Animation::~Animation()
 }
 
 
-AnimatedSprite::AnimatedSprite(Entity* owner)
-:Sprite(owner)
+AnimatedGraphic::AnimatedGraphic(Entity* owner)
+:Graphic(owner)
 {}
 
-void AnimatedSprite::render(SDL_Renderer* renderer, Camera* camera)
+void AnimatedGraphic::render(SDL_Renderer* renderer, Camera* camera)
 {
 	auto animation = animations[activeAnimation].get();
 	//std::cout << "DEBUG: animation " <<  animation->curFrame << std::endl;
@@ -58,7 +58,7 @@ void AnimatedSprite::render(SDL_Renderer* renderer, Camera* camera)
 	frameTick();
 }
 
-void AnimatedSprite::frameTick()
+void AnimatedGraphic::frameTick()
 {
 	if (animations.find(activeAnimation) == animations.end()){
 		return;

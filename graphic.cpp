@@ -1,18 +1,23 @@
-#include "sprite.hpp"
+#include "graphic.hpp"
 #include <iostream>
 
 // circ dep
 #include "entity.hpp"
 
-Sprite::Sprite(Entity* owner)
+Graphic::Graphic(Entity* owner)
 : owner(owner)
 {}
 
-Sprite::Sprite(SDL_Texture* spritesheet, SDL_Rect src, Entity* owner)
+Graphic::Graphic(SDL_Texture* spritesheet, SDL_Rect src, Entity* owner)
 : owner(owner), spritesheet(spritesheet), src(src)
 {}
 
-void Sprite::render(SDL_Renderer* renderer, Camera* camera)
+Graphic::~Graphic()
+{
+	//std::cout << "DEBUG: Sprite deconstructor" << std::endl;
+}
+
+void Graphic::render(SDL_Renderer* renderer, Camera* camera)
 {
 	auto pos = getPos(camera);
 
@@ -22,7 +27,7 @@ void Sprite::render(SDL_Renderer* renderer, Camera* camera)
 	}
 }
 
-SDL_Rect Sprite::getPos(Camera* camera)
+SDL_Rect Graphic::getPos(Camera* camera)
 {
 	if (!camera){
 		return {
@@ -38,9 +43,4 @@ SDL_Rect Sprite::getPos(Camera* camera)
 		owner->w,
 		owner->h
 	};
-}
-
-Sprite::~Sprite()
-{
-	//std::cout << "DEBUG: Sprite deconstructor" << std::endl;
 }
