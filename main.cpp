@@ -28,20 +28,22 @@ void generateEntities()
 	Entity* e = new Entity("player", 200, 0, 70, 100);
 	e->sprite = std::unique_ptr<Sprite>(new AnimatedSprite(e));
 
+	auto animatedSprite = (AnimatedSprite*)e->sprite.get();
+
 	auto walkAnimation = new Animation(sheet1);
 	walkAnimation->frames.push_back(std::make_unique<Frame>(32, 0, 32, 32));
 	walkAnimation->frames.push_back(std::make_unique<Frame>(64, 0, 32, 32));
-	e->sprite->animations.insert({ENTITY_STATE_WALK, std::unique_ptr<Animation>(walkAnimation)});
+	animatedSprite->animations.insert({ENTITY_STATE_WALK, std::unique_ptr<Animation>(walkAnimation)});
 
 	auto idleAnimation = new Animation(sheet1);
 	idleAnimation->frames.push_back(std::make_unique<Frame>(0, 0, 32, 32));
 	idleAnimation->no = true;
-	e->sprite->animations.insert({ENTITY_STATE_DEFAULT, std::unique_ptr<Animation>(idleAnimation)});
+	animatedSprite->animations.insert({ENTITY_STATE_DEFAULT, std::unique_ptr<Animation>(idleAnimation)});
 
 	auto jumpAnimation = new Animation(sheet1);
 	jumpAnimation->frames.push_back(std::make_unique<Frame>(0, 0, 32, 32));
 	jumpAnimation->no = true;
-	e->sprite->animations.insert({ENTITY_STATE_JUMP, std::unique_ptr<Animation>(jumpAnimation)});
+	animatedSprite->animations.insert({ENTITY_STATE_JUMP, std::unique_ptr<Animation>(jumpAnimation)});
 
 	e->behavior = std::unique_ptr<Behavior>(new Behavior(e));
 	//e->behavior->gravity = false;

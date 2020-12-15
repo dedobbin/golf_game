@@ -31,33 +31,8 @@ Sprite::~Sprite()
 	//std::cout << "DEBUG: Sprite deconstructor" << std::endl;
 }
 
-void Sprite::render(SDL_Renderer* renderer)
+void Sprite::render(SDL_Renderer* renderer, Camera* camera)
 {
 	//std::cout << "DEBUG: Sprite::render()" << std::endl;
-}
-
-void Sprite::frameTick()
-{
-	if (animations.find(activeAnimation) == animations.end()){
-		return;
-	}
-	auto animation = animations[activeAnimation].get();
-	if (animation->no) return;
-
-	if (animation->curFrameTick++ < 20 - animation->animationSpeed){
-		return;
-	}
-
-	animation->curFrameTick = 0;
-
-	if (animation->curFrame + 1 >= animation->frames.size()){
-		if (animation->loop){
-			animation->curFrame = 0;
-			return;
-		} else {
-			return;
-		}  
-	}
-
-	animation->curFrame ++;
+	
 }

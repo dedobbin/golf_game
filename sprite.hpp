@@ -6,6 +6,7 @@
 #include <map>
 #include <memory>
 #include "animation.hpp"
+#include "camera.hpp"
 // #include <SDL2/SDL_image.h>
 
 // circ dep
@@ -16,12 +17,9 @@ class Sprite
 	public:
 		Sprite(Entity* owner);
 		~Sprite();
-		virtual void render(SDL_Renderer* renderer);
-		void frameTick();
+		virtual void render(SDL_Renderer* renderer, Camera* camera);
 		SDL_Rect getPos(Camera* camera = NULL);
 		Entity* owner;
-		int activeAnimation = 0;
-		std::map<int, std::unique_ptr<Animation>> animations;
 };
 
 #endif

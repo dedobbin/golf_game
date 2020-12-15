@@ -162,36 +162,7 @@ void Visuals::renderEntity(Entity* entity)
 	if (!camera->inView(entity->x,entity->y,entity->w,entity->h))
 		return;
 	Sprite* sprite = entity->sprite.get();
-
-	if (sprite->animations.find(sprite->activeAnimation) != sprite->animations.end()){
-		auto animation = sprite->animations[sprite->activeAnimation].get();
-		//std::cout << "DEBUG: animation " <<  animation->curFrame << std::endl;
-		auto curFrame = animation->frames[animation->curFrame].get();
-	
-		auto pos = sprite->getPos(camera.get());
-		//if (SDL_RenderCopyEx( renderer, sprite->texture, &sprite->src, &sprite->pos , NULL, NULL, sprite->flip) < 0){
-		
-		if (entity->behavior){
-			auto lastState = entity->behavior->lastState;
-			auto currentState =  entity->behavior->getState();
-			if (lastState != currentState){
-				//std::cout << "DEBUG: state changed to " << currentState << std::endl;
-				if (sprite->animations.find(currentState) == sprite->animations.end()){
-					std::cout << "DEBUG: no animation for state " << currentState << std::endl;
-					sprite->activeAnimation = ENTITY_STATE_DEFAULT;
-				} else {
-					sprite->activeAnimation = currentState;
-				}
-			}
-		}
-
-		entity->sprite->render(renderer);
-
-		if (SDL_RenderCopy( renderer, animation->spritesheet, &curFrame->src, &pos) < 0){
-			std::cerr << "Failed to render sprite " << std::endl;
-		}
-		sprite->frameTick();
-	}
+ 	entity->sprite->render(renderer, camera.get());
 }
 
 void Visuals::renderRect(int x, int y, int w, int h)
