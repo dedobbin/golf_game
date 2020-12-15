@@ -55,15 +55,15 @@ void generateEntities()
 	int blockH = 100;
 	for (int i = 0; i < 10; i++){
 		Entity* b = new Entity("block" + std::to_string(i), i * blockW, 400, blockW, blockH);
-		b->sprite = std::unique_ptr<Sprite>(new Sprite(b));
+		b->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, b));
 		b->collision = std::unique_ptr<Collision>(new Collision(b, true));
 		entities.emplace_back(std::unique_ptr<Entity>(b));
-		// for (int j = 0; j < i ; j++){
-		// 	Entity* bv = new Entity("block" + std::to_string(i), i * blockW, 300 - (blockH/5) * j, blockW, blockH/5);
-		// 	bv->sprite = std::unique_ptr<Sprite>(new Sprite(bv));
-		// 	bv->collision = std::unique_ptr<Collision>(new Collision(bv, true));
-		// 	entities.emplace_back(std::unique_ptr<Entity>(bv));
-		// }
+		for (int j = 0; j < i ; j++){
+			Entity* bv = new Entity("block" + std::to_string(i), i * blockW, 300 - (blockH/5) * j, blockW, blockH/5);
+			bv->sprite = std::unique_ptr<Sprite>(new Sprite(sheet2, {0, 0, 32, 32}, bv));
+			bv->collision = std::unique_ptr<Collision>(new Collision(bv, true));
+			entities.emplace_back(std::unique_ptr<Entity>(bv));
+		}
 	}
 }
 int main (int argc, char* argv[])

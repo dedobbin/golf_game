@@ -23,7 +23,7 @@ void AnimatedSprite::render(SDL_Renderer* renderer, Camera* camera)
 		if (lastState != currentState){
 			//std::cout << "DEBUG: state changed to " << currentState << std::endl;
 			if (animations.find(currentState) == animations.end()){
-				std::cout << "DEBUG: no animation for state " << currentState << std::endl;
+				std::cout << "DEBUG: no animation for state " << owner->name << "(" << currentState << ")" << std::endl;
 				activeAnimation = ENTITY_STATE_DEFAULT;
 			} else {
 				activeAnimation = currentState;
@@ -32,7 +32,7 @@ void AnimatedSprite::render(SDL_Renderer* renderer, Camera* camera)
 	}
 
 	if (SDL_RenderCopy( renderer, animation->spritesheet, &curFrame->src, &pos) < 0){
-		std::cerr << "Failed to render sprite " << std::endl;
+		std::cerr << "Failed to render sprite " + owner->name << std::endl;
 	}
 
 	frameTick();
