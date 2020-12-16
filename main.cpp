@@ -13,9 +13,11 @@ LazyFooTimer capTimer;
 Visuals v;
 Entity* player = NULL;
 std::vector<std::unique_ptr<Entity>> entities;
+rect playerStartPos = {200, 0};
 
 #define DEBUG_DRAW
 //#define DEBUG_CAMERA
+#define DEBUG_CONTROLS
 
 void generateEntities()
 {
@@ -25,7 +27,7 @@ void generateEntities()
 	auto sheet3 = v.getSpritesheet("spritesheet3");
 
 	// Setup entities
-	Entity* e = new Entity("player", 200, 0, 70, 100);
+	Entity* e = new Entity("player", playerStartPos.x, playerStartPos.y, 70, 100);
 	e->graphic = std::unique_ptr<Graphic>(new AnimatedGraphic(e));
 
 	auto animatedGraphic = (AnimatedGraphic*)e->graphic.get();
@@ -123,6 +125,13 @@ int main (int argc, char* argv[])
 			player->behavior->jump();
 			((AnimatedGraphic*)(player->graphic.get()))->changeState(AnimationState::JUMP);
 		}
+
+#ifdef DEBUG_CONTROLS
+		if (keysPressed[SDL_SCANCODE_SPACE]){
+			player->x = playerStartPos.x;
+			player->y = playerStartPos.y;
+		}
+#endif
 
 #ifdef DEBUG_CAMERA
 		int camSpeed = 5;
