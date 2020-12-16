@@ -27,9 +27,16 @@ AnimatedGraphic::AnimatedGraphic(Entity* owner)
 :Graphic(owner)
 {}
 
+void AnimatedGraphic::changeState(AnimationState newState)
+{
+	if (curAnimationState == newState) return;
+	curAnimationState = newState;
+}
+
+
 Sprite AnimatedGraphic::getSprite()
 {
-	auto animation = animations[activeAnimation].get();
+	auto animation = animations[curAnimationState].get();
 	auto curFrame = animation->frames[animation->curFrame].get();
 	return {animation->spritesheet, curFrame->src};
 }
@@ -43,32 +50,31 @@ void AnimatedGraphic::render(SDL_Renderer* renderer, Camera* camera)
 		std::cerr << "Failed to render sprite " + owner->name << std::endl;
 	}
 
-	//TODO: wrap in function updateAnimation or something
-	if (owner->behavior){
-		auto animation = animations[activeAnimation].get();
-		auto lastState = owner->behavior->lastState;
-		auto curState =  owner->behavior->getState();
-		if (lastState != curState){
-			//std::cout << "DEBUG: state changed to " << curState << std::endl;
-			if (animations.find(curState) == animations.end()){
-				std::cout << "DEBUG: no animation for state " << owner->name << "(" << curState << ")" << std::endl;
-				activeAnimation = ENTITY_STATE_DEFAULT;
-			} else {
-				activeAnimation = curState;
-				animation->curFrame = 0;
-			}
-		}
-	}
+	// if (owner->behavior){
+	// 	auto animation = animations[curAnimationState].get();
+	// 	auto lastState = owner->behavior->lastState;
+	// 	auto curState =  owner->behavior->getState();
+	// 	if (lastState != curState){
+	// 		//std::cout << "DEBUG: state changed to " << curState << std::endl;
+	// 		if (animations.find(curState) == animations.end()){
+	// 			std::cout << "DEBUG: no animation for state " << owner->name << "(" << curState << ")" << std::endl;
+	// 			curAnimationState = ENTITY_STATE_DEFAULT;
+	// 		} else {
+	// 			curAnimationState = curState;
+	// 			animation->curFrame = 0;
+	// 		}
+	// 	}
+	// }
 
 	frameTick();
 }
 
 void AnimatedGraphic::frameTick()
 {
-	if (animations.find(activeAnimation) == animations.end()){
+	if (animations.find(curAnimationState) == animations.end()){
 		return;
 	}
-	auto animation = animations[activeAnimation].get();
+	auto animation = animations[curAnimationState].get();
 	if (animation->no) return;
 
 	if (animation->curFrameTick++ < 20 - animation->animationSpeed){

@@ -6,11 +6,6 @@ class Entity;
 
 #define GRAVITY 0.5
 
-#define ENTITY_STATE_DEFAULT 0
-#define ENTITY_STATE_WALK 1
-#define ENTITY_STATE_JUMP 2
-#define ENTITY_STATE_ATTACK 3
-
 class Behavior
 {
 	public:

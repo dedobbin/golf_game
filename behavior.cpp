@@ -62,20 +62,3 @@ void Behavior::jump(){
 	addYSpeed(-10.5);
 
 }
-
-int Behavior::getState()
-{
-	int result = lastState;
-	
-	//std::cout << "DEBUG: " << (xSpeed != 0) << grounded << std::endl;
-
-	if (gravity && ySpeed < 0){
-		result = ENTITY_STATE_JUMP;
-	} else if (xSpeed != 0 && grounded){
-		result = ENTITY_STATE_WALK;
-	} else {
-		result = ENTITY_STATE_DEFAULT;
-	}
-	lastState = result;
-	return result;
-}

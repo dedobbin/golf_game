@@ -6,6 +6,20 @@
 // circ dep
 class Entity;
 
+// #define ANIMATION_STATE_DEFAULT 0
+// #define ANIMATION_STATE_WALK 1
+// #define ANIMATION_STATE_JUMP 2
+// #define ANIMATION_STATE_ATTACK 3
+
+enum AnimationState
+{
+	DEFAULT,
+	WALK,
+	JUMP,
+	ATTACK,
+	FALL
+};
+
 class Frame 
 {
 	public:
@@ -38,7 +52,8 @@ class AnimatedGraphic : public Graphic
 		void render(SDL_Renderer* renderer, Camera* camera);
 		Sprite getSprite();
 		void frameTick();
-		std::map<int, std::unique_ptr<Animation>> animations;
+		std::map<AnimationState, std::unique_ptr<Animation>> animations;
+		void changeState(AnimationState newState);
 	private:
-		int activeAnimation = 0;
+		AnimationState curAnimationState = AnimationState::DEFAULT;
 };
