@@ -115,12 +115,12 @@ int main (int argc, char* argv[])
 			player->behavior->addXSpeed(-player->behavior->walkAcc);
 			if (player->behavior->grounded){
 				((AnimatedGraphic*)(player->graphic.get()))->changeState(AnimationState::WALK);
-			} else if (player->behavior->xSpeed < 0){
-				player->behavior->addXSpeed(SLOW_DOWN_AMOUNT, true);
-				((AnimatedGraphic*)(player->graphic.get()))->changeState(AnimationState::DEFAULT);
 			}
-
+		} else if (player->behavior->xSpeed < 0){
+			player->behavior->addXSpeed(SLOW_DOWN_AMOUNT, true);
+			((AnimatedGraphic*)(player->graphic.get()))->changeState(AnimationState::DEFAULT);
 		}
+
 		if (keysPressed[SDL_SCANCODE_UP]){
 			player->behavior->jump();
 			((AnimatedGraphic*)(player->graphic.get()))->changeState(AnimationState::JUMP);
