@@ -58,26 +58,66 @@ rect Collision::checkCollision(Entity* entityA, Entity* entityB)
 void Collision::effect(Entity* collider, rect intersect)
 {
     bool bothSolid = collider->collision->solid && owner->collision->solid;
-    if (collider->behavior && bothSolid){
-        if (intersect.h > intersect.w){
-            if (collider->behavior->xSpeed < 0 && collider->pos.x > owner->pos.x){
-                collider->pos.x += intersect.w;
-                collider->behavior->xSpeed = 0;
-            } else if (collider->behavior->xSpeed > 0 && collider->pos.x < owner->pos.x){
-                collider->pos.x -= intersect.w;
-                collider->behavior->xSpeed = 0;
-            }
-        } else {
-            if (collider->behavior->ySpeed < 0 && collider->pos.y > owner->pos.y){
-                collider->pos.y += intersect.h;
-                collider->behavior->ySpeed = 0;
-            } else if (collider->behavior->ySpeed > 0 && collider->pos.y < owner->pos.y){
+
+    bool downCollision = false;
+    bool rightCollision = false;
+    bool upCollision = false;
+    bool leftCollision = false;
+
+    if (bothSolid){
+        if (intersect.w > intersect.h){
+            if (collider->pos.y > collider->prevPos.y){
                 collider->pos.y -= intersect.h;
-                collider->behavior->ySpeed = 0;
-                collider->behavior->grounded = true;
+                downCollision = true;
+            } else if (collider->pos.y < collider->prevPos.y){
+                collider->pos.y += intersect.h;
+                upCollision = true;
+            }
+        }else if (intersect.h > intersect.w){
+            if (collider->pos.x > collider->prevPos.x){
+                collider->pos.x -= intersect.w;
+                leftCollision = true;
+            } else if (collider->pos.x < collider->prevPos.x){
+                collider->pos.x += intersect.w;
+                rightCollision = true;
             }
         }
     }
+
+    if (collider->behavior){
+        if (downCollision || upCollision){
+            collider->behavior->ySpeed = 0;
+        } 
+        if (leftCollision || rightCollision){
+            collider->behavior->xSpeed = 0;
+        }
+
+        if (downCollision && collider->behavior->gravity){
+            collider->behavior->grounded = true;
+        }
+
+    }
+    
+    // if (collider->behavior && bothSolid){
+    //     if (intersect.h > intersect.w){
+    //         if (collider->behavior->xSpeed < 0 && collider->pos.x > owner->pos.x){
+    //             collider->pos.x += intersect.w;
+    //             collider->behavior->xSpeed = 0;
+    //         } else if (collider->behavior->xSpeed > 0 && collider->pos.x < owner->pos.x){
+    //             collider->pos.x -= intersect.w;
+    //             collider->behavior->xSpeed = 0;
+    //         }
+    //     } else {
+    //         if (collider->behavior->ySpeed < 0 && collider->pos.y > owner->pos.y){
+    //             collider->pos.y += intersect.h;
+    //             collider->behavior->ySpeed = 0;
+    //         } else if (collider->behavior->ySpeed > 0 && collider->pos.y < owner->pos.y){
+    //             collider->pos.y -= intersect.h;
+    //             collider->behavior->ySpeed = 0;
+    //             collider->behavior->grounded = true;
+    //         }
+    //     }
+    // }
 }
 
 rect Collision::getRect()
