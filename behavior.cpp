@@ -47,8 +47,8 @@ void Behavior::behave()
 		addYSpeed(GRAVITY);
 	}
 
-	owner->x += xSpeed;
-	owner->y += ySpeed;
+	owner->pos.x += xSpeed;
+	owner->pos.y += ySpeed;
 
 	//std::cout << "DEBUG: x speed: " << xSpeed << std::endl;
 }

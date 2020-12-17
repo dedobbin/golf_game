@@ -159,7 +159,7 @@ void Visuals::renderEnd()
 
 void Visuals::renderEntity(Entity* entity)
 {
-	if (!camera->inView(entity->x,entity->y,entity->w,entity->h))
+	if (!camera->inView(entity->pos.x,entity->pos.y,entity->pos.w,entity->pos.h))
 		return;
  	entity->graphic->render(renderer, camera.get());
 }

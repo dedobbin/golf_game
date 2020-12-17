@@ -60,19 +60,19 @@ void Collision::effect(Entity* collider, rect intersect)
     bool bothSolid = collider->collision->solid && owner->collision->solid;
     if (collider->behavior && bothSolid){
         if (intersect.h > intersect.w){
-            if (collider->behavior->xSpeed < 0 && collider->x > owner->x){
-                collider->x += intersect.w;
+            if (collider->behavior->xSpeed < 0 && collider->pos.x > owner->pos.x){
+                collider->pos.x += intersect.w;
                 collider->behavior->xSpeed = 0;
-            } else if (collider->behavior->xSpeed > 0 && collider->x < owner->x){
-                collider->x -= intersect.w;
+            } else if (collider->behavior->xSpeed > 0 && collider->pos.x < owner->pos.x){
+                collider->pos.x -= intersect.w;
                 collider->behavior->xSpeed = 0;
             }
         } else {
-            if (collider->behavior->ySpeed < 0 && collider->y > owner->y){
-                collider->y += intersect.h;
+            if (collider->behavior->ySpeed < 0 && collider->pos.y > owner->pos.y){
+                collider->pos.y += intersect.h;
                 collider->behavior->ySpeed = 0;
-            } else if (collider->behavior->ySpeed > 0 && collider->y < owner->y){
-                collider->y -= intersect.h;
+            } else if (collider->behavior->ySpeed > 0 && collider->pos.y < owner->pos.y){
+                collider->pos.y -= intersect.h;
                 collider->behavior->ySpeed = 0;
                 collider->behavior->grounded = true;
             }
@@ -87,9 +87,9 @@ rect Collision::getRect()
     int hMargin = 0;
 
     return {
-        owner->x + wMargin,
-        owner->y + hMargin,
-        owner->w - wMargin * 2,
-        owner->h - hMargin * 2
+        owner->pos.x + wMargin,
+        owner->pos.y + hMargin,
+        owner->pos.w - wMargin * 2,
+        owner->pos.h - hMargin * 2
     };
 }

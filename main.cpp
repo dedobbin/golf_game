@@ -86,8 +86,8 @@ int main (int argc, char* argv[])
 		capTimer.start();
 
 #ifndef DEBUG_CAMERA
-		v.camera->camRect.x = player->x - v.camera->camRect.w / 2;
-		v.camera->camRect.y = player->y - v.camera->camRect.h / 2;
+		v.camera->camRect.x = player->pos.x - v.camera->camRect.w / 2;
+		v.camera->camRect.y = player->pos.y - v.camera->camRect.h / 2;
 #endif
 
 		// Gather inputs and apply to player behavior
@@ -128,8 +128,8 @@ int main (int argc, char* argv[])
 
 #ifdef DEBUG_CONTROLS
 		if (keysPressed[SDL_SCANCODE_SPACE]){
-			player->x = playerStartPos.x;
-			player->y = playerStartPos.y;
+			player->pos.x = playerStartPos.x;
+			player->pos.y = playerStartPos.y;
 		}
 #endif
 
@@ -173,9 +173,9 @@ int main (int argc, char* argv[])
 				// Check if ground underneath so flip grounded to false 
 				// TODO: would be nice if isolated 'pushout' collision from Collision::effect and also used it here
 				if (e->behavior && collidee->collision->solid && e->collision->solid){
-					int originalY = e->y;
+					int originalY = e->pos.y;
 
-					e->y += 1;
+					e->pos.y += 1;
 					auto intersect = Collision::checkCollision(e.get(), collidee.get());
 					bool collision = intersect.w > 0 && intersect.h > 0;
 					if (collision){
@@ -184,7 +184,7 @@ int main (int argc, char* argv[])
 						groundIntersect = intersect;
 					}
 
-					e->y = originalY;
+					e->pos.y = originalY;
 				}
 			}
 

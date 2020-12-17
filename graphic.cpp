@@ -38,16 +38,16 @@ SDL_Rect Graphic::getPos(Camera* camera)
 {
 	if (!camera){
 		return {
-			owner->x,
-			owner->y,
-			owner->w,
-			owner->h
+			owner->pos.x,
+			owner->pos.y,
+			owner->pos.w,
+			owner->pos.h
 		};
 	}
 	return {
-		owner->x - camera->camRect.x,
-		owner->y - camera->camRect.y,
-		owner->w,
-		owner->h
+		owner->pos.x - camera->camRect.x,
+		owner->pos.y - camera->camRect.y,
+		owner->pos.w,
+		owner->pos.h
 	};
 }
