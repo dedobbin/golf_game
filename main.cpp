@@ -3,6 +3,7 @@
 #include "visuals.hpp"
 #include "sdl_utils.hpp"
 #include "entity.hpp"
+#include "living_entity.hpp"
 #include "rect.hpp"
 #include "animated_graphic.hpp"
 
@@ -27,7 +28,7 @@ void generateEntities()
 	auto sheet3 = v.getSpritesheet("spritesheet3");
 
 	// Setup entities
-	Entity* e = new Entity("player", playerStartPos.x, playerStartPos.y, 70, 100);
+	Entity* e = new LivingEntity("player", playerStartPos.x, playerStartPos.y, 70, 100);
 	e->graphic = std::unique_ptr<Graphic>(new AnimatedGraphic(e));
 
 	auto animatedGraphic = (AnimatedGraphic*)e->graphic.get();
