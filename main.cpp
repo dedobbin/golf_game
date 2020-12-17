@@ -151,6 +151,7 @@ int main (int argc, char* argv[])
 
 		//Move etc all entities, collision etc
 		for (auto& e : entities){
+			e->prevPos = e->pos;
 			if (e->behavior){
 				e->behavior->behave();
 			}

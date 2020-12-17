@@ -13,6 +13,7 @@ class Entity
 		Entity(std::string name, int x = 0, int y = 0, int w = 100, int h = 100);
 		~Entity();
 		rect pos;
+		rect prevPos;
 		std::string name;
 		std::unique_ptr<Graphic> graphic;
 		std::unique_ptr<Behavior> behavior;
