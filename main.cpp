@@ -28,8 +28,9 @@ void generateEntities()
 	auto sheet3 = v.getSpritesheet("spritesheet3");
 
 	// Setup entities
-	Entity* e = new LivingEntity("player", playerStartPos.x, playerStartPos.y, 70, 100);
+	auto e = new LivingEntity("player", playerStartPos.x, playerStartPos.y, 70, 100);
 	e->graphic = std::unique_ptr<Graphic>(new AnimatedGraphic(e));
+	e->heldItem = std::make_unique<Item>("golf club", e);
 
 	auto animatedGraphic = (AnimatedGraphic*)e->graphic.get();
 
