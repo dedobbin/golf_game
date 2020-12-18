@@ -162,6 +162,9 @@ void Visuals::renderEntity(Entity* entity)
 	if (!camera->inView(entity->pos.x,entity->pos.y,entity->pos.w,entity->pos.h))
 		return;
  	entity->graphic->render(renderer, camera.get());
+	if (entity->hasEquip()){
+		std::cout << "TODO: render equipment" << std::endl;
+	}
 }
 
 void Visuals::renderRect(int x, int y, int w, int h)

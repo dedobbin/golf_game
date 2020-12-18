@@ -12,6 +12,8 @@ class Entity
 	public:
 		Entity(std::string name, int x = 0, int y = 0, int w = 100, int h = 100);
 		~Entity();
+		/* Always returns value if not overloaded by child */
+		virtual bool hasEquip();
 		rect pos;
 		rect prevPos;
 		std::string name;
