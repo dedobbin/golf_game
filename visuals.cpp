@@ -1,6 +1,7 @@
 #include <iostream>
 #include <dirent.h>
 #include "visuals.hpp"
+#include "living_entity.hpp"
 #include <iostream>
 
 Visuals::Visuals()
@@ -163,7 +164,11 @@ void Visuals::renderEntity(Entity* entity)
 		return;
  	entity->graphic->render(renderer, camera.get());
 	if (entity->hasEquip()){
-		std::cout << "TODO: render equipment" << std::endl;
+		//TODO shouldn't only work for living entities?
+		auto eEntity = (LivingEntity*)entity;
+		eEntity->heldItem->pos.x = entity->pos.x;
+		eEntity->heldItem->pos.y = entity->pos.y;
+		eEntity->heldItem->graphic->render(renderer, camera.get()); 
 	}
 }
 

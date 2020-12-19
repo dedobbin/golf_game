@@ -30,7 +30,10 @@ void generateEntities()
 	// Setup entities
 	auto e = new LivingEntity("player", playerStartPos.x, playerStartPos.y, 70, 100);
 	e->graphic = std::unique_ptr<Graphic>(new AnimatedGraphic(e));
-	e->heldItem = std::make_unique<Item>("golf club", e);
+	
+	e->heldItem = std::make_unique<Item>("golf club", 10, 100, e);
+	Graphic* clubGraphic = new Graphic(sheet2, {0, 0, 32, 32},  e->heldItem.get());
+	e->heldItem->graphic = std::unique_ptr<Graphic>(clubGraphic);
 
 	auto animatedGraphic = (AnimatedGraphic*)e->graphic.get();
 

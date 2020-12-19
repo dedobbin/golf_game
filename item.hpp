@@ -1,13 +1,12 @@
 #pragma once
 
 #include <string>
+#include "entity.hpp"
 
-// circ dep
-class Entity;
-
-class Item 
+class Item : public Entity
 {
 	public:
-		Item(std::string name, Entity* Owner);
-		std::string name;
+		Item(std::string name, int w, int h, Entity* Owner);
+		Item(std::string name, int x, int y, int w, int h);
+
 };
