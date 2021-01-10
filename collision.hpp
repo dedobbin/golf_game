@@ -13,6 +13,7 @@ class Collision
 		~Collision();
 		/* returns intersect of collision */
 		static rect checkCollision(Entity* a, Entity* b);
+		static bool checkCollision(rect a, rect b);
 		bool solid;
 		void effect(Entity* collider, struct rect);
 		rect getRect();

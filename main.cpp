@@ -6,7 +6,6 @@
 #include "living_entity.hpp"
 #include "rect.hpp"
 #include "animated_graphic.hpp"
-
 #include <vector>
 
 LazyFooTimer fpsTimer;
@@ -14,6 +13,9 @@ LazyFooTimer capTimer;
 Visuals v;
 Entity* player = NULL;
 std::vector<std::unique_ptr<Entity>> entities;
+
+Entity* followWithCam = NULL;
+
 rect playerStartPos = {200, 0};
 
 #define DEBUG_DRAW
@@ -28,12 +30,21 @@ void generateEntities()
 	auto sheet3 = v.getSpritesheet("spritesheet3");
 
 	// Setup entities
+	// auto club = new Item("golf_club", 50, 0, 10, 100);
+	// auto clubGraphic = new Graphic(sheet2, {0, 0, 32, 32},  club);
+	// club->graphic = std::unique_ptr<Graphic>(clubGraphic);
+	// club->behavior = std::make_unique<Behavior>(club);
+	// club->collision = std::make_unique<Collision>(club);
+	// entities.push_back(std::unique_ptr<Item>(club));
+
+
 	auto e = new LivingEntity("player", playerStartPos.x, playerStartPos.y, 70, 100);
 	e->graphic = std::unique_ptr<Graphic>(new AnimatedGraphic(e));
 	
-	e->heldItem = std::make_unique<Item>("golf club", 10, 100, e);
-	Graphic* clubGraphic = new Graphic(sheet2, {0, 0, 32, 32},  e->heldItem.get());
-	e->heldItem->graphic = std::unique_ptr<Graphic>(clubGraphic);
+	// e->heldItem = std::make_unique<Item>("golf club", 10, 100, e);
+	// Graphic* clubGraphic = new Graphic(sheet2, {0, 0, 32, 32},  e->heldItem.get());
+	// e->heldItem->graphic = std::unique_ptr<Graphic>(clubGraphic);
+
 
 	auto animatedGraphic = (AnimatedGraphic*)e->graphic.get();
 
@@ -72,6 +83,8 @@ void generateEntities()
 			entities.emplace_back(std::unique_ptr<Entity>(bv));
 		}
 	}
+	//player = club;
+	followWithCam = player;
 }
 
 int main (int argc, char* argv[])
@@ -91,8 +104,8 @@ int main (int argc, char* argv[])
 		capTimer.start();
 
 #ifndef DEBUG_CAMERA
-		v.camera->camRect.x = player->pos.x - v.camera->camRect.w / 2;
-		v.camera->camRect.y = player->pos.y - v.camera->camRect.h / 2;
+		v.camera->camRect.x = followWithCam->pos.x - v.camera->camRect.w / 2;
+		v.camera->camRect.y = followWithCam->pos.y - v.camera->camRect.h / 2;
 #endif
 
 		// Gather inputs and apply to player behavior
@@ -178,7 +191,8 @@ int main (int argc, char* argv[])
 
 				// Check if ground underneath so flip grounded to false 
 				// TODO: would be nice if isolated 'pushout' collision from Collision::effect and also used it here
-				if (e->behavior && collidee->collision->solid && e->collision->solid){
+				if (e->behavior && e->collision && e->collision->solid && 
+					collidee->collision && collidee->collision->solid){
 					int originalY = e->pos.y;
 
 					e->pos.y += 1;
