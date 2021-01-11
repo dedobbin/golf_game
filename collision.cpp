@@ -57,11 +57,12 @@ rect Collision::checkCollision(Entity* entityA, Entity* entityB)
 
 bool Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
 {
+    rect ownerRect = owner->collision->getRect();
+    rect colliderRect = collider->collision->getRect();
+
     bool bothSolid = collider->collision->solid && owner->collision->solid;
 
     if (bothSolid){
-        rect ownerRect = owner->collision->getRect();
-        rect colliderRect = collider->collision->getRect();
         if (collider->behavior){
             switch(colliderDir){
                 case DOWN: case NONE:
