@@ -12,7 +12,7 @@ LazyFooTimer fpsTimer;
 LazyFooTimer capTimer;
 Visuals v;
 Entity* player = NULL;
-std::vector<std::unique_ptr<Entity>> entities;
+std::vector<std::shared_ptr<Entity>> entities;
 
 Entity* followWithCam = NULL;
 
@@ -67,7 +67,7 @@ void generateEntities()
 	//e->behavior->gravity = false;
 	e->collision = std::unique_ptr<Collision>(new Collision(e, true));
 	player = e;
-	entities.emplace_back(std::unique_ptr<Entity>(e));
+	entities.emplace_back(std::shared_ptr<Entity>(e));
 
 	int blockW = 100;
 	int blockH = 100;
@@ -75,12 +75,12 @@ void generateEntities()
 		Entity* b = new Entity("block" + std::to_string(i), i * blockW, 400, blockW, blockH);
 		b->graphic = std::unique_ptr<Graphic>(new Graphic(sheet2, {0, 0, 32, 32}, b));
 		b->collision = std::unique_ptr<Collision>(new Collision(b, true));
-		entities.emplace_back(std::unique_ptr<Entity>(b));
+		entities.emplace_back(std::shared_ptr<Entity>(b));
 		for (int j = 0; j < i ; j++){
 			Entity* bv = new Entity("block" + std::to_string(i), i * blockW, 300 - (blockH/5) * j, blockW, blockH/5);
 			bv->graphic = std::unique_ptr<Graphic>(new Graphic(sheet2, {0, 0, 32, 32}, bv));
 			bv->collision = std::unique_ptr<Collision>(new Collision(bv, true));
-			entities.emplace_back(std::unique_ptr<Entity>(bv));
+			entities.emplace_back(std::shared_ptr<Entity>(bv));
 		}
 	}
 	//player = club;
@@ -169,48 +169,47 @@ int main (int argc, char* argv[])
 
 		//Move etc all entities, collision etc
 		for (auto& e : entities){
-			e->prevPos = e->pos;
 			if (e->behavior){
-				e->behavior->behave();
+				e->behavior->behave(entities);
 			}
 
 			//Collision
-			bool hasGroundUnderneath = false;
-			rect groundIntersect = {0, 0, 0, 0};
+			// bool hasGroundUnderneath = false;
+			// rect groundIntersect = {0, 0, 0, 0};
 
-			for (auto& collidee : entities){
-				if (e == collidee) continue;
+			// for (auto& collidee : entities){
+			// 	if (e == collidee) continue;
 				
-				auto intersect = Collision::checkCollision(e.get(), collidee.get());
-				bool collision = intersect.w > 0 && intersect.h > 0;
+			// 	auto intersect = Collision::checkCollision(e.get(), collidee.get());
+			// 	bool collision = intersect.w > 0 && intersect.h > 0;
 
-				if (collision){
-					//std::cout << "DEBUG: collision: " << e->name << " and " << collidee->name << std::endl;
-					collidee->collision->effect(e.get(), intersect);
-				}
+			// 	if (collision){
+			// 		//std::cout << "DEBUG: collision: " << e->name << " and " << collidee->name << std::endl;
+			// 		collidee->collision->effect(e.get(), intersect);
+			// 	}
 
-				// Check if ground underneath so flip grounded to false 
-				// TODO: would be nice if isolated 'pushout' collision from Collision::effect and also used it here
-				if (e->behavior && e->collision && e->collision->solid && 
-					collidee->collision && collidee->collision->solid){
-					int originalY = e->pos.y;
+			// 	// Check if ground underneath so flip grounded to false 
+			// 	// TODO: would be nice if isolated 'pushout' collision from Collision::effect and also used it here
+			// 	if (e->behavior && e->collision && e->collision->solid && 
+			// 		collidee->collision && collidee->collision->solid){
+			// 		int originalY = e->pos.y;
 
-					e->pos.y += 1;
-					auto intersect = Collision::checkCollision(e.get(), collidee.get());
-					bool collision = intersect.w > 0 && intersect.h > 0;
-					if (collision){
-						//std::cout << "DEBUG: has ground underneath: " << e->name << " and " << collidee->name << std::endl;
-						hasGroundUnderneath = true;
-						groundIntersect = intersect;
-					}
+			// 		e->pos.y += 1;
+			// 		auto intersect = Collision::checkCollision(e.get(), collidee.get());
+			// 		bool collision = intersect.w > 0 && intersect.h > 0;
+			// 		if (collision){
+			// 			//std::cout << "DEBUG: has ground underneath: " << e->name << " and " << collidee->name << std::endl;
+			// 			hasGroundUnderneath = true;
+			// 			groundIntersect = intersect;
+			// 		}
 
-					e->pos.y = originalY;
-				}
-			}
+			// 		e->pos.y = originalY;
+			// 	}
+			// }
 
-			if (!hasGroundUnderneath && e->behavior && e->behavior->gravity){
-				e->behavior->grounded = false;
-			} 
+			// if (!hasGroundUnderneath && e->behavior && e->behavior->gravity){
+			// 	e->behavior->grounded = false;
+			// } 
 		}
 		
 		// Render everything

@@ -2,6 +2,7 @@
 #define __COLLISION_HPP__
 
 #include "rect.hpp"
+#include "direction.hpp"
 
 // circ dep
 class Entity;
@@ -13,9 +14,8 @@ class Collision
 		~Collision();
 		/* returns intersect of collision */
 		static rect checkCollision(Entity* a, Entity* b);
-		static bool checkCollision(rect a, rect b);
 		bool solid;
-		void effect(Entity* collider, struct rect);
+		bool pushout(Entity* collider, direction colliderDir, rect intersect);
 		rect getRect();
 	private:
 		Entity* owner;

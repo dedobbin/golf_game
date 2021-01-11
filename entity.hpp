@@ -15,7 +15,6 @@ class Entity
 		/* Always returns value if not overloaded by child */
 		virtual bool hasEquip();
 		rect pos;
-		rect prevPos;
 		std::string name;
 		std::unique_ptr<Graphic> graphic;
 		std::unique_ptr<Behavior> behavior;

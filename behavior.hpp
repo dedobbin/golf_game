@@ -1,6 +1,9 @@
 #ifndef __BEHAVIOR_HPP__
 #define __BEHAVIOR_HPP__
 
+#include <vector>
+#include <memory>
+
 // circ dep
 class Entity;
 
@@ -11,7 +14,7 @@ class Behavior
 	public:
 		Behavior(Entity* owner);
 		~Behavior();
-		void behave();
+		void behave(std::vector<std::shared_ptr<Entity>> entities);
 		void jump();
 		/* When slowing down, clampZero should be true so rounds to 0 eventually */
 		void addXSpeed(float n, bool clampZero = false);
