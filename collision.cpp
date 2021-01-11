@@ -64,7 +64,7 @@ bool Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
         rect colliderRect = collider->collision->getRect();
         if (collider->behavior){
             switch(colliderDir){
-                case DOWN:
+                case DOWN: case NONE:
                     collider->pos.y -= intersect.h;
                     collider->behavior->ySpeed = 0;
                     if (collider->behavior->gravity){
