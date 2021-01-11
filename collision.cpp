@@ -91,7 +91,15 @@ bool Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
 
 bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
 {
-    std::cout << "DEBUG: collision effect" << std::endl;
+    if (collider->type == LIVING){
+        switch(owner->type){
+            case ITEM:
+                std::cout << "TODO: pickup item" << std::endl;
+                return true;
+                break;
+        }
+        return false;
+    }
 }
 
 rect Collision::getRect()

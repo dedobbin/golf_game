@@ -12,10 +12,11 @@ class Collision
 	public:
 		Collision(Entity* owner, bool solid = true);
 		~Collision();
-		/* returns intersect of collision */
+		/* Returns intersect of collision */
 		static rect checkCollision(Entity* a, Entity* b);
 		bool solid;
 		bool pushout(Entity* collider, direction colliderDir, rect intersect);
+		/* Return true if entity needs to be removed from entity list */
 		bool effect(Entity* collider, direction colliderDir, rect intersect);
 
 		rect getRect();

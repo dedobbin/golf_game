@@ -72,12 +72,12 @@ void generateEntities()
 	int blockW = 100;
 	int blockH = 100;
 	for (int i = 0; i < 10; i++){
-		Entity* b = new Entity("block" + std::to_string(i), i * blockW, 400, blockW, blockH);
+		Entity* b = new Entity("block" + std::to_string(i), STATIC_SOLID, i * blockW, 400, blockW, blockH);
 		b->graphic = std::unique_ptr<Graphic>(new Graphic(sheet2, {0, 0, 32, 32}, b));
 		b->collision = std::unique_ptr<Collision>(new Collision(b, true));
 		entities.emplace_back(std::shared_ptr<Entity>(b));
 		for (int j = 0; j < i ; j++){
-			Entity* bv = new Entity("block" + std::to_string(i), i * blockW, 300 - (blockH/5) * j, blockW, blockH/5);
+			Entity* bv = new Entity("block" + std::to_string(i), STATIC_SOLID, i * blockW, 300 - (blockH/5) * j, blockW, blockH/5);
 			bv->graphic = std::unique_ptr<Graphic>(new Graphic(sheet2, {0, 0, 32, 32}, bv));
 			bv->collision = std::unique_ptr<Collision>(new Collision(bv, true));
 			entities.emplace_back(std::shared_ptr<Entity>(bv));
