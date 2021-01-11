@@ -148,6 +148,8 @@ int main (int argc, char* argv[])
 		if (keysPressed[SDL_SCANCODE_SPACE]){
 			player->pos.x = playerStartPos.x;
 			player->pos.y = playerStartPos.y;
+			player->behavior->xSpeed = 0;
+			player->behavior->ySpeed = 0;
 		}
 #endif
 

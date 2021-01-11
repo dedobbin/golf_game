@@ -93,6 +93,7 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 			collidee->collision->pushout(e, vDir, intersect);
 		}
 
+		// check if solid underneath
 		if (owner->collision && owner->behavior && owner->behavior->gravity){
 			auto realPos = owner->pos;
 			owner->pos.y += 1;
