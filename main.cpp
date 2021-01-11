@@ -29,7 +29,7 @@ void generateEntities()
 	auto sheet2 = v.getSpritesheet("spritesheet2");
 	auto sheet3 = v.getSpritesheet("spritesheet3");
 
-	// Setup entities
+	//Setup entities
 	// auto club = new Item("golf_club", 50, 0, 10, 100);
 	// auto clubGraphic = new Graphic(sheet2, {0, 0, 32, 32},  club);
 	// club->graphic = std::unique_ptr<Graphic>(clubGraphic);
@@ -83,7 +83,7 @@ void generateEntities()
 			entities.emplace_back(std::shared_ptr<Entity>(bv));
 		}
 	}
-	//player = club;
+
 	followWithCam = player;
 }
 
