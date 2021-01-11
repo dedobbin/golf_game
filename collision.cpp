@@ -89,6 +89,11 @@ bool Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
     }
 }
 
+bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
+{
+    std::cout << "DEBUG: collision effect" << std::endl;
+}
+
 rect Collision::getRect()
 {
     // TODO: make dynamic

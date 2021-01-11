@@ -68,6 +68,7 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 
 		if (collision){
 			collidee->collision->pushout(e, hDir, intersect);
+			collidee->collision->effect(e, hDir, intersect);
 		}
 	}
 
@@ -91,6 +92,7 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 
 		if (collision){
 			collidee->collision->pushout(e, vDir, intersect);
+			collidee->collision->effect(e, vDir, intersect);
 		}
 
 		// check if solid underneath

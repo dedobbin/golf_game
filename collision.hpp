@@ -16,6 +16,8 @@ class Collision
 		static rect checkCollision(Entity* a, Entity* b);
 		bool solid;
 		bool pushout(Entity* collider, direction colliderDir, rect intersect);
+		bool effect(Entity* collider, direction colliderDir, rect intersect);
+
 		rect getRect();
 	private:
 		Entity* owner;
