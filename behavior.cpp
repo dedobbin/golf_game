@@ -43,7 +43,8 @@ void Behavior::addYSpeed(float n, bool clampZero)
 
 void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 {
-	// TODO: this check all entities for collision twice, should optimize by sorting list, static entities on same place
+	// TODO: this check all entities for collision 2 times, should optimize by sorting list, static entities on same place
+	// OR only checking entities in view, but that could lead to other problems later
 	if (gravity && !grounded){
 		addYSpeed(GRAVITY);
 	}
@@ -80,6 +81,8 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 
 	owner->pos.y += ySpeed;
 
+	// to check if in air
+	bool hasGroundUnderneath = false;
 	for (auto& collidee : entities){
 		if (e == collidee.get()) continue;
 		
@@ -89,7 +92,27 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 		if (collision){
 			collidee->collision->pushout(e, vDir, intersect);
 		}
+
+		if (owner->collision && owner->behavior && owner->behavior->gravity){
+			auto realPos = owner->pos;
+			owner->pos.y += 1;
+
+			auto intersect = Collision::checkCollision(e, collidee.get());
+			bool groundCollision = intersect.w > 0 && intersect.h > 0;
+
+			if (groundCollision){
+				hasGroundUnderneath = true;
+			}
+
+			owner->pos = realPos;
+		}
 	}
+
+	if (!hasGroundUnderneath){
+		owner->behavior->grounded = false;
+	}
+
+
 }
 
 void Behavior::jump(){

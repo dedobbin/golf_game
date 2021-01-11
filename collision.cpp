@@ -14,51 +14,45 @@ Collision::~Collision()
 	//std::cout << "DEBUG: Collision deconstructor" << std::endl;
 }
 
-bool Collision::checkCollision(rect a, rect b)
+rect Collision::checkCollision(Entity* entityA, Entity* entityB)
 {
-    // thanks lazy foo, https://lazyfoo.net/tutorials/SDL/27_collision_detection/index.php
-    //The sides of the rectangles
-    int leftA, leftB;
-    int rightA, rightB;
-    int topA, topB;
-    int bottomA, bottomB;
+	rect intersect = {0,0,0,0};
 
-    //Calculate the sides of rect A
-    leftA = a.x;
-    rightA = a.x + a.w;
-    topA = a.y;
-    bottomA = a.y + a.h;
+	if (!entityA->collision || !entityB->collision){
+		return intersect;
+	}
 
-    //Calculate the sides of rect B
-    leftB = b.x;
-    rightB = b.x + b.w;
-    topB = b.y;
-    bottomB = b.y + b.h;
+    rect a = entityA->collision->getRect();
+    rect b = entityB->collision->getRect();
+	
+	//Based on SDL_IntersectRect
 
+    int Amin, Amax, Bmin, Bmax;	
+	/* Horizontal intersection */
+    Amin = a.x;
+    Amax = Amin + a.w;
+    Bmin = b.x;
+    Bmax = Bmin + b.w;
+    if (Bmin > Amin)
+        Amin = Bmin;
+    intersect.x = Amin;
+    if (Bmax < Amax)
+        Amax = Bmax;
+    intersect.w = Amax - Amin;
 
-    //If any of the sides from A are outside of B
-    if( bottomA <= topB )
-    {
-        return false;
-    }
+    /* Vertical intersection */
+    Amin = a.y;
+    Amax = Amin + a.h;
+    Bmin = b.y;
+    Bmax = Bmin + b.h;
+    if (Bmin > Amin)
+        Amin = Bmin;
+    intersect.y = Amin;
+    if (Bmax < Amax)
+        Amax = Bmax;
+    intersect.h = Amax - Amin;
 
-    if( topA >= bottomB )
-    {
-        return false;
-    }
-
-    if( rightA <= leftB )
-    {
-        return false;
-    }
-
-    if( leftA >= rightB )
-    {
-        return false;
-    }
-
-    //If none of the sides from A are outside B
-    return true;
+	return intersect; 
 }
 
 bool Collision::pushout(Entity* collider, direction colliderDir, rect intersect)

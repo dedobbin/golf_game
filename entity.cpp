@@ -7,7 +7,7 @@ Entity::Entity(std::string name, int x, int y, int w, int h)
 
 Entity::~Entity()
 {
-	std::cout << "DEBUG: Entity deconstructor" << std::endl;
+	//std::cout << "DEBUG: Entity deconstructor" << std::endl;
 }
 
 bool Entity::hasEquip()
