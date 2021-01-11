@@ -174,44 +174,6 @@ int main (int argc, char* argv[])
 			if (e->behavior){
 				e->behavior->behave(entities);
 			}
-
-			//Collision
-			// bool hasGroundUnderneath = false;
-			// rect groundIntersect = {0, 0, 0, 0};
-
-			// for (auto& collidee : entities){
-			// 	if (e == collidee) continue;
-				
-			// 	auto intersect = Collision::checkCollision(e.get(), collidee.get());
-			// 	bool collision = intersect.w > 0 && intersect.h > 0;
-
-			// 	if (collision){
-			// 		//std::cout << "DEBUG: collision: " << e->name << " and " << collidee->name << std::endl;
-			// 		collidee->collision->effect(e.get(), intersect);
-			// 	}
-
-			// 	// Check if ground underneath so flip grounded to false 
-			// 	// TODO: would be nice if isolated 'pushout' collision from Collision::effect and also used it here
-			// 	if (e->behavior && e->collision && e->collision->solid && 
-			// 		collidee->collision && collidee->collision->solid){
-			// 		int originalY = e->pos.y;
-
-			// 		e->pos.y += 1;
-			// 		auto intersect = Collision::checkCollision(e.get(), collidee.get());
-			// 		bool collision = intersect.w > 0 && intersect.h > 0;
-			// 		if (collision){
-			// 			//std::cout << "DEBUG: has ground underneath: " << e->name << " and " << collidee->name << std::endl;
-			// 			hasGroundUnderneath = true;
-			// 			groundIntersect = intersect;
-			// 		}
-
-			// 		e->pos.y = originalY;
-			// 	}
-			// }
-
-			// if (!hasGroundUnderneath && e->behavior && e->behavior->gravity){
-			// 	e->behavior->grounded = false;
-			// } 
 		}
 		
 		// Render everything
