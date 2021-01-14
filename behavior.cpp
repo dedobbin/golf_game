@@ -103,7 +103,9 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 		}
 
 		// check if solid underneath
-		if (owner->collision && owner->behavior && owner->behavior->gravity){
+		if (collidee->type!=ITEM 
+			&& owner->collision && owner->behavior && owner->behavior->gravity
+		){
 			auto realPos = owner->pos;
 			owner->pos.y += 1;
 
