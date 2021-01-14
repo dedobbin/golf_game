@@ -11,7 +11,7 @@
 LazyFooTimer fpsTimer;
 LazyFooTimer capTimer;
 Visuals v;
-Entity* player = NULL;
+LivingEntity* player = NULL;
 std::vector<std::shared_ptr<Entity>> entities;
 
 Entity* followWithCam = NULL;
@@ -133,10 +133,14 @@ int main (int argc, char* argv[])
 			player->behavior->addXSpeed(SLOW_DOWN_AMOUNT, true);
 			((AnimatedGraphic*)(player->graphic.get()))->changeState(AnimationState::DEFAULT);
 		}
-
 		if (keysPressed[SDL_SCANCODE_UP]){
 			player->behavior->jump();
 			((AnimatedGraphic*)(player->graphic.get()))->changeState(AnimationState::JUMP);
+		}
+		if (keysPressed[SDL_SCANCODE_Z]){
+			if (player->heldItem){
+				player->dropHeldItem();
+			}
 		}
 
 #ifdef DEBUG_CONTROLS

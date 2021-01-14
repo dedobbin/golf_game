@@ -11,3 +11,9 @@ void LivingEntity::give(Item* item)
 	item->owner = this;
 	this->heldItem = item;
 }
+
+void LivingEntity::dropHeldItem()
+{
+	this->heldItem->owner = NULL;
+	this->heldItem = NULL;
+}
