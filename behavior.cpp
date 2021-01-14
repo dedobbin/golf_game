@@ -1,6 +1,8 @@
 #include "behavior.hpp"
 #include "iostream"
 
+#include "item.hpp"
+
 // circ dep
 #include "entity.hpp"
 
@@ -71,7 +73,6 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 			collidee->collision->effect(e, hDir, intersect);
 		}
 	}
-
 
 	direction vDir = NONE;
 	if (ySpeed > 0){

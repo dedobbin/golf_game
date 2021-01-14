@@ -2,6 +2,9 @@
 #include <SDL2/SDL.h>
 #include <cmath>
 
+#include "item.hpp"
+#include "living_entity.hpp"
+
 //circ dep
 #include "entity.hpp"
 
@@ -55,8 +58,13 @@ rect Collision::checkCollision(Entity* entityA, Entity* entityB)
 	return intersect; 
 }
 
-bool Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
+void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
 {
+    if ((owner->type == ITEM && collider->type == LIVING) 
+        || owner->type == LIVING && collider->type == ITEM){
+        return;
+    }
+
     rect ownerRect = owner->collision->getRect();
     rect colliderRect = collider->collision->getRect();
 
@@ -94,10 +102,13 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
     if (collider->type == LIVING){
         switch(owner->type){
             case ITEM:
-                //TODO: give to collider
-                std::cout << "TODO: pickup " << owner->name << std::endl;
+                //if not owned by an entity, its on the field
+                auto item = (Item*)owner;
+                if (!item->owner){
+                    auto living = (LivingEntity*) collider;
+                    living->give(item);
+                }
                 return false;
-                break;
         }
         return false;
     }
