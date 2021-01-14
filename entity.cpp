@@ -9,8 +9,3 @@ Entity::~Entity()
 {
 	//std::cout << "DEBUG: Entity deconstructor" << std::endl;
 }
-
-bool Entity::hasEquip()
-{
-	return false;
-}

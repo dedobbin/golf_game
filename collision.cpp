@@ -94,8 +94,9 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
     if (collider->type == LIVING){
         switch(owner->type){
             case ITEM:
-                std::cout << "TODO: pickup item" << std::endl;
-                return true;
+                //TODO: give to collider
+                std::cout << "TODO: pickup " << owner->name << std::endl;
+                return false;
                 break;
         }
         return false;

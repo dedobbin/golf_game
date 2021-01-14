@@ -1,6 +1,8 @@
 #include "graphic.hpp"
 #include <iostream>
 
+#include "item.hpp"
+
 // circ dep
 #include "entity.hpp"
 
@@ -19,7 +21,19 @@ Graphic::~Graphic()
 
 void Graphic::render(SDL_Renderer* renderer, Camera* camera)
 {
-	auto pos = getPos(camera);
+	SDL_Rect pos;
+	if (owner->type == ITEM && ((Item*) owner)->owner){
+		auto item = (Item*) owner;
+		//TODO move with animation etc
+		pos = {
+			item->owner->pos.x,
+			item->owner->pos.y,
+			item->owner->pos.w,
+			item->owner->pos.h
+		};
+	}else {
+		pos = getPos(camera);
+	}
 
 	auto sprite = getSprite();
 

@@ -16,7 +16,7 @@ class Collision
 		static rect checkCollision(Entity* a, Entity* b);
 		bool solid;
 		bool pushout(Entity* collider, direction colliderDir, rect intersect);
-		/* Return true if entity needs to be removed from entity list */
+		/* Return true if entity needs to be removed from entity list, when destroyed */
 		bool effect(Entity* collider, direction colliderDir, rect intersect);
 
 		rect getRect();

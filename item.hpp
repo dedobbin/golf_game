@@ -2,6 +2,7 @@
 
 #include <string>
 #include "entity.hpp"
+#include <memory>
 
 class Item : public Entity
 {
@@ -9,5 +10,5 @@ class Item : public Entity
 		Item(std::string name, int w, int h, Entity* Owner);
 		Item(std::string name, int x, int y, int w, int h);
 		~Item();
-
+		std::shared_ptr<Entity> owner;
 };

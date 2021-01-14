@@ -163,13 +163,6 @@ void Visuals::renderEntity(Entity* entity)
 	if (!camera->inView(entity->pos.x,entity->pos.y,entity->pos.w,entity->pos.h))
 		return;
  	entity->graphic->render(renderer, camera.get());
-	if (entity->hasEquip()){
-		//TODO shouldn't only work for living entities?
-		auto eEntity = (LivingEntity*)entity;
-		eEntity->heldItem->pos.x = entity->pos.x;
-		eEntity->heldItem->pos.y = entity->pos.y;
-		eEntity->heldItem->graphic->render(renderer, camera.get()); 
-	}
 }
 
 void Visuals::renderRect(int x, int y, int w, int h)
