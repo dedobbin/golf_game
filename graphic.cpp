@@ -1,7 +1,8 @@
 #include "graphic.hpp"
 #include <iostream>
 
-// #include "item.hpp"
+#include "item.hpp"
+#include "living_entity.hpp"
 
 // circ dep
 #include "entity.hpp"
@@ -22,7 +23,6 @@ Graphic::~Graphic()
 void Graphic::render(SDL_Renderer* renderer, Camera* camera)
 {
 	SDL_Rect pos = getPos(camera);
-
 	auto sprite = getSprite();
 
 	//if (SDL_RenderCopyEx( renderer, sprite->texture, &sprite->src, &sprite->pos , NULL, NULL, sprite->flip) < 0){

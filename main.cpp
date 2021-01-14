@@ -174,6 +174,9 @@ int main (int argc, char* argv[])
 		// Render everything
 		v.renderStart();
 		for (auto& e : entities){
+			if (e->type == ITEM){
+				int d = 4;
+			}
 			if (e->graphic){
 				v.renderEntity(e.get());
 #ifdef DEBUG_DRAW 

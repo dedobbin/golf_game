@@ -2,6 +2,7 @@
 #include "iostream"
 
 #include "item.hpp"
+#include "living_entity.hpp"
 
 // circ dep
 #include "entity.hpp"
@@ -45,6 +46,11 @@ void Behavior::addYSpeed(float n, bool clampZero)
 
 void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 {
+	if (owner->type == ITEM && ((Item*) owner)->owner){
+		//No need to update pos, moves with owning entity
+		return;
+	}
+
 	// TODO: this check all entities for collision 2 times, should optimize by sorting list, static entities on same place
 	// OR only checking entities in view, but that could lead to other problems later
 	if (gravity && !grounded){
@@ -114,6 +120,12 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 
 	if (!hasGroundUnderneath){
 		owner->behavior->grounded = false;
+	}
+
+	if (owner->type == LIVING && ((LivingEntity*)owner)->heldItem){
+		auto item = ((LivingEntity*)owner)->heldItem;
+		item->pos.x = owner->pos.x;
+		item->pos.y = owner->pos.y;
 	}
 
 
