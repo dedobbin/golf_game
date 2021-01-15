@@ -66,17 +66,17 @@ void generateEntities()
 
 	int blockW = 100;
 	int blockH = 100;
-	for (int i = 0; i < 10; i++){
+	for (int i = 0; i < 50; i++){
 		Entity* b = new Entity("block" + std::to_string(i), STATIC_SOLID, i * blockW, 400, blockW, blockH);
 		b->graphic = std::unique_ptr<Graphic>(new Graphic(sheet2, {0, 0, 32, 32}, b));
 		b->collision = std::unique_ptr<Collision>(new Collision(b, true));
 		entities.emplace_back(std::shared_ptr<Entity>(b));
-		for (int j = 0; j < i ; j++){
-			Entity* bv = new Entity("block" + std::to_string(i), STATIC_SOLID, i * blockW, 300 - (blockH/5) * j, blockW, blockH/5);
-			bv->graphic = std::unique_ptr<Graphic>(new Graphic(sheet2, {0, 0, 32, 32}, bv));
-			bv->collision = std::unique_ptr<Collision>(new Collision(bv, true));
-			entities.emplace_back(std::shared_ptr<Entity>(bv));
-		}
+		// for (int j = 0; j < i ; j++){
+		// 	Entity* bv = new Entity("block" + std::to_string(i), STATIC_SOLID, i * blockW, 300 - (blockH/5) * j, blockW, blockH/5);
+		// 	bv->graphic = std::unique_ptr<Graphic>(new Graphic(sheet2, {0, 0, 32, 32}, bv));
+		// 	bv->collision = std::unique_ptr<Collision>(new Collision(bv, true));
+		// 	entities.emplace_back(std::shared_ptr<Entity>(bv));
+		// }
 	}
 
 	followWithCam = player;
@@ -133,14 +133,9 @@ int main (int argc, char* argv[])
 			player->behavior->addXSpeed(SLOW_DOWN_AMOUNT, true);
 			((AnimatedGraphic*)(player->graphic.get()))->changeState(AnimationState::DEFAULT);
 		}
-		if (keysPressed[SDL_SCANCODE_UP]){
+		if (keysPressed[SDL_SCANCODE_LCTRL]){
 			player->behavior->jump();
 			((AnimatedGraphic*)(player->graphic.get()))->changeState(AnimationState::JUMP);
-		}
-		if (keysPressed[SDL_SCANCODE_Z]){
-			if (player->heldItem){
-				player->dropHeldItem();
-			}
 		}
 
 #ifdef DEBUG_CONTROLS
