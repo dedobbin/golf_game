@@ -30,14 +30,6 @@ void generateEntities()
 	auto sheet3 = v.getSpritesheet("spritesheet3");
 
 	//Setup entities
-	auto club = new Item("golf_club", 50, 0, 10, 60);
-	auto clubGraphic = new Graphic(sheet2, {0, 0, 32, 32},  club);
-	club->graphic = std::unique_ptr<Graphic>(clubGraphic);
-	club->behavior = std::make_unique<Behavior>(club);
-	club->collision = std::make_unique<Collision>(club);
-	entities.push_back(std::unique_ptr<Item>(club));
-
-
 	auto e = new LivingEntity("player", playerStartPos.x, playerStartPos.y, 70, 100);
 	e->graphic = std::unique_ptr<Graphic>(new AnimatedGraphic(e));
 
@@ -64,6 +56,13 @@ void generateEntities()
 	player = e;
 	entities.emplace_back(std::shared_ptr<Entity>(e));
 
+	auto club = new Item("golf_club", 50, 0, 10, 60);
+	auto clubGraphic = new Graphic(sheet2, {0, 0, 32, 32},  club);
+	club->graphic = std::unique_ptr<Graphic>(clubGraphic);
+	club->behavior = std::make_unique<Behavior>(club);
+	club->collision = std::make_unique<Collision>(club);
+	entities.push_back(std::unique_ptr<Item>(club));
+
 	int blockW = 100;
 	int blockH = 100;
 	for (int i = 0; i < 50; i++){
@@ -71,12 +70,12 @@ void generateEntities()
 		b->graphic = std::unique_ptr<Graphic>(new Graphic(sheet2, {0, 0, 32, 32}, b));
 		b->collision = std::unique_ptr<Collision>(new Collision(b, true));
 		entities.emplace_back(std::shared_ptr<Entity>(b));
-		// for (int j = 0; j < i ; j++){
-		// 	Entity* bv = new Entity("block" + std::to_string(i), STATIC_SOLID, i * blockW, 300 - (blockH/5) * j, blockW, blockH/5);
-		// 	bv->graphic = std::unique_ptr<Graphic>(new Graphic(sheet2, {0, 0, 32, 32}, bv));
-		// 	bv->collision = std::unique_ptr<Collision>(new Collision(bv, true));
-		// 	entities.emplace_back(std::shared_ptr<Entity>(bv));
-		// }
+		for (int j = 0; j < i ; j++){
+			Entity* bv = new Entity("block" + std::to_string(i), STATIC_SOLID, i * blockW, 300 - (blockH/5) * j, blockW, blockH/5);
+			bv->graphic = std::unique_ptr<Graphic>(new Graphic(sheet2, {0, 0, 32, 32}, bv));
+			bv->collision = std::unique_ptr<Collision>(new Collision(bv, true));
+			entities.emplace_back(std::shared_ptr<Entity>(bv));
+		}
 	}
 
 	followWithCam = player;
@@ -136,6 +135,11 @@ int main (int argc, char* argv[])
 		if (keysPressed[SDL_SCANCODE_LCTRL]){
 			player->behavior->jump();
 			((AnimatedGraphic*)(player->graphic.get()))->changeState(AnimationState::JUMP);
+		}
+
+		//If movement was stopped by wall, dont keep walk animation
+		if (player->behavior->xSpeed == 0){
+			((AnimatedGraphic*)(player->graphic.get()))->changeState(AnimationState::DEFAULT);
 		}
 
 #ifdef DEBUG_CONTROLS
