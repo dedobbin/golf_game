@@ -18,7 +18,7 @@ Entity* followWithCam = NULL;
 
 rect playerStartPos = {200, 0};
 
-#define DEBUG_DRAW
+//#define DEBUG_DRAW
 //#define DEBUG_CAMERA
 #define DEBUG_CONTROLS
 
@@ -46,7 +46,7 @@ void generateEntities()
 	animatedGraphic->animations.insert({AnimationState::DEFAULT, std::unique_ptr<Animation>(idleAnimation)});
 
 	auto jumpAnimation = new Animation(sheet1);
-	jumpAnimation->frames.push_back(std::make_unique<Frame>(0, 0, 32, 32));
+	jumpAnimation->frames.push_back(std::make_unique<Frame>(32, 0, 32, 32));
 	jumpAnimation->no = true;
 	animatedGraphic->animations.insert({AnimationState::JUMP, std::unique_ptr<Animation>(jumpAnimation)});
 
@@ -56,8 +56,8 @@ void generateEntities()
 	player = e;
 	entities.emplace_back(std::shared_ptr<Entity>(e));
 
-	auto club = new Item("golf_club", 50, 0, 10, 60);
-	auto clubGraphic = new Graphic(sheet2, {0, 0, 32, 32},  club);
+	auto club = new Item("golf_club", 50, 0, 20, 100);
+	auto clubGraphic = new Graphic(sheet2, {0, 32, 32, 32},  club);
 	club->graphic = std::unique_ptr<Graphic>(clubGraphic);
 	club->behavior = std::make_unique<Behavior>(club);
 	club->collision = std::make_unique<Collision>(club);
@@ -113,37 +113,44 @@ int main (int argc, char* argv[])
 				keysPressed[e.key.keysym.scancode] = false;
 			}
 		}
+		auto playerAnimatedGraphic = (AnimatedGraphic*)(player->graphic.get());
 		#define SLOW_DOWN_AMOUNT 0.2
 		if (keysPressed[SDL_SCANCODE_RIGHT]){
 			player->behavior->addXSpeed(player->behavior->walkAcc);
 			if (player->behavior->grounded){
-				((AnimatedGraphic*)(player->graphic.get()))->changeState(AnimationState::WALK);
+				playerAnimatedGraphic->changeState(AnimationState::WALK);
 			}
 		} else if (player->behavior->xSpeed > 0){
 			player->behavior->addXSpeed(-SLOW_DOWN_AMOUNT, true);
-			((AnimatedGraphic*)(player->graphic.get()))->changeState(AnimationState::DEFAULT);
+			playerAnimatedGraphic->changeState(AnimationState::DEFAULT);
 		}
 		if (keysPressed[SDL_SCANCODE_LEFT]){
 			player->behavior->addXSpeed(-player->behavior->walkAcc);
 			if (player->behavior->grounded){
-				((AnimatedGraphic*)(player->graphic.get()))->changeState(AnimationState::WALK);
+				playerAnimatedGraphic->changeState(AnimationState::WALK);
 			}
 		} else if (player->behavior->xSpeed < 0){
 			player->behavior->addXSpeed(SLOW_DOWN_AMOUNT, true);
-			((AnimatedGraphic*)(player->graphic.get()))->changeState(AnimationState::DEFAULT);
+			playerAnimatedGraphic->changeState(AnimationState::DEFAULT);
 		}
-		if (keysPressed[SDL_SCANCODE_LCTRL]){
+		if (keysPressed[SDL_SCANCODE_SPACE]){
 			player->behavior->jump();
-			((AnimatedGraphic*)(player->graphic.get()))->changeState(AnimationState::JUMP);
+			playerAnimatedGraphic->changeState(AnimationState::JUMP);
 		}
 
-		//If movement was stopped by wall, dont keep walk animation
-		if (player->behavior->xSpeed == 0){
-			((AnimatedGraphic*)(player->graphic.get()))->changeState(AnimationState::DEFAULT);
+		//If movement was stopped by wall, dont keep walk animation, same when landing
+		if (playerAnimatedGraphic->curAnimationState == AnimationState::WALK && player->behavior->xSpeed == 0){
+			playerAnimatedGraphic->changeState(AnimationState::DEFAULT);
 		}
+
+		if (playerAnimatedGraphic->curAnimationState == AnimationState::JUMP && player->behavior->grounded){
+			playerAnimatedGraphic->changeState(AnimationState::DEFAULT);
+		}
+
+
 
 #ifdef DEBUG_CONTROLS
-		if (keysPressed[SDL_SCANCODE_SPACE]){
+		if (keysPressed[SDL_SCANCODE_BACKSPACE]){
 			player->pos.x = playerStartPos.x;
 			player->pos.y = playerStartPos.y;
 			player->behavior->xSpeed = 0;

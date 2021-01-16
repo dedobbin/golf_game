@@ -54,6 +54,5 @@ class AnimatedGraphic : public Graphic
 		void frameTick();
 		std::map<AnimationState, std::unique_ptr<Animation>> animations;
 		void changeState(AnimationState newState);
-	private:
 		AnimationState curAnimationState = AnimationState::DEFAULT;
 };
