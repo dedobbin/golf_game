@@ -124,6 +124,30 @@ bool handleInput()
 	return true;
 }
 
+void renderEverything()
+{
+			v.renderStart();
+		for (auto& e : entities){
+			if (e->type == ITEM){
+				int d = 4;
+			}
+			if (e->graphic){
+				v.renderEntity(e.get());
+#ifdef DEBUG_DRAW 
+				if (e->collision){
+					rect collisionRect = e->collision->getRect();
+					v.renderRect(collisionRect.x, collisionRect.y, collisionRect.w, collisionRect.h);
+				}
+#endif	
+			}
+		}
+#ifdef DEBUG_DRAW 
+	v.renderRectOverlay(0, 0, v.camera->camRect.w, v.camera->camRect.w);
+#endif	
+
+		v.renderEnd();
+}
+
 int main (int argc, char* argv[])
 {
 	assert(v.spritesheets.size() > 0);
@@ -152,34 +176,13 @@ int main (int argc, char* argv[])
 				e->behavior->behave(entities);
 			}
 		}
-		
-		// Render everything
 
 #ifndef DEBUG_CAMERA
 		v.camera->camRect.x = followWithCam->pos.x - v.camera->camRect.w / 2;
 		v.camera->camRect.y = followWithCam->pos.y - v.camera->camRect.h / 2;
 #endif
 
-		v.renderStart();
-		for (auto& e : entities){
-			if (e->type == ITEM){
-				int d = 4;
-			}
-			if (e->graphic){
-				v.renderEntity(e.get());
-#ifdef DEBUG_DRAW 
-				if (e->collision){
-					rect collisionRect = e->collision->getRect();
-					v.renderRect(collisionRect.x, collisionRect.y, collisionRect.w, collisionRect.h);
-				}
-#endif	
-			}
-		}
-#ifdef DEBUG_DRAW 
-	v.renderRectOverlay(0, 0, v.camera->camRect.w, v.camera->camRect.w);
-#endif	
-
-		v.renderEnd();
+		renderEverything();
 
 		float avgFps = countedFrames / ( fpsTimer.getTicks() / 1000.f );
 		if( avgFps > 2000000 ){
