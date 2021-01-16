@@ -13,10 +13,10 @@
 LazyFooTimer fpsTimer;
 LazyFooTimer capTimer;
 Visuals v;
-LivingEntity* player = NULL;
+std::shared_ptr<LivingEntity> player;
 std::vector<std::shared_ptr<Entity>> entities;
 
-Entity* followWithCam = NULL;
+std::shared_ptr<Entity> followWithCam = NULL;
 
 rect playerStartPos = {200, 0};
 
@@ -28,10 +28,9 @@ void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets
 {
 	EntityFactory factory(spritesheets);
 
-	player = factory.createPlayer(200, 0);
+	entities.emplace_back( factory.createPlayer(200, 0));
+	player = std::static_pointer_cast<LivingEntity>(entities.back());
 	followWithCam = player;
-	entities.emplace_back(player);
-
 
 	// //Setup entities
 
