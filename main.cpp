@@ -82,7 +82,7 @@ bool handleInput()
 		player->behavior->addXSpeed(SLOW_DOWN_AMOUNT, true);
 		playerAnimatedGraphic->changeState(AnimationState::DEFAULT);
 	}
-	if (keysPressed[SDL_SCANCODE_SPACE]){
+	if (keysPressed[SDL_SCANCODE_Z]){
 		player->behavior->jump();
 		playerAnimatedGraphic->changeState(AnimationState::JUMP);
 	}
