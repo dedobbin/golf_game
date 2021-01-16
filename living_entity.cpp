@@ -7,6 +7,11 @@ LivingEntity::LivingEntity(std::string name, int x, int y, int w, int h)
 : Entity(name, LIVING, x, y, w, h)
 {}
 
+LivingEntity::~LivingEntity()
+{
+	std::cout << "DEBUG: LivingEntity deconstructor" << std::endl;
+}
+
 void LivingEntity::give(Item* item)
 {
 	assert(item->behavior);

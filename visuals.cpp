@@ -4,6 +4,20 @@
 #include "living_entity.hpp"
 #include <iostream>
 
+//TODO: place in utils file
+void strip_ext(char *fname)
+{
+    char *end = fname + strlen(fname);
+
+    while (end > fname && *end != '.' && *end != '\\' && *end != '/') {
+        --end;
+    }
+    if ((end > fname && *end == '.') &&
+        (*(end - 1) != '\\' && *(end - 1) != '/')) {
+        *end = '\0';
+    }  
+}
+
 Visuals::Visuals()
 {
 	if (!initSDL()){
@@ -33,8 +47,11 @@ bool Visuals::loadSpritesheets(std::string path)
 		if (strcmp(ent->d_name, ".") == 0 ^ strcmp(ent->d_name, "..") == 0){
 			continue;
 		}
-		//std::string name = ent->d_name;
-		spritesheets[ent->d_name] = loadTexture(path + "/" + ent->d_name);
+		
+		auto location = path + "/" + ent->d_name;
+		strip_ext(ent->d_name);
+		spritesheets[ent->d_name] = loadTexture(location);
+		//std::cout << "DEBUG: Added spritesheet, " << ent->d_name << ": " << path + "/" + ent->d_name << std::endl;
 	}
 
 	closedir (dir);
@@ -49,6 +66,7 @@ bool Visuals::loadSpritesheet(std::string name)
 {
 	auto path = defaultSpritesheetPath + "/" + name + ".png";
 	spritesheets[name] = loadTexture(path);
+	//std::cout << "DEBUG: Added spritesheet, " << name << ": " << path << std::endl;
 }
 
 SDL_Texture* Visuals::getSpritesheet(std::string name)

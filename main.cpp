@@ -6,6 +6,8 @@
 #include "living_entity.hpp"
 #include "rect.hpp"
 #include "animated_graphic.hpp"
+#include "entity_factory.hpp"
+#include <assert.h>
 #include <vector>
 
 LazyFooTimer fpsTimer;
@@ -22,69 +24,48 @@ rect playerStartPos = {200, 0};
 //#define DEBUG_CAMERA
 #define DEBUG_CONTROLS
 
-void generateEntities()
+void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 {
-	// Get all spritesheets
-	auto sheet1 = v.getSpritesheet("spritesheet1");
-	auto sheet2 = v.getSpritesheet("spritesheet2");
-	auto sheet3 = v.getSpritesheet("spritesheet3");
+	EntityFactory factory(spritesheets);
 
-	//Setup entities
-
-	auto club = new Item("golf_club", 50, 0, 32, 100);
-	auto clubGraphic = new Graphic(sheet2, {0, 32, 6 , 25},  club);
-	club->graphic = std::unique_ptr<Graphic>(clubGraphic);
-	club->behavior = std::make_unique<Behavior>(club);
-	club->collision = std::make_unique<Collision>(club);
-	entities.push_back(std::unique_ptr<Item>(club));
-
-	auto e = new LivingEntity("player", playerStartPos.x, playerStartPos.y, 70, 100);
-	e->graphic = std::unique_ptr<Graphic>(new AnimatedGraphic(e));
-
-	auto animatedGraphic = (AnimatedGraphic*)e->graphic.get();
-
-	auto walkAnimation = new Animation(sheet1);
-	walkAnimation->frames.push_back(std::make_unique<Frame>(32, 0, 32, 32));
-	walkAnimation->frames.push_back(std::make_unique<Frame>(64, 0, 32, 32));
-	animatedGraphic->animations.insert({AnimationState::WALK, std::unique_ptr<Animation>(walkAnimation)});
-
-	auto idleAnimation = new Animation(sheet1);
-	idleAnimation->frames.push_back(std::make_unique<Frame>(0, 0, 32, 32));
-	idleAnimation->no = true;
-	animatedGraphic->animations.insert({AnimationState::DEFAULT, std::unique_ptr<Animation>(idleAnimation)});
-
-	auto jumpAnimation = new Animation(sheet1);
-	jumpAnimation->frames.push_back(std::make_unique<Frame>(32, 0, 32, 32));
-	jumpAnimation->no = true;
-	animatedGraphic->animations.insert({AnimationState::JUMP, std::unique_ptr<Animation>(jumpAnimation)});
-
-	e->behavior = std::unique_ptr<Behavior>(new Behavior(e));
-	//e->behavior->gravity = false;
-	e->collision = std::unique_ptr<Collision>(new Collision(e, true));
-	player = e;
-	entities.emplace_back(std::shared_ptr<Entity>(e));
-
-	int blockW = 100;
-	int blockH = 100;
-	for (int i = 0; i < 50; i++){
-		Entity* b = new Entity("block" + std::to_string(i), STATIC_SOLID, i * blockW, 400, blockW, blockH);
-		b->graphic = std::unique_ptr<Graphic>(new Graphic(sheet2, {0, 0, 32, 32}, b));
-		b->collision = std::unique_ptr<Collision>(new Collision(b, true));
-		entities.emplace_back(std::shared_ptr<Entity>(b));
-		for (int j = 0; j < i ; j++){
-			Entity* bv = new Entity("block" + std::to_string(i), STATIC_SOLID, i * blockW, 300 - (blockH/5) * j, blockW, blockH/5);
-			bv->graphic = std::unique_ptr<Graphic>(new Graphic(sheet2, {0, 0, 32, 32}, bv));
-			bv->collision = std::unique_ptr<Collision>(new Collision(bv, true));
-			entities.emplace_back(std::shared_ptr<Entity>(bv));
-		}
-	}
-
+	player = factory.createPlayer(200, 0);
 	followWithCam = player;
+	entities.emplace_back(player);
+
+
+	// //Setup entities
+
+	// auto club = new Item("golf_club", 50, 0, 32, 100);
+	// auto clubGraphic = new Graphic(sheet2, {0, 32, 6 , 25},  club);
+	// club->graphic = std::unique_ptr<Graphic>(clubGraphic);
+	// club->behavior = std::make_unique<Behavior>(club);
+	// club->collision = std::make_unique<Collision>(club);
+	// entities.push_back(std::unique_ptr<Item>(club));
+
+	// int blockW = 100;
+	// int blockH = 100;
+	// for (int i = 0; i < 50; i++){
+	// 	Entity* b = new Entity("block" + std::to_string(i), STATIC_SOLID, i * blockW, 400, blockW, blockH);
+	// 	b->graphic = std::unique_ptr<Graphic>(new Graphic(sheet2, {0, 0, 32, 32}, b));
+	// 	b->collision = std::unique_ptr<Collision>(new Collision(b, true));
+	// 	entities.emplace_back(std::shared_ptr<Entity>(b));
+	// 	for (int j = 0; j < i ; j++){
+	// 		Entity* bv = new Entity("block" + std::to_string(i), STATIC_SOLID, i * blockW, 300 - (blockH/5) * j, blockW, blockH/5);
+	// 		bv->graphic = std::unique_ptr<Graphic>(new Graphic(sheet2, {0, 0, 32, 32}, bv));
+	// 		bv->collision = std::unique_ptr<Collision>(new Collision(bv, true));
+	// 		entities.emplace_back(std::shared_ptr<Entity>(bv));
+	// 	}
+	// }
+
+	// followWithCam = player;
 }
 
 int main (int argc, char* argv[])
 {
-	generateEntities();
+	assert(v.spritesheets.size() > 0);
+	generateEntities(v.spritesheets);
+
+
 	int countedFrames = 0;
 	const int FPS = 60;
 	const int SCREEN_TICK_PER_FRAME = 1000 / FPS;

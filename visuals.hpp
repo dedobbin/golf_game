@@ -28,6 +28,7 @@ class Visuals
 		// Overlay implies 'behind' the camera
 		void renderRectOverlay(int x, int y, int w, int h);
 		std::unique_ptr<Camera> camera;
+		std::unordered_map<std::string, SDL_Texture*> spritesheets;
 
 	private:
 		bool initSDL();
@@ -36,7 +37,6 @@ class Visuals
 		bool createWindow(std::string title);
 		const int renderText(std::string text, SDL_Color color, int x, int y, int h) const;
 		SDL_Texture* loadTexture( std::string path) const;
-		std::unordered_map<std::string, SDL_Texture*> spritesheets;
 
 		std::string defaultSpritesheetPath = ".";
 
