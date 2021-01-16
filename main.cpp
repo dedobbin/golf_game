@@ -28,18 +28,11 @@ void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets
 {
 	EntityFactory factory(spritesheets);
 
+	entities.emplace_back(factory.createGolfClub(50, 0));
+
 	entities.emplace_back( factory.createPlayer(200, 0));
 	player = std::static_pointer_cast<LivingEntity>(entities.back());
 	followWithCam = player;
-
-	// //Setup entities
-
-	// auto club = new Item("golf_club", 50, 0, 32, 100);
-	// auto clubGraphic = new Graphic(sheet2, {0, 32, 6 , 25},  club);
-	// club->graphic = std::unique_ptr<Graphic>(clubGraphic);
-	// club->behavior = std::make_unique<Behavior>(club);
-	// club->collision = std::make_unique<Collision>(club);
-	// entities.push_back(std::unique_ptr<Item>(club));
 
 	// int blockW = 100;
 	// int blockH = 100;

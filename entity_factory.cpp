@@ -2,7 +2,6 @@
 #include <memory>
 //#include "graphic.hpp"
 #include "animated_graphic.hpp"
-#include <assert.h>
 
 EntityFactory::EntityFactory(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 :spritesheets(spritesheets)
@@ -36,4 +35,16 @@ LivingEntity* EntityFactory::createPlayer(int x, int y)
 	//e->behavior->gravity = false;
 	e->collision = std::unique_ptr<Collision>(new Collision(e, true));
 	return e;
+}
+
+Item* EntityFactory::createGolfClub(int x, int y)
+{
+	auto sheet = spritesheets.at("spritesheet2");
+
+	auto club = new Item("golf_club", x, y, 32, 100);
+	auto clubGraphic = new Graphic(sheet, {0, 32, 6 , 25},  club);
+	club->graphic = std::unique_ptr<Graphic>(clubGraphic);
+	club->behavior = std::make_unique<Behavior>(club);
+	club->collision = std::make_unique<Collision>(club);
+	return club;
 }
