@@ -10,6 +10,8 @@ class EntityFactory
 		EntityFactory(std::unordered_map<std::string, SDL_Texture*> spritesheets);
 		LivingEntity* createPlayer(int x, int y);
 		Item* createGolfClub(int x, int y);
+		Entity* createBlock(int x, int y, int w = 100, int h = 100);
+
 
 	private:
 		// not owned, it should be destroyed here (but in Visuals)

@@ -11,5 +11,5 @@ Item::Item(std::string name, int x, int y, int w, int h)
 
 Item::~Item()
 {
-	std::cout << "DEBUG: Item deconstructor" << std::endl;
+	//std::cout << "DEBUG: Item deconstructor" << std::endl;
 }

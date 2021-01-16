@@ -48,3 +48,13 @@ Item* EntityFactory::createGolfClub(int x, int y)
 	club->collision = std::make_unique<Collision>(club);
 	return club;
 }
+
+Entity* EntityFactory::createBlock(int x, int y, int w, int h)
+{
+	auto sheet = spritesheets.at("spritesheet2");
+
+	Entity* b = new Entity("block", STATIC_SOLID, x,  y, w, h);
+	b->graphic = std::unique_ptr<Graphic>(new Graphic(sheet, {0, 0, 32, 32}, b));
+	b->collision = std::unique_ptr<Collision>(new Collision(b, true));
+	return b;
+}

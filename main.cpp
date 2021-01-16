@@ -32,32 +32,27 @@ void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets
 
 	entities.emplace_back( factory.createPlayer(200, 0));
 	player = std::static_pointer_cast<LivingEntity>(entities.back());
-	followWithCam = player;
 
-	// int blockW = 100;
-	// int blockH = 100;
-	// for (int i = 0; i < 50; i++){
-	// 	Entity* b = new Entity("block" + std::to_string(i), STATIC_SOLID, i * blockW, 400, blockW, blockH);
-	// 	b->graphic = std::unique_ptr<Graphic>(new Graphic(sheet2, {0, 0, 32, 32}, b));
-	// 	b->collision = std::unique_ptr<Collision>(new Collision(b, true));
-	// 	entities.emplace_back(std::shared_ptr<Entity>(b));
-	// 	for (int j = 0; j < i ; j++){
-	// 		Entity* bv = new Entity("block" + std::to_string(i), STATIC_SOLID, i * blockW, 300 - (blockH/5) * j, blockW, blockH/5);
-	// 		bv->graphic = std::unique_ptr<Graphic>(new Graphic(sheet2, {0, 0, 32, 32}, bv));
-	// 		bv->collision = std::unique_ptr<Collision>(new Collision(bv, true));
-	// 		entities.emplace_back(std::shared_ptr<Entity>(bv));
-	// 	}
-	// }
+	int blockW = 100;
+	int blockH = 100;
+	for (int i = 0; i < 50; i++){
+		entities.emplace_back(factory.createBlock(i * blockW, 400, blockW, blockH));
+		for (int j = 0; j < i ; j++){
+			entities.emplace_back(factory.createBlock(i * blockW, 300 - (blockH/5) * j, blockW, blockH/5));
+		}
+	}
 
-	// followWithCam = player;
 }
 
 int main (int argc, char* argv[])
 {
 	assert(v.spritesheets.size() > 0);
 	generateEntities(v.spritesheets);
-
-
+	
+	assert(player);
+	followWithCam = player;
+	
+	
 	int countedFrames = 0;
 	const int FPS = 60;
 	const int SCREEN_TICK_PER_FRAME = 1000 / FPS;
