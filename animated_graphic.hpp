@@ -26,7 +26,6 @@ class Frame
 		Frame(int x, int y, int w, int h);
 		~Frame();
 		SDL_Rect src = { 0, 0, 0, 0 };
-		// store x and y of equip hand etc
 };
 class Animation
 {

@@ -26,7 +26,7 @@ void Graphic::render(SDL_Renderer* renderer, Camera* camera)
 	auto sprite = getSprite();
 
 	//if (SDL_RenderCopyEx( renderer, sprite->texture, &sprite->src, &sprite->pos , NULL, NULL, sprite->flip) < 0){
-	if (SDL_RenderCopy( renderer, sprite.spritesheet, &sprite.src, &pos) < 0){
+	if (SDL_RenderCopyEx( renderer, sprite.spritesheet, &sprite.src, &pos, sprite.angle, NULL, (SDL_RendererFlip)false) < 0){
 		std::cerr << "Failed to render sprite " + owner->name << std::endl;
 	}
 }

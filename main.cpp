@@ -30,6 +30,14 @@ void generateEntities()
 	auto sheet3 = v.getSpritesheet("spritesheet3");
 
 	//Setup entities
+
+	auto club = new Item("golf_club", 50, 0, 32, 100);
+	auto clubGraphic = new Graphic(sheet2, {0, 32, 6 , 25},  club);
+	club->graphic = std::unique_ptr<Graphic>(clubGraphic);
+	club->behavior = std::make_unique<Behavior>(club);
+	club->collision = std::make_unique<Collision>(club);
+	entities.push_back(std::unique_ptr<Item>(club));
+
 	auto e = new LivingEntity("player", playerStartPos.x, playerStartPos.y, 70, 100);
 	e->graphic = std::unique_ptr<Graphic>(new AnimatedGraphic(e));
 
@@ -55,13 +63,6 @@ void generateEntities()
 	e->collision = std::unique_ptr<Collision>(new Collision(e, true));
 	player = e;
 	entities.emplace_back(std::shared_ptr<Entity>(e));
-
-	auto club = new Item("golf_club", 50, 0, 32, 100);
-	auto clubGraphic = new Graphic(sheet2, {0, 32, 6 , 30},  club);
-	club->graphic = std::unique_ptr<Graphic>(clubGraphic);
-	club->behavior = std::make_unique<Behavior>(club);
-	club->collision = std::make_unique<Collision>(club);
-	entities.push_back(std::unique_ptr<Item>(club));
 
 	int blockW = 100;
 	int blockH = 100;
