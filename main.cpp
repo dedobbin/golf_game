@@ -56,8 +56,8 @@ void generateEntities()
 	player = e;
 	entities.emplace_back(std::shared_ptr<Entity>(e));
 
-	auto club = new Item("golf_club", 50, 0, 20, 100);
-	auto clubGraphic = new Graphic(sheet2, {0, 32, 32, 32},  club);
+	auto club = new Item("golf_club", 50, 0, 32, 100);
+	auto clubGraphic = new Graphic(sheet2, {0, 32, 32, 20},  club);
 	club->graphic = std::unique_ptr<Graphic>(clubGraphic);
 	club->behavior = std::make_unique<Behavior>(club);
 	club->collision = std::make_unique<Collision>(club);
