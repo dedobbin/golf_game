@@ -11,9 +11,9 @@
 #include <vector>
 
 
-//#define DEBUG_DRAW
-//#define DEBUG_CAMERA
-#define DEBUG_CONTROLS
+// #define DEBUG_DRAW
+// #define DEBUG_CAMERA
+// #define DEBUG_CONTROLS
 
 //TODO: get rid of globals so functions can go to own files etc
 LazyFooTimer fpsTimer;
@@ -105,6 +105,22 @@ bool handleInput()
 	}
 #endif
 
+#ifdef DEBUG_CAMERA
+		int camSpeed = 5;
+		if (keysPressed[SDL_SCANCODE_D]){
+			v.camera->camRect.x += camSpeed;
+		} 
+		if (keysPressed[SDL_SCANCODE_A]){
+			v.camera->camRect.x -= camSpeed;
+		} 
+		if (keysPressed[SDL_SCANCODE_W]){
+			v.camera->camRect.y -= camSpeed;
+		} 
+		if (keysPressed[SDL_SCANCODE_S]){
+			v.camera->camRect.y += camSpeed;
+		} 
+#endif
+
 	return true;
 }
 
@@ -128,28 +144,7 @@ int main (int argc, char* argv[])
 	while(keepGoing){
 		capTimer.start();
 
-#ifndef DEBUG_CAMERA
-		v.camera->camRect.x = followWithCam->pos.x - v.camera->camRect.w / 2;
-		v.camera->camRect.y = followWithCam->pos.y - v.camera->camRect.h / 2;
-#endif
-
 		keepGoing = handleInput();
-
-#ifdef DEBUG_CAMERA
-		int camSpeed = 5;
-		if (keysPressed[SDL_SCANCODE_D]){
-			v.camera->camRect.x += camSpeed;
-		} 
-		if (keysPressed[SDL_SCANCODE_A]){
-			v.camera->camRect.x -= camSpeed;
-		} 
-		if (keysPressed[SDL_SCANCODE_W]){
-			v.camera->camRect.y -= camSpeed;
-		} 
-		if (keysPressed[SDL_SCANCODE_S]){
-			v.camera->camRect.y += camSpeed;
-		} 
-#endif
 
 		//Move etc all entities, collision etc
 		for (auto& e : entities){
@@ -159,6 +154,12 @@ int main (int argc, char* argv[])
 		}
 		
 		// Render everything
+
+#ifndef DEBUG_CAMERA
+		v.camera->camRect.x = followWithCam->pos.x - v.camera->camRect.w / 2;
+		v.camera->camRect.y = followWithCam->pos.y - v.camera->camRect.h / 2;
+#endif
+
 		v.renderStart();
 		for (auto& e : entities){
 			if (e->type == ITEM){
