@@ -10,6 +10,12 @@
 #include <assert.h>
 #include <vector>
 
+
+//#define DEBUG_DRAW
+//#define DEBUG_CAMERA
+#define DEBUG_CONTROLS
+
+//TODO: get rid of globals so functions can go to own files etc
 LazyFooTimer fpsTimer;
 LazyFooTimer capTimer;
 Visuals v;
@@ -20,9 +26,8 @@ std::shared_ptr<Entity> followWithCam = NULL;
 
 rect playerStartPos = {200, 0};
 
-//#define DEBUG_DRAW
-//#define DEBUG_CAMERA
-#define DEBUG_CONTROLS
+bool keysPressed[322] = {false};
+
 
 void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 {
@@ -44,6 +49,65 @@ void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets
 
 }
 
+/* Returns false if quit */
+bool handleInput()
+{
+	SDL_Event e;
+	while( SDL_PollEvent( &e ) != 0 ){
+		if (e.type == SDL_QUIT){
+			return false;
+		} else if (e.type == SDL_KEYDOWN){
+			keysPressed[e.key.keysym.scancode] = true;
+		} else  if (e.type == SDL_KEYUP){
+			keysPressed[e.key.keysym.scancode] = false;
+		}
+	}
+	auto playerAnimatedGraphic = (AnimatedGraphic*)(player->graphic.get());
+	#define SLOW_DOWN_AMOUNT 0.2
+	if (keysPressed[SDL_SCANCODE_RIGHT]){
+		player->behavior->addXSpeed(player->behavior->walkAcc);
+		if (player->behavior->grounded){
+			playerAnimatedGraphic->changeState(AnimationState::WALK);
+		}
+	} else if (player->behavior->xSpeed > 0){
+		player->behavior->addXSpeed(-SLOW_DOWN_AMOUNT, true);
+		playerAnimatedGraphic->changeState(AnimationState::DEFAULT);
+	}
+	if (keysPressed[SDL_SCANCODE_LEFT]){
+		player->behavior->addXSpeed(-player->behavior->walkAcc);
+		if (player->behavior->grounded){
+			playerAnimatedGraphic->changeState(AnimationState::WALK);
+		}
+	} else if (player->behavior->xSpeed < 0){
+		player->behavior->addXSpeed(SLOW_DOWN_AMOUNT, true);
+		playerAnimatedGraphic->changeState(AnimationState::DEFAULT);
+	}
+	if (keysPressed[SDL_SCANCODE_SPACE]){
+		player->behavior->jump();
+		playerAnimatedGraphic->changeState(AnimationState::JUMP);
+	}
+
+	//If movement was stopped by wall, dont keep walk animation, same when landing
+	if (playerAnimatedGraphic->curAnimationState == AnimationState::WALK && player->behavior->xSpeed == 0){
+		playerAnimatedGraphic->changeState(AnimationState::DEFAULT);
+	}
+
+	if (playerAnimatedGraphic->curAnimationState == AnimationState::JUMP && player->behavior->grounded){
+		playerAnimatedGraphic->changeState(AnimationState::DEFAULT);
+	}
+
+#ifdef DEBUG_CONTROLS
+	if (keysPressed[SDL_SCANCODE_BACKSPACE]){
+		player->pos.x = playerStartPos.x;
+		player->pos.y = playerStartPos.y;
+		player->behavior->xSpeed = 0;
+		player->behavior->ySpeed = 0;
+	}
+#endif
+
+	return true;
+}
+
 int main (int argc, char* argv[])
 {
 	assert(v.spritesheets.size() > 0);
@@ -60,8 +124,6 @@ int main (int argc, char* argv[])
 	bool keepGoing = true;
 
 	fpsTimer.start();
-	
-	bool keysPressed[322] = {false};
 
 	while(keepGoing){
 		capTimer.start();
@@ -71,61 +133,7 @@ int main (int argc, char* argv[])
 		v.camera->camRect.y = followWithCam->pos.y - v.camera->camRect.h / 2;
 #endif
 
-		// Gather inputs and apply to player behavior
-		SDL_Event e;
-		while( SDL_PollEvent( &e ) != 0 ){
-			if (e.type == SDL_QUIT){
-				keepGoing = false;
-			} else if (e.type == SDL_KEYDOWN){
-				keysPressed[e.key.keysym.scancode] = true;
-			} else  if (e.type == SDL_KEYUP){
-				keysPressed[e.key.keysym.scancode] = false;
-			}
-		}
-		auto playerAnimatedGraphic = (AnimatedGraphic*)(player->graphic.get());
-		#define SLOW_DOWN_AMOUNT 0.2
-		if (keysPressed[SDL_SCANCODE_RIGHT]){
-			player->behavior->addXSpeed(player->behavior->walkAcc);
-			if (player->behavior->grounded){
-				playerAnimatedGraphic->changeState(AnimationState::WALK);
-			}
-		} else if (player->behavior->xSpeed > 0){
-			player->behavior->addXSpeed(-SLOW_DOWN_AMOUNT, true);
-			playerAnimatedGraphic->changeState(AnimationState::DEFAULT);
-		}
-		if (keysPressed[SDL_SCANCODE_LEFT]){
-			player->behavior->addXSpeed(-player->behavior->walkAcc);
-			if (player->behavior->grounded){
-				playerAnimatedGraphic->changeState(AnimationState::WALK);
-			}
-		} else if (player->behavior->xSpeed < 0){
-			player->behavior->addXSpeed(SLOW_DOWN_AMOUNT, true);
-			playerAnimatedGraphic->changeState(AnimationState::DEFAULT);
-		}
-		if (keysPressed[SDL_SCANCODE_SPACE]){
-			player->behavior->jump();
-			playerAnimatedGraphic->changeState(AnimationState::JUMP);
-		}
-
-		//If movement was stopped by wall, dont keep walk animation, same when landing
-		if (playerAnimatedGraphic->curAnimationState == AnimationState::WALK && player->behavior->xSpeed == 0){
-			playerAnimatedGraphic->changeState(AnimationState::DEFAULT);
-		}
-
-		if (playerAnimatedGraphic->curAnimationState == AnimationState::JUMP && player->behavior->grounded){
-			playerAnimatedGraphic->changeState(AnimationState::DEFAULT);
-		}
-
-
-
-#ifdef DEBUG_CONTROLS
-		if (keysPressed[SDL_SCANCODE_BACKSPACE]){
-			player->pos.x = playerStartPos.x;
-			player->pos.y = playerStartPos.y;
-			player->behavior->xSpeed = 0;
-			player->behavior->ySpeed = 0;
-		}
-#endif
+		keepGoing = handleInput();
 
 #ifdef DEBUG_CAMERA
 		int camSpeed = 5;
