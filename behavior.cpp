@@ -3,6 +3,7 @@
 
 #include "item.hpp"
 #include "living_entity.hpp"
+#include "animated_graphic.hpp"
 
 // circ dep
 #include "entity.hpp"
@@ -13,6 +14,7 @@ Behavior::Behavior(Entity* owner)
 
 void Behavior::addXSpeed(float n, bool clampZero)
 {
+	int prevSpeed = xSpeed;
 	if (xSpeed + n > maxXSpeed){
 		xSpeed = maxXSpeed;
 	} else if (xSpeed + n < -maxXSpeed){
@@ -23,6 +25,15 @@ void Behavior::addXSpeed(float n, bool clampZero)
 	if (clampZero && round(xSpeed) == 0){
 		xSpeed = 0;
 	}
+
+	if (grounded && gravity){
+		if ( xSpeed != 0 && (prevSpeed > 0 && n > 0) || (prevSpeed < 0 && n < 0) ){
+			((AnimatedGraphic*)owner->graphic.get())->changeState(AnimationState::WALK);
+		} else {
+			((AnimatedGraphic*)owner->graphic.get())->changeState(AnimationState::DEFAULT);
+		}
+	}
+
 }
 
 Behavior::~Behavior()

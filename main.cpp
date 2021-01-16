@@ -28,6 +28,8 @@ rect playerStartPos = {200, 0};
 
 bool keysPressed[322] = {false};
 
+#define STOP_WALK_SLOW_DOWN_AMOUNT 0.2
+
 
 void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 {
@@ -42,9 +44,9 @@ void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets
 	int blockH = 100;
 	for (int i = 0; i < 50; i++){
 		entities.emplace_back(factory.createBlock(i * blockW, 400, blockW, blockH));
-		for (int j = 0; j < i ; j++){
-			entities.emplace_back(factory.createBlock(i * blockW, 300 - (blockH/5) * j, blockW, blockH/5));
-		}
+		// for (int j = 0; j < i ; j++){
+		// 	entities.emplace_back(factory.createBlock(i * blockW, 300 - (blockH/5) * j, blockW, blockH/5));
+		// }
 	}
 
 }
@@ -62,39 +64,53 @@ bool handleInput()
 			keysPressed[e.key.keysym.scancode] = false;
 		}
 	}
-	auto playerAnimatedGraphic = (AnimatedGraphic*)(player->graphic.get());
-	#define SLOW_DOWN_AMOUNT 0.2
+
 	if (keysPressed[SDL_SCANCODE_RIGHT]){
 		player->behavior->addXSpeed(player->behavior->walkAcc);
-		if (player->behavior->grounded){
-			playerAnimatedGraphic->changeState(AnimationState::WALK);
-		}
 	} else if (player->behavior->xSpeed > 0){
-		player->behavior->addXSpeed(-SLOW_DOWN_AMOUNT, true);
-		playerAnimatedGraphic->changeState(AnimationState::DEFAULT);
+		player->behavior->addXSpeed(-STOP_WALK_SLOW_DOWN_AMOUNT, true);
 	}
+
 	if (keysPressed[SDL_SCANCODE_LEFT]){
 		player->behavior->addXSpeed(-player->behavior->walkAcc);
-		if (player->behavior->grounded){
-			playerAnimatedGraphic->changeState(AnimationState::WALK);
-		}
 	} else if (player->behavior->xSpeed < 0){
-		player->behavior->addXSpeed(SLOW_DOWN_AMOUNT, true);
-		playerAnimatedGraphic->changeState(AnimationState::DEFAULT);
-	}
-	if (keysPressed[SDL_SCANCODE_Z]){
-		player->behavior->jump();
-		playerAnimatedGraphic->changeState(AnimationState::JUMP);
+		player->behavior->addXSpeed(STOP_WALK_SLOW_DOWN_AMOUNT, true);
 	}
 
-	//If movement was stopped by wall, dont keep walk animation, same when landing
-	if (playerAnimatedGraphic->curAnimationState == AnimationState::WALK && player->behavior->xSpeed == 0){
-		playerAnimatedGraphic->changeState(AnimationState::DEFAULT);
-	}
 
-	if (playerAnimatedGraphic->curAnimationState == AnimationState::JUMP && player->behavior->grounded){
-		playerAnimatedGraphic->changeState(AnimationState::DEFAULT);
-	}
+	// auto playerAnimatedGraphic = (AnimatedGraphic*)(player->graphic.get());
+	// #define SLOW_DOWN_AMOUNT 0.2
+	// if (keysPressed[SDL_SCANCODE_RIGHT]){
+	// 	player->behavior->addXSpeed(player->behavior->walkAcc);
+	// 	if (player->behavior->grounded){
+	// 		playerAnimatedGraphic->changeState(AnimationState::WALK);
+	// 	}
+	// } else if (player->behavior->xSpeed > 0){
+	// 	player->behavior->addXSpeed(-SLOW_DOWN_AMOUNT, true);
+	// 	playerAnimatedGraphic->changeState(AnimationState::DEFAULT);
+	// }
+	// if (keysPressed[SDL_SCANCODE_LEFT]){
+	// 	player->behavior->addXSpeed(-player->behavior->walkAcc);
+	// 	if (player->behavior->grounded){
+	// 		playerAnimatedGraphic->changeState(AnimationState::WALK);
+	// 	}
+	// } else if (player->behavior->xSpeed < 0){
+	// 	player->behavior->addXSpeed(SLOW_DOWN_AMOUNT, true);
+	// 	playerAnimatedGraphic->changeState(AnimationState::DEFAULT);
+	// }
+	// if (keysPressed[SDL_SCANCODE_Z]){
+	// 	player->behavior->jump();
+	// 	playerAnimatedGraphic->changeState(AnimationState::JUMP);
+	// }
+
+	// //If movement was stopped by wall, dont keep walk animation, same when landing
+	// if (playerAnimatedGraphic->curAnimationState == AnimationState::WALK && player->behavior->xSpeed == 0){
+	// 	playerAnimatedGraphic->changeState(AnimationState::DEFAULT);
+	// }
+
+	// if (playerAnimatedGraphic->curAnimationState == AnimationState::JUMP && player->behavior->grounded){
+	// 	playerAnimatedGraphic->changeState(AnimationState::DEFAULT);
+	// }
 
 #ifdef DEBUG_CONTROLS
 	if (keysPressed[SDL_SCANCODE_BACKSPACE]){
