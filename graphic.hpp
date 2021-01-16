@@ -14,7 +14,6 @@ struct Sprite
 {
 	SDL_Texture* spritesheet = NULL;
 	SDL_Rect src = {0,0,0,0};
-	float angle = 0.0f;
 };
 
 class Graphic 

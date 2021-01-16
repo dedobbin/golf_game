@@ -25,8 +25,15 @@ void Graphic::render(SDL_Renderer* renderer, Camera* camera)
 	SDL_Rect pos = getPos(camera);
 	auto sprite = getSprite();
 
-	//if (SDL_RenderCopyEx( renderer, sprite->texture, &sprite->src, &sprite->pos , NULL, NULL, sprite->flip) < 0){
-	if (SDL_RenderCopyEx( renderer, sprite.spritesheet, &sprite.src, &pos, sprite.angle, NULL, (SDL_RendererFlip)false) < 0){
+	float angle = 0.0f;
+
+	if (owner->type == ITEM && ((Item*)owner)->owner){
+		angle = -18;
+		pos.x += ((Item*)owner)->owner->pos.w / 10 + 10;
+		pos.y -= 5;
+	}
+
+	if (SDL_RenderCopyEx( renderer, sprite.spritesheet, &sprite.src, &pos, angle, NULL, (SDL_RendererFlip)false) < 0){
 		std::cerr << "Failed to render sprite " + owner->name << std::endl;
 	}
 }
