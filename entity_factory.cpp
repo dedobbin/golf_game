@@ -2,6 +2,7 @@
 #include <memory>
 //#include "graphic.hpp"
 #include "animated_graphic.hpp"
+#include "enemy_behavior.hpp"
 
 EntityFactory::EntityFactory(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 :spritesheets(spritesheets)
@@ -82,7 +83,7 @@ LivingEntity* EntityFactory::createEnemy(int x, int y)
 	jumpAnimation->no = true;
 	animatedGraphic->animations.insert({AnimationState::JUMP, std::unique_ptr<Animation>(jumpAnimation)});
 
-	e->behavior = std::unique_ptr<Behavior>(new Behavior(e));
+	e->behavior = std::unique_ptr<EnemyBehavior>(new EnemyBehavior(e));
 	//e->behavior->gravity = false;
 	e->collision = std::unique_ptr<Collision>(new Collision(e, true));
 	return e;

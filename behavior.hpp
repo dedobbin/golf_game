@@ -24,7 +24,8 @@ class Behavior
 	public:
 		Behavior(Entity* owner);
 		~Behavior();
-		void behave(std::vector<std::shared_ptr<Entity>> entities);
+		/* overloaded functions should always call parent in normal cases */
+		virtual void behave(std::vector<std::shared_ptr<Entity>> entities);
 		void jump();
 		/* the x direction entity wants to go, used by behavior to add x speed */
 		direction xPush = NONE;
