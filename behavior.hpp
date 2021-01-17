@@ -12,10 +12,10 @@ class Entity;
 
 struct DirectSurroundings 
 {
-	bool groundUnderneath = false;
-	bool ceilingAbove = false;
-	bool wallLeft = false;
-	bool wallRight = false;
+	Entity* underneath = NULL;
+	Entity* above = NULL;
+	Entity* left = NULL;
+	Entity* right = NULL;
 };
 
 class Behavior

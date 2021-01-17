@@ -65,23 +65,21 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 		return;
 	}
 
-	if (owner->behavior){
-		directSurroundings = {false, false, false, false};
-		switch(owner->behavior->xPush){
-			case RIGHT:
-				owner->behavior->addXSpeed(owner->behavior->walkAcc);
-				break;
-			case LEFT:
-				owner->behavior->addXSpeed(-owner->behavior->walkAcc);
-				break;
-			case NONE:
-				if (owner->behavior->xSpeed > 0){
-					owner->behavior->addXSpeed(-STOP_WALK_SLOW_DOWN_AMOUNT, true);
-				} else if (owner->behavior->xSpeed < 0){
-					owner->behavior->addXSpeed(STOP_WALK_SLOW_DOWN_AMOUNT, true);
-				}
-				break;
-		}
+	directSurroundings = {NULL, NULL, NULL, NULL};
+	switch(xPush){
+		case RIGHT:
+			addXSpeed(owner->behavior->walkAcc);
+			break;
+		case LEFT:
+			addXSpeed(-owner->behavior->walkAcc);
+			break;
+		case NONE:
+			if (xSpeed > 0){
+				addXSpeed(-STOP_WALK_SLOW_DOWN_AMOUNT, true);
+			} else if (owner->behavior->xSpeed < 0){
+				addXSpeed(STOP_WALK_SLOW_DOWN_AMOUNT, true);
+			}
+			break;
 	}
 
 	// TODO: this check all entities for collision 2 times, should optimize by sorting list, static entities on same place
@@ -124,11 +122,12 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 	owner->pos.y += ySpeed;
 
 	// to check if in air
-	bool hasGroundUnderneath = false;
-	bool hasCeilingabove = false;
-	bool hasWallLeft = false;
-	bool hasWallRight = false;
+	Entity* underneath = NULL;
+	Entity* above = NULL;
+	Entity* left = NULL;
+	Entity* right = NULL;
 
+	// check what is down
 	for (auto& collidee : entities){
 		if (e == collidee.get()) continue;
 		
@@ -140,101 +139,93 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 			collidee->collision->effect(e, vDir, intersect);
 		}
 
-		// check if solid underneath
-		if (collidee->type!=ITEM 
-			&& owner->collision && owner->behavior && owner->behavior->gravity
-		){
-			auto realPos = owner->pos;
-			owner->pos.y += 1;
 
-			auto intersect = Collision::checkCollision(e, collidee.get());
-			bool groundCollision = intersect.w > 0 && intersect.h > 0;
+		/*** check 4 surroundings ***/  
+		rect intersect2;
+		bool collision2;
+		auto realPos = owner->pos;
 
-			if (groundCollision){
-				hasGroundUnderneath = true;
-			}
+		// check what is down
+		owner->pos.y += 1;
 
-			owner->pos = realPos;
+		intersect2 = Collision::checkCollision(e, collidee.get());
+		collision2 = intersect2.w > 0 && intersect2.h > 0;
+
+		if (collision2){
+			underneath = collidee.get();
+		}
+		owner->pos = realPos;
+	
+		// check what is up
+		owner->pos.y -= 1;
+
+		intersect2 = Collision::checkCollision(e, collidee.get());
+		collision2 = intersect2.w > 0 && intersect2.h > 0;
+
+		if (collision2){
+			above = collidee.get();
+		}
+		owner->pos = realPos;
+	
+	
+		// check what is left
+		owner->pos.x -= 1;
+
+		intersect2 = Collision::checkCollision(e, collidee.get());
+		collision2 = intersect2.w > 0 && intersect2.h > 0;
+
+		if (collision2){
+			left = collidee.get();
+		}
+		owner->pos = realPos;
+	
+
+		// check what is right
+		owner->pos.x += 1;
+
+		intersect2 = Collision::checkCollision(e, collidee.get());
+		collision2 = intersect2.w > 0 && intersect2.h > 0;
+
+		if (collision2){
+			right = collidee.get();
 		}
 
-		// check if ceiling above
-		if (collidee->type!=ITEM 
-			&& owner->collision && owner->behavior && owner->behavior->gravity
-		){
-			auto realPos = owner->pos;
-			owner->pos.y -= 1;
-
-			auto intersect = Collision::checkCollision(e, collidee.get());
-			bool collision = intersect.w > 0 && intersect.h > 0;
-
-			if (collision){
-				hasCeilingabove = true;
-			}
-
-			owner->pos = realPos;
-		}
+		owner->pos = realPos;
 		
-		// check if wall left
-		if (collidee->type!=ITEM 
-			&& owner->collision && owner->behavior && owner->behavior->gravity
-		){
-			auto realPos = owner->pos;
-			owner->pos.x -= 1;
-
-			auto intersect = Collision::checkCollision(e, collidee.get());
-			bool collision = intersect.w > 0 && intersect.h > 0;
-
-			if (collision){
-				hasWallLeft = true;
-			}
-
-			owner->pos = realPos;
-		}
-
-		// check if wall right
-		if (collidee->type!=ITEM 
-			&& owner->collision && owner->behavior && owner->behavior->gravity
-		){
-			auto realPos = owner->pos;
-			owner->pos.x += 1;
-
-			auto intersect = Collision::checkCollision(e, collidee.get());
-			bool collision = intersect.w > 0 && intersect.h > 0;
-
-			if (collision){
-				hasWallRight = true;
-			}
-
-			owner->pos = realPos;
-		}
-
-
 	}
 
-	if (!hasGroundUnderneath){
-		owner->behavior->grounded = false;
-	}
+	/*** surroundings check end ***/  
+
+
 
 	//Update directSurroundings so overloaded function can use info to determine how enemies etc should behave
-	directSurroundings.groundUnderneath = hasGroundUnderneath;
-	directSurroundings.ceilingAbove = hasCeilingabove;
-	directSurroundings.wallLeft = hasWallLeft;
-	directSurroundings.wallRight = hasWallRight;
+	directSurroundings.underneath = underneath;
+	directSurroundings.above = above;
+	directSurroundings.left = left;
+	directSurroundings.right = right;
 
-	if (directSurroundings.groundUnderneath){
-		//std::cout << "DEBUG: ground underneath, " << owner->name << std::endl;
+
+	//TODO: set grounded
+	// if (!hasGroundUnderneath && collidee->type!=ITEM && collidee->solid 
+	// 	&& owner->collision && owner->behavior && owner->behavior->gravity
+	// ){
+	// 	owner->behavior->grounded = false;
+	// }
+
+	// if (directSurroundings.underneath){
+	// 	std::cout << "DEBUG: " << directSurroundings.underneath->name << " underneath of " << owner->name << std::endl;
+	// }
+
+	if (directSurroundings.above){
+		std::cout << "DEBUG: " << directSurroundings.above->name << " above of " << owner->name << std::endl;
 	}
 
-	if (directSurroundings.ceilingAbove){
-		std::cout << "DEBUG: ceiling above, " << owner->name << std::endl;
+	if (directSurroundings.left){
+		std::cout << "DEBUG: " << directSurroundings.left->name << " left of " << owner->name << std::endl;
 	}
 
-	if (directSurroundings.wallLeft){
-		std::cout << "DEBUG: wall left, " << owner->name << std::endl;
-	}
-
-	if (directSurroundings.wallRight){
-		std::cout << "DEBUG: wall right, " << owner->name << std::endl;
+	if (directSurroundings.right){
+		std::cout << "DEBUG: " << directSurroundings.right->name << " right of " << owner->name << std::endl;
 	}
 
 	if (owner->type == LIVING && ((LivingEntity*)owner)->heldItem){
@@ -243,6 +234,7 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 		item->pos.y = owner->pos.y;
 	}
 
+	// update some animations
 	if (owner->type == LIVING){
 		// If movement was stopped by wall, dont keep walk animation
 		auto animatedGraphic = (AnimatedGraphic*)owner->graphic.get();
@@ -254,8 +246,6 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 			animatedGraphic->changeState(AnimationState::DEFAULT);
 		}
 	}
-
-
 }
 
 void Behavior::jump(){
