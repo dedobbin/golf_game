@@ -12,5 +12,4 @@ class LivingEntity : public Entity
 		void give(Item* item);
 		/* Should be set using give, so owner of item is also set correctly, would be better to properly private but eh */
 		Item* heldItem = NULL;
-		
 };

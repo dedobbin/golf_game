@@ -33,7 +33,7 @@ void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets
 {
 	EntityFactory factory(spritesheets);
 
-	entities.emplace_back(factory.createGolfClub(50, 0));
+	entities.emplace_back(factory.createGolfClub(400, 0));
 
 	entities.emplace_back(factory.createPlayer(200, 0));
 	player = std::static_pointer_cast<LivingEntity>(entities.back());

@@ -104,7 +104,7 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
             case ITEM:
                 //if not owned by an entity, its on the field
                 auto item = (Item*)owner;
-                if (!item->owner){
+                if (!item->owner && collider->behavior->pickupItems){
                     auto living = (LivingEntity*) collider;
                     living->give(item);
                 }

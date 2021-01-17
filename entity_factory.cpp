@@ -32,7 +32,7 @@ LivingEntity* EntityFactory::createPlayer(int x, int y)
 	jumpAnimation->no = true;
 	animatedGraphic->animations.insert({AnimationState::JUMP, std::unique_ptr<Animation>(jumpAnimation)});
 
-	e->behavior = std::unique_ptr<Behavior>(new Behavior(e));
+	e->behavior = std::unique_ptr<Behavior>(new Behavior(e, true));
 	//e->behavior->gravity = false;
 	e->collision = std::unique_ptr<Collision>(new Collision(e, true));
 	return e;

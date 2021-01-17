@@ -22,7 +22,7 @@ struct Surroundings
 class Behavior
 {
 	public:
-		Behavior(Entity* owner);
+		Behavior(Entity* owner, bool pickupItems = false);
 		~Behavior();
 		/* overloaded functions should always call parent in normal cases */
 		virtual void behave(std::vector<std::shared_ptr<Entity>> entities);
@@ -42,6 +42,7 @@ class Behavior
 		bool gravity = true;
 		Entity* owner;
 		bool grounded = false;
+		bool pickupItems = false;
 		
 	protected:
 		/* set after every behave call, so functions overloading behave can check if after calling parent */
