@@ -42,6 +42,8 @@ class Behavior
 		bool gravity = true;
 		Entity* owner;
 		bool grounded = false;
+		
+	protected:
 		/* set after every behave call, so functions overloading behave can check if after calling parent */
 		Surroundings surroundings;
 };
