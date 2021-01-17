@@ -8,6 +8,7 @@
 // circ dep
 #include "entity.hpp"
 
+#define CHECK_SURROUNDINGS_DEBUG
 #define STOP_WALK_SLOW_DOWN_AMOUNT 0.2
 
 Behavior::Behavior(Entity* owner)
@@ -121,13 +122,11 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 
 	owner->pos.y += ySpeed;
 
-	// to check if in air
 	Entity* underneath = NULL;
 	Entity* above = NULL;
 	Entity* left = NULL;
 	Entity* right = NULL;
 
-	// check what is down
 	for (auto& collidee : entities){
 		if (e == collidee.get()) continue;
 		
@@ -139,64 +138,51 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 			collidee->collision->effect(e, vDir, intersect);
 		}
 
+		/*** check 4 surroundings ***/
+		if (! (owner->type == LIVING && ((LivingEntity*)owner)->heldItem == collidee.get())){  
+			rect intersect2;
+			bool collision2;
+			auto realPos = owner->pos;
 
-		/*** check 4 surroundings ***/  
-		rect intersect2;
-		bool collision2;
-		auto realPos = owner->pos;
-
-		// check what is down
-		owner->pos.y += 1;
-
-		intersect2 = Collision::checkCollision(e, collidee.get());
-		collision2 = intersect2.w > 0 && intersect2.h > 0;
-
-		if (collision2){
-			underneath = collidee.get();
-		}
-		owner->pos = realPos;
-	
-		// check what is up
-		owner->pos.y -= 1;
-
-		intersect2 = Collision::checkCollision(e, collidee.get());
-		collision2 = intersect2.w > 0 && intersect2.h > 0;
-
-		if (collision2){
-			above = collidee.get();
-		}
-		owner->pos = realPos;
-	
-	
-		// check what is left
-		owner->pos.x -= 1;
-
-		intersect2 = Collision::checkCollision(e, collidee.get());
-		collision2 = intersect2.w > 0 && intersect2.h > 0;
-
-		if (collision2){
-			left = collidee.get();
-		}
-		owner->pos = realPos;
-	
-
-		// check what is right
-		owner->pos.x += 1;
-
-		intersect2 = Collision::checkCollision(e, collidee.get());
-		collision2 = intersect2.w > 0 && intersect2.h > 0;
-
-		if (collision2){
-			right = collidee.get();
-		}
-
-		owner->pos = realPos;
+			// check what is down
+			owner->pos.y += 1;
+			intersect2 = Collision::checkCollision(e, collidee.get());
+			collision2 = intersect2.w > 0 && intersect2.h > 0;
+			if (collision2){
+				underneath = collidee.get();
+			}
+			owner->pos = realPos;
 		
+			// check what is up
+			owner->pos.y -= 1;
+			intersect2 = Collision::checkCollision(e, collidee.get());
+			collision2 = intersect2.w > 0 && intersect2.h > 0;
+			if (collision2){
+				above = collidee.get();
+			}
+			owner->pos = realPos;
+		
+			// check what is left
+			owner->pos.x -= 1;
+			intersect2 = Collision::checkCollision(e, collidee.get());
+			collision2 = intersect2.w > 0 && intersect2.h > 0;
+			if (collision2){
+				left = collidee.get();
+			}
+			owner->pos = realPos;
+		
+			// check what is right
+			owner->pos.x += 1;
+			intersect2 = Collision::checkCollision(e, collidee.get());
+			collision2 = intersect2.w > 0 && intersect2.h > 0;
+			if (collision2){
+				right = collidee.get();
+			}
+			owner->pos = realPos;
+		}
 	}
 
-	/*** surroundings check end ***/  
-
-
+	/*** end surroundings check ***/  
 
 	//Update directSurroundings so overloaded function can use info to determine how enemies etc should behave
 	directSurroundings.underneath = underneath;
@@ -206,12 +192,13 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 
 
 	//TODO: set grounded
-	// if (!hasGroundUnderneath && collidee->type!=ITEM && collidee->solid 
-	// 	&& owner->collision && owner->behavior && owner->behavior->gravity
-	// ){
-	// 	owner->behavior->grounded = false;
-	// }
+	if (!directSurroundings.underneath 
+		|| (directSurroundings.underneath->collision->solid && !directSurroundings.underneath->type == ITEM)
+	){
+		grounded = false;
+	}
 
+#ifdef CHECK_SURROUNDINGS_DEBUG
 	// if (directSurroundings.underneath){
 	// 	std::cout << "DEBUG: " << directSurroundings.underneath->name << " underneath of " << owner->name << std::endl;
 	// }
@@ -233,6 +220,7 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 		item->pos.x = owner->pos.x;
 		item->pos.y = owner->pos.y;
 	}
+#endif
 
 	// update some animations
 	if (owner->type == LIVING){
