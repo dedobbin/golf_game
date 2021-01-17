@@ -66,6 +66,7 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 	}
 
 	if (owner->behavior){
+		directSurroundings = {false, false, false, false};
 		switch(owner->behavior->xPush){
 			case RIGHT:
 				owner->behavior->addXSpeed(owner->behavior->walkAcc);
@@ -124,6 +125,10 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 
 	// to check if in air
 	bool hasGroundUnderneath = false;
+	bool hasCeilingabove = false;
+	bool hasWallLeft = false;
+	bool hasWallRight = false;
+
 	for (auto& collidee : entities){
 		if (e == collidee.get()) continue;
 		
@@ -151,10 +156,85 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 
 			owner->pos = realPos;
 		}
+
+		// check if ceiling above
+		if (collidee->type!=ITEM 
+			&& owner->collision && owner->behavior && owner->behavior->gravity
+		){
+			auto realPos = owner->pos;
+			owner->pos.y -= 1;
+
+			auto intersect = Collision::checkCollision(e, collidee.get());
+			bool collision = intersect.w > 0 && intersect.h > 0;
+
+			if (collision){
+				hasCeilingabove = true;
+			}
+
+			owner->pos = realPos;
+		}
+		
+		// check if wall left
+		if (collidee->type!=ITEM 
+			&& owner->collision && owner->behavior && owner->behavior->gravity
+		){
+			auto realPos = owner->pos;
+			owner->pos.x -= 1;
+
+			auto intersect = Collision::checkCollision(e, collidee.get());
+			bool collision = intersect.w > 0 && intersect.h > 0;
+
+			if (collision){
+				hasWallLeft = true;
+			}
+
+			owner->pos = realPos;
+		}
+
+		// check if wall right
+		if (collidee->type!=ITEM 
+			&& owner->collision && owner->behavior && owner->behavior->gravity
+		){
+			auto realPos = owner->pos;
+			owner->pos.x += 1;
+
+			auto intersect = Collision::checkCollision(e, collidee.get());
+			bool collision = intersect.w > 0 && intersect.h > 0;
+
+			if (collision){
+				hasWallRight = true;
+			}
+
+			owner->pos = realPos;
+		}
+
+
 	}
 
 	if (!hasGroundUnderneath){
 		owner->behavior->grounded = false;
+	}
+
+	//Update directSurroundings so overloaded function can use info to determine how enemies etc should behave
+	directSurroundings.groundUnderneath = hasGroundUnderneath;
+	directSurroundings.ceilingAbove = hasCeilingabove;
+	directSurroundings.wallLeft = hasWallLeft;
+	directSurroundings.wallRight = hasWallRight;
+
+	if (directSurroundings.groundUnderneath){
+		//std::cout << "DEBUG: ground underneath, " << owner->name << std::endl;
+	}
+
+	if (directSurroundings.ceilingAbove){
+		std::cout << "DEBUG: ceiling above, " << owner->name << std::endl;
+	}
+
+	if (directSurroundings.wallLeft){
+		std::cout << "DEBUG: wall left, " << owner->name << std::endl;
+	}
+
+	if (directSurroundings.wallRight){
+		std::cout << "DEBUG: wall right, " << owner->name << std::endl;
 	}
 
 	if (owner->type == LIVING && ((LivingEntity*)owner)->heldItem){

@@ -50,22 +50,6 @@ void AnimatedGraphic::render(SDL_Renderer* renderer, Camera* camera)
 		std::cerr << "Failed to render sprite " + owner->name << std::endl;
 	}
 
-	// if (owner->behavior){
-	// 	auto animation = animations[curAnimationState].get();
-	// 	auto lastState = owner->behavior->lastState;
-	// 	auto curState =  owner->behavior->getState();
-	// 	if (lastState != curState){
-	// 		//std::cout << "DEBUG: state changed to " << curState << std::endl;
-	// 		if (animations.find(curState) == animations.end()){
-	// 			std::cout << "DEBUG: no animation for state " << owner->name << "(" << curState << ")" << std::endl;
-	// 			curAnimationState = ENTITY_STATE_DEFAULT;
-	// 		} else {
-	// 			curAnimationState = curState;
-	// 			animation->curFrame = 0;
-	// 		}
-	// 	}
-	// }
-
 	frameTick();
 }
 

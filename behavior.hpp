@@ -10,6 +10,14 @@ class Entity;
 
 #define GRAVITY 0.5
 
+struct DirectSurroundings 
+{
+	bool groundUnderneath = false;
+	bool ceilingAbove = false;
+	bool wallLeft = false;
+	bool wallRight = false;
+};
+
 class Behavior
 {
 	public:
@@ -31,10 +39,10 @@ class Behavior
 		bool gravity = true;
 		Entity* owner;
 		bool grounded = false;
+		/* set after every behave call, so functions overloading behave can check if after calling parent */
+		DirectSurroundings directSurroundings;
 
 		int getState();
-		// stores last result of getStateFlags to compare if changes happend
-		int lastState = 0;
 
 };
 
