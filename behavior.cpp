@@ -249,6 +249,7 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 }
 
 void Behavior::jump(){
+	//TODO: shouldn't be able to jump if something above that is not item etc
 	if (!grounded){
 		return;
 	}

@@ -31,6 +31,7 @@ class Behavior
 		void addXSpeed(float n, bool clampZero = false);
 		/* When slowing down, clampZero should be true so rounds to 0 eventually */
 		void addYSpeed(float n, bool clampZero = false);
+		int getState();
 		float walkAcc = 0.2;
 		float xSpeed = 0; //should be set through addXSpeed(), would be better to properly private but eh
 		float ySpeed = 0; //should be set through addXSpeed(), would be better to properly private but eh 
@@ -41,9 +42,6 @@ class Behavior
 		bool grounded = false;
 		/* set after every behave call, so functions overloading behave can check if after calling parent */
 		DirectSurroundings directSurroundings;
-
-		int getState();
-
 };
 
 #endif

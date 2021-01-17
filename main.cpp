@@ -44,13 +44,22 @@ void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets
 	int blockH = 100;
 	int i = 0;
 	entities.emplace_back(factory.createBlock(i * blockW, 400 - blockH, blockW, blockH));
-	for (i = 0; i < 10; i++){
+	
+	for (i = 0; i < 15; i++){
 		entities.emplace_back(factory.createBlock(i * blockW, 400, blockW, blockH));
-		for (int j = 0; j < i ; j++){
-			//entities.emplace_back(factory.createBlock(i * blockW, 300 - (blockH/5) * j, blockW, blockH/5));
+		if (i > 6){
+			if (i < 9){
+				entities.emplace_back(factory.createBlock(i * blockW, 200, blockW, blockH));
+			}else {
+				entities.emplace_back(factory.createBlock(i * blockW, 100, blockW, blockH));
+			}
 		}
+		// for (int j = 0; j < i ; j++){
+		// 	entities.emplace_back(factory.createBlock(i * blockW, 300 - (blockH/5) * j, blockW, blockH/5));
+		// }
 	}
 	entities.emplace_back(factory.createBlock(i * blockW - blockW, 400 - blockH, blockW, blockH));
+	
 }
 
 /* Returns false if quit */
