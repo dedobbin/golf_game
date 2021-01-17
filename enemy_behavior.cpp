@@ -31,6 +31,5 @@ void EnemyBehavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 				}
 			}
 			break;
-		
 	}
 }

@@ -214,13 +214,13 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 	if (surroundings.right){
 		std::cout << "DEBUG: " << surroundings.right->name << " right of " << owner->name << std::endl;
 	}
+#endif
 
 	if (owner->type == LIVING && ((LivingEntity*)owner)->heldItem){
 		auto item = ((LivingEntity*)owner)->heldItem;
 		item->pos.x = owner->pos.x;
 		item->pos.y = owner->pos.y;
 	}
-#endif
 
 	// update some animations
 	if (owner->type == LIVING){
