@@ -10,7 +10,8 @@ class Entity;
 
 #define GRAVITY 0.5
 
-struct DirectSurroundings 
+/* Reset and set every Behave call, so overloaded functions can use it, later could hold move information about surroundings */
+struct Surroundings 
 {
 	Entity* underneath = NULL;
 	Entity* above = NULL;
@@ -41,7 +42,7 @@ class Behavior
 		Entity* owner;
 		bool grounded = false;
 		/* set after every behave call, so functions overloading behave can check if after calling parent */
-		DirectSurroundings directSurroundings;
+		Surroundings surroundings;
 };
 
 #endif

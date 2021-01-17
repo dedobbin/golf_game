@@ -66,7 +66,7 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 		return;
 	}
 
-	directSurroundings = {NULL, NULL, NULL, NULL};
+	surroundings = {NULL, NULL, NULL, NULL};
 	switch(xPush){
 		case RIGHT:
 			addXSpeed(owner->behavior->walkAcc);
@@ -184,35 +184,35 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 
 	/*** end surroundings check ***/  
 
-	//Update directSurroundings so overloaded function can use info to determine how enemies etc should behave
-	directSurroundings.underneath = underneath;
-	directSurroundings.above = above;
-	directSurroundings.left = left;
-	directSurroundings.right = right;
+	//Update surroundings so overloaded function can use info to determine how enemies etc should behave
+	surroundings.underneath = underneath;
+	surroundings.above = above;
+	surroundings.left = left;
+	surroundings.right = right;
 
 
 	//TODO: set grounded
-	if (!directSurroundings.underneath 
-		|| (directSurroundings.underneath->collision->solid && !directSurroundings.underneath->type == ITEM)
+	if (!surroundings.underneath 
+		|| (surroundings.underneath->collision->solid && !surroundings.underneath->type == ITEM)
 	){
 		grounded = false;
 	}
 
 #ifdef CHECK_SURROUNDINGS_DEBUG
-	// if (directSurroundings.underneath){
-	// 	std::cout << "DEBUG: " << directSurroundings.underneath->name << " underneath of " << owner->name << std::endl;
+	// if (surroundings.underneath){
+	// 	std::cout << "DEBUG: " << surroundings.underneath->name << " underneath of " << owner->name << std::endl;
 	// }
 
-	if (directSurroundings.above){
-		std::cout << "DEBUG: " << directSurroundings.above->name << " above of " << owner->name << std::endl;
+	if (surroundings.above){
+		std::cout << "DEBUG: " << surroundings.above->name << " above of " << owner->name << std::endl;
 	}
 
-	if (directSurroundings.left){
-		std::cout << "DEBUG: " << directSurroundings.left->name << " left of " << owner->name << std::endl;
+	if (surroundings.left){
+		std::cout << "DEBUG: " << surroundings.left->name << " left of " << owner->name << std::endl;
 	}
 
-	if (directSurroundings.right){
-		std::cout << "DEBUG: " << directSurroundings.right->name << " right of " << owner->name << std::endl;
+	if (surroundings.right){
+		std::cout << "DEBUG: " << surroundings.right->name << " right of " << owner->name << std::endl;
 	}
 
 	if (owner->type == LIVING && ((LivingEntity*)owner)->heldItem){
