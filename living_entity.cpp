@@ -1,5 +1,4 @@
 #include "living_entity.hpp"
-#include "direction.hpp"
 #include <iostream>
 #include <assert.h>
 

@@ -9,6 +9,7 @@
 #include "entity_factory.hpp"
 #include <assert.h>
 #include <vector>
+#include "direction.hpp"
 
 
 // #define DEBUG_DRAW
@@ -27,9 +28,6 @@ std::shared_ptr<Entity> followWithCam = NULL;
 rect playerStartPos = {200, 0};
 
 bool keysPressed[322] = {false};
-
-#define STOP_WALK_SLOW_DOWN_AMOUNT 0.2
-
 
 void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 {
@@ -66,15 +64,15 @@ bool handleInput()
 	}
 
 	if (keysPressed[SDL_SCANCODE_RIGHT]){
-		player->behavior->addXSpeed(player->behavior->walkAcc);
+		player->behavior->xPush = RIGHT;
 	} else if (player->behavior->xSpeed > 0){
-		player->behavior->addXSpeed(-STOP_WALK_SLOW_DOWN_AMOUNT, true);
+		player->behavior->xPush = NONE;
 	}
 
 	if (keysPressed[SDL_SCANCODE_LEFT]){
-		player->behavior->addXSpeed(-player->behavior->walkAcc);
+		player->behavior->xPush = LEFT;
 	} else if (player->behavior->xSpeed < 0){
-		player->behavior->addXSpeed(STOP_WALK_SLOW_DOWN_AMOUNT, true);
+		player->behavior->xPush = NONE;
 	}
 
 	if (keysPressed[SDL_SCANCODE_Z]){

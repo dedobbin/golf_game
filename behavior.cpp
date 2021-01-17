@@ -1,12 +1,14 @@
 #include "behavior.hpp"
 #include "iostream"
-
+#include "assert.h"
 #include "item.hpp"
 #include "living_entity.hpp"
 #include "animated_graphic.hpp"
 
 // circ dep
 #include "entity.hpp"
+
+#define STOP_WALK_SLOW_DOWN_AMOUNT 0.2
 
 Behavior::Behavior(Entity* owner)
 : owner(owner)
@@ -61,6 +63,24 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 	if (owner->type == ITEM && ((Item*) owner)->owner){
 		//No need to update pos, moves with owning entity
 		return;
+	}
+
+	if (owner->behavior){
+		switch(owner->behavior->xPush){
+			case RIGHT:
+				owner->behavior->addXSpeed(owner->behavior->walkAcc);
+				break;
+			case LEFT:
+				owner->behavior->addXSpeed(-owner->behavior->walkAcc);
+				break;
+			case NONE:
+				if (owner->behavior->xSpeed > 0){
+					owner->behavior->addXSpeed(-STOP_WALK_SLOW_DOWN_AMOUNT, true);
+				} else if (owner->behavior->xSpeed < 0){
+					owner->behavior->addXSpeed(STOP_WALK_SLOW_DOWN_AMOUNT, true);
+				}
+				break;
+		}
 	}
 
 	// TODO: this check all entities for collision 2 times, should optimize by sorting list, static entities on same place
