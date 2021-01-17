@@ -142,6 +142,18 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 		item->pos.y = owner->pos.y;
 	}
 
+	if (owner->type == LIVING){
+		// If movement was stopped by wall, dont keep walk animation
+		auto animatedGraphic = (AnimatedGraphic*)owner->graphic.get();
+		if (animatedGraphic->curAnimationState == AnimationState::WALK && owner->behavior->xSpeed == 0){
+			animatedGraphic->changeState(AnimationState::DEFAULT);
+		}
+
+		if (animatedGraphic->curAnimationState == AnimationState::JUMP && owner->behavior->grounded){
+			animatedGraphic->changeState(AnimationState::DEFAULT);
+		}
+	}
+
 
 }
 
@@ -152,5 +164,5 @@ void Behavior::jump(){
 
 	grounded = false;
 	addYSpeed(-10.5);
-
+	((AnimatedGraphic*)owner->graphic.get())->changeState(AnimationState::JUMP);
 }
