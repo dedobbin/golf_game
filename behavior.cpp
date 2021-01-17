@@ -30,6 +30,7 @@ void Behavior::addXSpeed(float n, bool clampZero)
 		if ( xSpeed != 0 && (prevSpeed > 0 && n > 0) || (prevSpeed < 0 && n < 0) ){
 			((AnimatedGraphic*)owner->graphic.get())->changeState(AnimationState::WALK);
 		} else {
+			//TODO: i think this jank get called when not needed, animation looks good though..
 			((AnimatedGraphic*)owner->graphic.get())->changeState(AnimationState::DEFAULT);
 		}
 	}
