@@ -122,10 +122,10 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 
 	owner->pos.y += ySpeed;
 
-	Entity* underneath = NULL;
-	Entity* above = NULL;
-	Entity* left = NULL;
-	Entity* right = NULL;
+	std::shared_ptr<Entity> underneath;
+	std::shared_ptr<Entity> above;
+	std::shared_ptr<Entity> left;
+	std::shared_ptr<Entity> right;
 
 	for (auto& collidee : entities){
 		if (e == collidee.get()) continue;
@@ -149,7 +149,7 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 			intersect2 = Collision::checkCollision(e, collidee.get());
 			collision2 = intersect2.w > 0 && intersect2.h > 0;
 			if (collision2){
-				underneath = collidee.get();
+				underneath = collidee;
 			}
 			owner->pos = realPos;
 		
@@ -158,7 +158,7 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 			intersect2 = Collision::checkCollision(e, collidee.get());
 			collision2 = intersect2.w > 0 && intersect2.h > 0;
 			if (collision2){
-				above = collidee.get();
+				above = collidee;
 			}
 			owner->pos = realPos;
 		
@@ -167,7 +167,7 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 			intersect2 = Collision::checkCollision(e, collidee.get());
 			collision2 = intersect2.w > 0 && intersect2.h > 0;
 			if (collision2){
-				left = collidee.get();
+				left = collidee;
 			}
 			owner->pos = realPos;
 		
@@ -176,7 +176,7 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 			intersect2 = Collision::checkCollision(e, collidee.get());
 			collision2 = intersect2.w > 0 && intersect2.h > 0;
 			if (collision2){
-				right = collidee.get();
+				right = collidee;
 			}
 			owner->pos = realPos;
 		}

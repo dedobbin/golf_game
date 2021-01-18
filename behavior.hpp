@@ -14,10 +14,10 @@ class Entity;
 /* Reset and set every Behave call, so overloaded functions can use it, later could hold move information about surroundings */
 struct Surroundings 
 {
-	Entity* underneath = NULL;
-	Entity* above = NULL;
-	Entity* left = NULL;
-	Entity* right = NULL;
+	std::shared_ptr<Entity> underneath;
+	std::shared_ptr<Entity> above;
+	std::shared_ptr<Entity> left;
+	std::shared_ptr<Entity> right;
 };
 
 class Behavior
