@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <algorithm>
 #include "visuals.hpp"
 #include "sdl_utils.hpp"
 #include "entity.hpp"
@@ -92,6 +93,16 @@ bool handleInput()
 
 	if (keysPressed[SDL_SCANCODE_Z]){
 		player->behavior->jump();
+	}
+
+	if (keysPressed[SDL_SCANCODE_C]){
+		auto arr = player->behavior->surroundings.inside;
+		auto i = std::find_if(arr.begin(),
+			arr.end(), 
+			[&](const auto& val){ return val->type == BALL; } );
+		if (i != arr.end()){
+			std::cout << "DEBUG: " << (*i)->name << std::endl;
+		}
 	}
 
 #ifdef DEBUG_CONTROLS

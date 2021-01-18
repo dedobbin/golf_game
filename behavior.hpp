@@ -45,8 +45,6 @@ class Behavior
 		Entity* owner;
 		bool grounded = false;
 		bool pickupItems = false;
-		
-	protected:
 		/* set after every behave call, so functions overloading behave can check if after calling parent */
 		Surroundings surroundings;
 };
