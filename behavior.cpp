@@ -244,6 +244,6 @@ void Behavior::jump(){
 	}
 
 	grounded = false;
-	addYSpeed(-10.5);
+	addYSpeed(-13.5);
 	((AnimatedGraphic*)owner->graphic.get())->changeState(AnimationState::JUMP);
 }

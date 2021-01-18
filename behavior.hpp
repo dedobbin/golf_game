@@ -8,7 +8,7 @@
 // circ dep
 class Entity;
 
-#define GRAVITY 0.5
+#define GRAVITY 0.65
 
 /* Reset and set every Behave call, so overloaded functions can use it, later could hold move information about surroundings */
 struct Surroundings 
