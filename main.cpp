@@ -33,6 +33,8 @@ void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets
 {
 	EntityFactory factory(spritesheets);
 
+	entities.emplace_back(factory.createBall(300, 0));
+
 	entities.emplace_back(factory.createGolfClub(400, 0));
 
 	entities.emplace_back(factory.createPlayer(200, 0));

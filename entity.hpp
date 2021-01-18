@@ -11,6 +11,7 @@ enum entityType {
 	STATIC_SOLID, 
 	LIVING,
 	ITEM,
+	BALL,
 };
 
 class Entity 

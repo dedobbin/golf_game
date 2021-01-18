@@ -50,6 +50,18 @@ Item* EntityFactory::createGolfClub(int x, int y)
 	return club;
 }
 
+Entity* EntityFactory::createBall(int x, int y)
+{
+	auto sheet = spritesheets.at("spritesheet2");
+
+	auto ball = new Entity("golf_ball", BALL, x, y, 20, 20);
+	auto graphic = new Graphic(sheet, {32, 32, 6 , 6},  ball);
+	ball->graphic = std::unique_ptr<Graphic>(graphic);
+	ball->behavior = std::make_unique<Behavior>(ball);
+	ball->collision = std::make_unique<Collision>(ball);
+	return ball;
+}
+
 Entity* EntityFactory::createBlock(int x, int y, int w, int h)
 {
 	auto sheet = spritesheets.at("spritesheet2");

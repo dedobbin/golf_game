@@ -10,6 +10,7 @@ class EntityFactory
 		EntityFactory(std::unordered_map<std::string, SDL_Texture*> spritesheets);
 		LivingEntity* createPlayer(int x, int y);
 		Item* createGolfClub(int x, int y);
+		Entity* createBall(int x, int y);
 		Entity* createBlock(int x, int y, int w = 100, int h = 100);
 		LivingEntity* createEnemy(int x, int y);
 
