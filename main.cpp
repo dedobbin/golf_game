@@ -101,7 +101,9 @@ bool handleInput()
 			arr.end(), 
 			[&](const auto& val){ return val->type == BALL; } );
 		if (i != arr.end()){
-			std::cout << "DEBUG: " << (*i)->name << std::endl;
+			if (player->heldItem){
+				std::cout << "DEBUG: interact with ball" << std::endl;
+			}
 		}
 	}
 

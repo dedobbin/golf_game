@@ -3,6 +3,7 @@
 //#include "graphic.hpp"
 #include "animated_graphic.hpp"
 #include "enemy_behavior.hpp"
+#include "item_behavior.hpp"
 
 EntityFactory::EntityFactory(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 :spritesheets(spritesheets)
@@ -45,7 +46,7 @@ Item* EntityFactory::createGolfClub(int x, int y)
 	auto club = new Item("golf_club", x, y, 32, 100);
 	auto clubGraphic = new Graphic(sheet, {0, 32, 6 , 25},  club);
 	club->graphic = std::unique_ptr<Graphic>(clubGraphic);
-	club->behavior = std::make_unique<Behavior>(club);
+	club->behavior = std::make_unique<ItemBehavior>(club);
 	club->collision = std::make_unique<Collision>(club);
 	return club;
 }

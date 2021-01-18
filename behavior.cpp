@@ -64,11 +64,6 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 	// OR only checking entities in view, but that could lead to other problems later
 	// also Z will get all messed up when i resort list
 
-	if (owner->type == ITEM && ((Item*) owner)->owner){
-		//No need to update pos, moves with owning entity
-		return;
-	}
-
 	surroundings = {NULL, NULL, NULL, NULL, {}};
 	switch(xPush){
 		case RIGHT:
