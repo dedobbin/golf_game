@@ -18,6 +18,7 @@ struct Surroundings
 	std::shared_ptr<Entity> above;
 	std::shared_ptr<Entity> left;
 	std::shared_ptr<Entity> right;
+	std::vector<std::shared_ptr<Entity>> inside;
 };
 
 class Behavior

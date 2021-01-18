@@ -69,7 +69,7 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 		return;
 	}
 
-	surroundings = {NULL, NULL, NULL, NULL};
+	surroundings = {NULL, NULL, NULL, NULL, {}};
 	switch(xPush){
 		case RIGHT:
 			addXSpeed(grounded ? owner->behavior->walkAcc : owner->behavior->walkAcc / 2);
@@ -126,6 +126,7 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 	std::shared_ptr<Entity> above;
 	std::shared_ptr<Entity> left;
 	std::shared_ptr<Entity> right;
+	std::shared_ptr<Entity> inside;
 
 	for (auto& collidee : entities){
 		if (e == collidee.get()) continue;
@@ -136,6 +137,7 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 		if (collision){
 			collidee->collision->pushout(e, vDir, intersect);
 			collidee->collision->effect(e, vDir, intersect);
+			surroundings.inside.push_back(collidee);
 		}
 
 		/*** check 4 surroundings ***/
@@ -190,8 +192,6 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 	surroundings.left = left;
 	surroundings.right = right;
 
-
-	//TODO: set grounded
 	if (!surroundings.underneath 
 		|| (surroundings.underneath->collision && surroundings.underneath->collision->isNotOrSemiSolid())
 	){
@@ -213,6 +213,15 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 
 	if (surroundings.right){
 		std::cout << "DEBUG: " << surroundings.right->name << " right of " << owner->name << std::endl;
+	}
+
+	if (surroundings.inside.size() > 0){
+		std::string s = "";
+		for (auto& e : surroundings.inside){
+			s+= e->name + " ";
+		}
+		std::cout << "DEBUG: " << s << "inside of " << owner->name << std::endl;
+
 	}
 #endif
 
