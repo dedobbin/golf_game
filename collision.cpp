@@ -74,29 +74,27 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
 
     bool bothSolid = collider->collision->solid && owner->collision->solid;
 
-    if (bothSolid){
-        if (collider->behavior){
-            switch(colliderDir){
-                case DOWN: case NONE:
-                    collider->pos.y -= intersect.h;
-                    collider->behavior->ySpeed = 0;
-                    if (collider->behavior->gravity){
-                        collider->behavior->grounded = true;
-                    }
-                    break;
-                case UP:
-                    collider->pos.y += intersect.h;
-                    collider->behavior->ySpeed = 0;
-                    break;
-                case LEFT:
-                    collider->pos.x += intersect.w;
-                    collider->behavior->xSpeed = 0;
-                    break;
-                case RIGHT:
-                    collider->pos.x -= intersect.w;
-                    collider->behavior->xSpeed = 0;
-                    break;
-            }
+    if (collider->behavior){
+        switch(colliderDir){
+            case DOWN: case NONE:
+                collider->pos.y -= intersect.h;
+                collider->behavior->ySpeed = 0;
+                if (collider->behavior->gravity){
+                    collider->behavior->grounded = true;
+                }
+                break;
+            case UP:
+                collider->pos.y += intersect.h;
+                collider->behavior->ySpeed = 0;
+                break;
+            case LEFT:
+                collider->pos.x += intersect.w;
+                collider->behavior->xSpeed = 0;
+                break;
+            case RIGHT:
+                collider->pos.x -= intersect.w;
+                collider->behavior->xSpeed = 0;
+                break;
         }
     }
 }
