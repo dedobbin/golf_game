@@ -9,7 +9,6 @@
 #include "entity.hpp"
 
 // #define CHECK_SURROUNDINGS_DEBUG
-#define STOP_WALK_SLOW_DOWN_AMOUNT 0.2
 
 Behavior::Behavior(Entity* owner, bool pickupItems)
 : owner(owner), pickupItems(pickupItems)

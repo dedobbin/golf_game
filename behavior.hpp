@@ -9,6 +9,7 @@
 class Entity;
 
 #define GRAVITY 0.65
+#define STOP_WALK_SLOW_DOWN_AMOUNT 0.35
 
 /* Reset and set every Behave call, so overloaded functions can use it, later could hold move information about surroundings */
 struct Surroundings 
