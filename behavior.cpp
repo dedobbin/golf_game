@@ -193,7 +193,7 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 
 	//TODO: set grounded
 	if (!surroundings.underneath 
-		|| (surroundings.underneath->collision->solid && !surroundings.underneath->type == ITEM)
+		|| (surroundings.underneath->collision && surroundings.underneath->collision->isNotOrSemiSolid())
 	){
 		grounded = false;
 	}
