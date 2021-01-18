@@ -64,6 +64,12 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 	// OR only checking entities in view, but that could lead to other problems later
 	// also Z will get all messed up when i resort list
 
+
+	//TODO: should go in living behavior
+	if (owner->type == LIVING && ((LivingEntity*)owner)->golfMode){
+		std::cout << "GOLF MODE " << std::endl;
+	}
+
 	surroundings = {NULL, NULL, NULL, NULL, {}};
 	switch(xPush){
 		case RIGHT:

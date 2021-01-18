@@ -102,7 +102,9 @@ bool handleInput()
 			arr.end(), 
 			[&](const auto& val){ return val->type == BALL; } );
 		if (i != arr.end()){
-			if (player->heldItem){
+			if (player->golfMode){
+				player->golfMode = false;
+			} else if (player->heldItem){
 				auto itemBehavior = (ItemBehavior*)player->heldItem->behavior.get();
 				itemBehavior->interact(*i);
 			}
