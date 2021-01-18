@@ -19,21 +19,14 @@ void EnemyBehavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 			break;
 		case LEFT:
 			if (surroundings.left){
-				if (surroundings.left->type == ITEM && !((Item*)surroundings.left)->owner){
-					break;
-				}
-				if (surroundings.left->collision && surroundings.left->collision->solid){
+				if (! (!surroundings.left->collision || surroundings.left->collision->isNotOrSemiSolid())){
 					xPush = RIGHT;
 				}
 			}
 			break;
 		case RIGHT:
 			if (surroundings.right){
-				if (surroundings.right->type == ITEM && !((Item*)surroundings.right)->owner){
-					break;
-				}
-
-				if (surroundings.right->collision && surroundings.right->collision->solid){
+				if (! (!surroundings.right->collision || surroundings.right->collision->isNotOrSemiSolid())){
 					xPush = LEFT;
 				}
 			}
