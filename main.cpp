@@ -11,6 +11,7 @@
 #include <assert.h>
 #include <vector>
 #include "direction.hpp"
+#include "item_behavior.hpp"
 
 
 // #define DEBUG_DRAW
@@ -102,7 +103,8 @@ bool handleInput()
 			[&](const auto& val){ return val->type == BALL; } );
 		if (i != arr.end()){
 			if (player->heldItem){
-				std::cout << "DEBUG: interact with ball" << std::endl;
+				auto itemBehavior = (ItemBehavior*)player->heldItem->behavior.get();
+				itemBehavior->interact(*i);
 			}
 		}
 	}
