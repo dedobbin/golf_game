@@ -60,8 +60,12 @@ rect Collision::checkCollision(Entity* entityA, Entity* entityB)
 
 void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
 {
-    if ((owner->type == ITEM && collider->type == LIVING) 
-        || owner->type == LIVING && collider->type == ITEM){
+    if (!collider->collision){
+        return;
+    }
+
+    if ((isNotOrSemiSolid() && collider->type == LIVING) 
+        || owner->type == LIVING && collider->collision->isNotOrSemiSolid()){
         return;
     }
 
@@ -133,7 +137,7 @@ bool Collision::isNotOrSemiSolid()
     if (!solid){
         return true;
     }
-    if (owner->type == ITEM && !((Item*)owner)->owner){
+    if (owner->type == ITEM){
         return true;
     }
 	if (owner->type == BALL && (owner->behavior->xSpeed == 0 && owner->behavior->ySpeed == 0)){
