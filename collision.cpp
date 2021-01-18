@@ -127,3 +127,16 @@ rect Collision::getRect()
         owner->pos.h - hMargin * 2
     };
 }
+
+bool Collision::isNotOrSemiSolid()
+{
+    if (!solid){
+        return true;
+    }
+    if (owner->type == ITEM && !((Item*)owner)->owner){
+        return true;
+    }
+	if (owner->type == BALL && (owner->behavior->xSpeed == 0 && owner->behavior->ySpeed == 0)){
+        return true;
+    }
+}

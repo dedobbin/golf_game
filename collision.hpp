@@ -18,7 +18,8 @@ class Collision
 		void pushout(Entity* collider, direction colliderDir, rect intersect);
 		/* Return true if entity needs to be removed from entity list */
 		bool effect(Entity* collider, direction colliderDir, rect intersect);
-
+		/* To check if living entities and moving platforms etc can move through */
+		bool isNotOrSemiSolid();
 		rect getRect();
 	private:
 		Entity* owner;
