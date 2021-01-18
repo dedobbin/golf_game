@@ -64,8 +64,8 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
         return;
     }
 
-    if ((isNotOrSemiSolid() && collider->type == LIVING) 
-        || owner->type == LIVING && collider->collision->isNotOrSemiSolid()){
+    if ((isNotOrSemiSolid() && ((collider->collision->isNotOrSemiSolid() || collider->type == LIVING)) 
+        || (isNotOrSemiSolid() || owner->type == LIVING) && collider->collision->isNotOrSemiSolid())){
         return;
     }
 
