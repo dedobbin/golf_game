@@ -19,6 +19,7 @@ void ItemBehavior::interact(std::shared_ptr<Entity> e)
 	if (((Item*) owner)->itemType == CLUB){
 		auto holdingEntity = ((Item*)owner)->owner;
 		auto living = (LivingEntity*)holdingEntity;
-		living->golfMode = true;
+		std::cout << "DEBUG: golf mode" << std::endl;
+		living->golfMode.active = true;
 	}
 }

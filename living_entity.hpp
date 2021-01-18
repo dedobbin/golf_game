@@ -4,6 +4,11 @@
 #include "entity.hpp"
 #include <memory>
 
+struct GolfMode 
+{
+	bool active = false;
+};
+
 class LivingEntity : public Entity
 {
 	public:
@@ -13,5 +18,5 @@ class LivingEntity : public Entity
 		/* Should be set using give, so owner of item is also set correctly, would be better to properly private but eh */
 		Item* heldItem = NULL;
 		//TODO: should go in living_behavior
-		bool golfMode = false;
+		GolfMode golfMode;
 };

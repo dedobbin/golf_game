@@ -80,35 +80,39 @@ bool handleInput()
 		}
 	}
 
-	if (keysPressed[SDL_SCANCODE_RIGHT]){
-		player->behavior->xPush = RIGHT;
-	} else if (player->behavior->xSpeed > 0){
-		player->behavior->xPush = NONE;
-	}
+	if (!player->golfMode.active){
+		if (keysPressed[SDL_SCANCODE_RIGHT]){
+			player->behavior->xPush = RIGHT;
+		} else if (player->behavior->xSpeed > 0){
+			player->behavior->xPush = NONE;
+		}
 
-	if (keysPressed[SDL_SCANCODE_LEFT]){
-		player->behavior->xPush = LEFT;
-	} else if (player->behavior->xSpeed < 0){
-		player->behavior->xPush = NONE;
-	}
+		if (keysPressed[SDL_SCANCODE_LEFT]){
+			player->behavior->xPush = LEFT;
+		} else if (player->behavior->xSpeed < 0){
+			player->behavior->xPush = NONE;
+		}
 
-	if (keysPressed[SDL_SCANCODE_Z]){
-		player->behavior->jump();
-	}
+		if (keysPressed[SDL_SCANCODE_Z]){
+			player->behavior->jump();
+		}
 
-	if (keysPressed[SDL_SCANCODE_C]){
-		auto arr = player->behavior->surroundings.inside;
-		auto i = std::find_if(arr.begin(),
-			arr.end(), 
-			[&](const auto& val){ return val->type == BALL; } );
-		if (i != arr.end()){
-			if (player->golfMode){
-				player->golfMode = false;
-			} else if (player->heldItem){
-				auto itemBehavior = (ItemBehavior*)player->heldItem->behavior.get();
-				itemBehavior->interact(*i);
+		if (keysPressed[SDL_SCANCODE_C]){
+			auto arr = player->behavior->surroundings.inside;
+			auto i = std::find_if(arr.begin(),
+				arr.end(), 
+				[&](const auto& val){ return val->type == BALL; } );
+			if (i != arr.end()){
+				if (player->heldItem){
+					auto itemBehavior = (ItemBehavior*)player->heldItem->behavior.get();
+					itemBehavior->interact(*i);
+				}
 			}
 		}
+	} else {
+		if (keysPressed[SDL_SCANCODE_C]){
+			player->golfMode.active = false;
+		} 
 	}
 
 #ifdef DEBUG_CONTROLS
