@@ -72,10 +72,10 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 	surroundings = {NULL, NULL, NULL, NULL};
 	switch(xPush){
 		case RIGHT:
-			addXSpeed(owner->behavior->walkAcc);
+			addXSpeed(grounded ? owner->behavior->walkAcc : owner->behavior->walkAcc / 2);
 			break;
 		case LEFT:
-			addXSpeed(-owner->behavior->walkAcc);
+			addXSpeed(-(grounded ? owner->behavior->walkAcc : owner->behavior->walkAcc / 2));
 			break;
 		case NONE:
 			if (xSpeed > 0){
