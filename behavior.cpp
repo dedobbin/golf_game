@@ -61,6 +61,10 @@ void Behavior::addYSpeed(float n, bool clampZero)
 
 void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 {
+	// TODO: this check all entities for collision 2 times, should optimize by sorting list, static entities on same place
+	// OR only checking entities in view, but that could lead to other problems later
+	// also Z will get all messed up when i resort list
+
 	if (owner->type == ITEM && ((Item*) owner)->owner){
 		//No need to update pos, moves with owning entity
 		return;
@@ -83,9 +87,6 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 			break;
 	}
 
-	// TODO: this check all entities for collision 2 times, should optimize by sorting list, static entities on same place
-	// OR only checking entities in view, but that could lead to other problems later
-	// also Z will get all messed up when i resort list
 	if (gravity && !grounded){
 		addYSpeed(GRAVITY);
 	}
