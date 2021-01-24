@@ -30,9 +30,21 @@ void GolfMode::activate(std::shared_ptr<Entity> ball)
 	std::cout << "DEBUG: golf mode" << std::endl;
 	assert(owner->behavior);
 	active = true;
-	ball = ball;
+	_ball = ball;
 	owner->behavior->xSpeed = 0;
 	owner->behavior->ySpeed = 0;
-	owner->pos.x = ball->pos.x;
-	owner->pos.y = ball->pos.y;
+	setDirection(RIGHT);
+}
+
+void GolfMode::setDirection(direction dir){
+	assert(_ball);
+	assert(dir == LEFT || dir == RIGHT);
+	//owner->pos.y = _ball->pos.y;
+	_dir = dir;
+	if (dir == LEFT){
+		owner->pos.x = _ball->pos.x;
+	} else if (dir == RIGHT){
+		owner->pos.x = _ball->pos.x - owner->pos.w + _ball->pos.w;
+		
+	}
 }

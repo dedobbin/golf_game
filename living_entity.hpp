@@ -3,6 +3,7 @@
 #include "item.hpp"
 #include "entity.hpp"
 #include <memory>
+#include "direction.hpp"
 
 class LivingEntity;
 class GolfMode 
@@ -11,9 +12,11 @@ class GolfMode
 		GolfMode(LivingEntity* owner);
 		void activate(std::shared_ptr<Entity> ball);
 		bool active = false;
+		void setDirection(direction dir);
 	private:
-		std::shared_ptr<Entity> ball;
+		std::shared_ptr<Entity> _ball;
 		Entity* owner;
+		direction _dir;
 };
 
 class LivingEntity : public Entity
