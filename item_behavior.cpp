@@ -22,10 +22,7 @@ void ItemBehavior::interact(std::shared_ptr<Entity> e)
 		auto living = (LivingEntity*)holdingEntity;
 		assert(living->behavior);
 		if(living->behavior->grounded){
-			std::cout << "DEBUG: golf mode" << std::endl;
-			living->golfMode.active = true;
-			living->behavior->xSpeed = 0;
-			living->behavior->ySpeed = 0;
+			living->activateGolfMode();
 		}
 	}
 }

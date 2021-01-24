@@ -20,3 +20,11 @@ void LivingEntity::give(Item* item)
 	item->owner = this;
 	this->heldItem = item;
 }
+
+void LivingEntity::activateGolfMode()
+{
+	std::cout << "DEBUG: golf mode" << std::endl;
+	golfMode.active = true;
+	behavior->xSpeed = 0;
+	behavior->ySpeed = 0;
+}

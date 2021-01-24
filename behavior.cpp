@@ -220,14 +220,15 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 	}
 #endif
 
-	if (owner->type == LIVING && ((LivingEntity*)owner)->heldItem){
-		auto item = ((LivingEntity*)owner)->heldItem;
-		item->pos.x = owner->pos.x;
-		item->pos.y = owner->pos.y;
-	}
-
-	// update some animations
 	if (owner->type == LIVING){
+		auto living = (LivingEntity*)owner;
+		if (living->heldItem){
+			auto item = living->heldItem;
+			item->pos.x = owner->pos.x;
+			item->pos.y = owner->pos.y;
+		}
+		
+		// update some animations
 		// If movement was stopped by wall, dont keep walk animation
 		auto animatedGraphic = (AnimatedGraphic*)owner->graphic.get();
 		if (animatedGraphic->curAnimationState == AnimationState::WALK && owner->behavior->xSpeed == 0){
@@ -237,6 +238,7 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 		if (animatedGraphic->curAnimationState == AnimationState::JUMP && owner->behavior->grounded){
 			animatedGraphic->changeState(AnimationState::DEFAULT);
 		}
+
 	}
 }
 
