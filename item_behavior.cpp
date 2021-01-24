@@ -17,12 +17,12 @@ void ItemBehavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 void ItemBehavior::interact(std::shared_ptr<Entity> e)
 {
 	//std::cout << "DEBUG: " << owner->name << " interacts with " << e->name << std::endl;
-	if (((Item*) owner)->itemType == CLUB){
+	if (((Item*) owner)->itemType == CLUB && e->type == BALL){
 		auto holdingEntity = ((Item*)owner)->owner;
 		auto living = (LivingEntity*)holdingEntity;
 		assert(living->behavior);
 		if(living->behavior->grounded){
-			living->activateGolfMode();
+			living->activateGolfMode(e);
 		}
 	}
 }

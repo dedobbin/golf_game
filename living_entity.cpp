@@ -21,10 +21,13 @@ void LivingEntity::give(Item* item)
 	this->heldItem = item;
 }
 
-void LivingEntity::activateGolfMode()
+void LivingEntity::activateGolfMode(std::shared_ptr<Entity> ball)
 {
 	std::cout << "DEBUG: golf mode" << std::endl;
 	golfMode.active = true;
+	golfMode.ball = ball;
 	behavior->xSpeed = 0;
 	behavior->ySpeed = 0;
+	pos.x = ball->pos.x;
+	pos.y = ball->pos.y;
 }
