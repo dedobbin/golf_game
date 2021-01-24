@@ -135,7 +135,7 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 			surroundings.inside.push_back(collidee);
 		}
 
-		/*** check 4 surroundings ***/
+		/*** check 4 surroundings TODO: take care of overlapping, entities can be on ball etc ***/
 		if (! (owner->type == LIVING && ((LivingEntity*)owner)->heldItem == collidee.get())){  
 			rect intersect2;
 			bool collision2;

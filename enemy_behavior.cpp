@@ -19,19 +19,13 @@ void EnemyBehavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 			xPush = LEFT;
 			break;
 		case LEFT:
-			if (surroundings.left){
-				if (! (!surroundings.left->collision || surroundings.left->collision->isNotOrSemiSolid())){
-					std::cout << "DEBUG: " << owner->name +" bumps into "+  surroundings.left->name << std::endl;
-					xPush = RIGHT;
-				}
+			if (xSpeed == 0){
+				xPush = RIGHT;
 			}
 			break;
 		case RIGHT:
-			if (surroundings.right){
-				if (! (!surroundings.right->collision || surroundings.right->collision->isNotOrSemiSolid())){
-					std::cout << "DEBUG: " << owner->name +" bumps into "+  surroundings.right->name << std::endl;
-					xPush = LEFT;
-				}
+			if (xSpeed == 0){
+				xPush = LEFT;
 			}
 			break;
 	}
