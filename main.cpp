@@ -109,6 +109,14 @@ bool handleInput()
 				}
 			}
 		}
+	} else {
+		if (keysPressed[SDL_SCANCODE_RIGHT]){
+			player->golfMode->setDirection(RIGHT);
+		}
+
+		if (keysPressed[SDL_SCANCODE_LEFT]){
+			player->golfMode->setDirection(LEFT);
+		}
 	}
 
 #ifdef DEBUG_CONTROLS
