@@ -11,16 +11,6 @@ class Entity;
 #define GRAVITY 0.65
 #define STOP_WALK_SLOW_DOWN_AMOUNT 0.35
 
-/* Reset and set every Behave call, so overloaded functions can use it, later could hold move information about surroundings */
-struct Surroundings 
-{
-	std::shared_ptr<Entity> underneath;
-	std::shared_ptr<Entity> above;
-	std::shared_ptr<Entity> left;
-	std::shared_ptr<Entity> right;
-	std::vector<std::shared_ptr<Entity>> inside;
-};
-
 class Behavior
 {
 	public:
@@ -45,8 +35,6 @@ class Behavior
 		Entity* owner;
 		bool grounded = false;
 		bool pickupItems = false;
-		/* set after every behave call, so functions overloading behave can check if after calling parent */
-		Surroundings surroundings;
 };
 
 #endif

@@ -8,8 +8,6 @@
 // circ dep
 #include "entity.hpp"
 
-#define CHECK_SURROUNDINGS_DEBUG
-
 Behavior::Behavior(Entity* owner, bool pickupItems)
 : owner(owner), pickupItems(pickupItems)
 {}
@@ -64,7 +62,6 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 	// OR only checking entities in view, but that could lead to other problems later
 	// also Z will get all messed up when i resort list
 
-	surroundings = {NULL, NULL, NULL, NULL, {}};
 	switch(xPush){
 		case RIGHT:
 			addXSpeed(grounded ? owner->behavior->walkAcc : owner->behavior->walkAcc / 2);
@@ -123,6 +120,7 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 	std::shared_ptr<Entity> right;
 	std::shared_ptr<Entity> inside;
 
+	bool hasGroundUnder = false;
 	for (auto& collidee : entities){
 		if (e == collidee.get()) continue;
 		
@@ -132,93 +130,23 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 		if (collision){
 			collidee->collision->pushout(e, vDir, intersect);
 			collidee->collision->effect(e, vDir, intersect);
-			surroundings.inside.push_back(collidee);
 		}
 
-		/*** check 4 surroundings TODO: take care of overlapping, entities can be on ball etc ***/
-		if (! (owner->type == LIVING && ((LivingEntity*)owner)->heldItem == collidee.get())){  
-			rect intersect2;
-			bool collision2;
-			auto realPos = owner->pos;
 
-			// check what is down
-			owner->pos.y += 1;
-			intersect2 = Collision::checkCollision(e, collidee.get());
-			collision2 = intersect2.w > 0 && intersect2.h > 0;
-			if (collision2){
-				underneath = collidee;
-			}
-			owner->pos = realPos;
-		
-			// check what is up
-			owner->pos.y -= 1;
-			intersect2 = Collision::checkCollision(e, collidee.get());
-			collision2 = intersect2.w > 0 && intersect2.h > 0;
-			if (collision2){
-				above = collidee;
-			}
-			owner->pos = realPos;
-		
-			// check what is left
-			owner->pos.x -= 1;
-			intersect2 = Collision::checkCollision(e, collidee.get());
-			collision2 = intersect2.w > 0 && intersect2.h > 0;
-			if (collision2){
-				left = collidee;
-			}
-			owner->pos = realPos;
-		
-			// check what is right
-			owner->pos.x += 1;
-			intersect2 = Collision::checkCollision(e, collidee.get());
-			collision2 = intersect2.w > 0 && intersect2.h > 0;
-			if (collision2){
-				right = collidee;
-			}
-			owner->pos = realPos;
+		// check what is down
+		auto realPos = owner->pos;
+		owner->pos.y += 1;
+		auto intersect2 = Collision::checkCollision(e, collidee.get());
+		auto collision2 = intersect2.w > 0 && intersect2.h > 0;
+		if (collision2 && !collidee->collision->isNotOrSemiSolid()){
+			hasGroundUnder = true;
 		}
+		owner->pos = realPos;
 	}
 
-	/*** end surroundings check ***/  
-
-	//Update surroundings so overloaded function can use info to determine how enemies etc should behave
-	surroundings.underneath = underneath;
-	surroundings.above = above;
-	surroundings.left = left;
-	surroundings.right = right;
-
-	if (!surroundings.underneath 
-		|| (surroundings.underneath->collision && surroundings.underneath->collision->isNotOrSemiSolid())
-	){
+	if (!hasGroundUnder){
 		grounded = false;
 	}
-
-#ifdef CHECK_SURROUNDINGS_DEBUG
-	// if (surroundings.underneath){
-	// 	std::cout << "DEBUG: " << surroundings.underneath->name << " underneath of " << owner->name << std::endl;
-	// }
-
-	if (surroundings.above){
-		std::cout << "DEBUG: " << surroundings.above->name << " above of " << owner->name << std::endl;
-	}
-
-	if (surroundings.left){
-		std::cout << "DEBUG: " << surroundings.left->name << " left of " << owner->name << std::endl;
-	}
-
-	if (surroundings.right){
-		std::cout << "DEBUG: " << surroundings.right->name << " right of " << owner->name << std::endl;
-	}
-
-	if (surroundings.inside.size() > 0){
-		std::string s = "";
-		for (auto& e : surroundings.inside){
-			s+= e->name + " ";
-		}
-		std::cout << "DEBUG: " << s << "inside of " << owner->name << std::endl;
-
-	}
-#endif
 
 	if (owner->type == LIVING){
 		auto living = (LivingEntity*)owner;
