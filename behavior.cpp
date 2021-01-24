@@ -8,7 +8,7 @@
 // circ dep
 #include "entity.hpp"
 
-// #define CHECK_SURROUNDINGS_DEBUG
+#define CHECK_SURROUNDINGS_DEBUG
 
 Behavior::Behavior(Entity* owner, bool pickupItems)
 : owner(owner), pickupItems(pickupItems)
