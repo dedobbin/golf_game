@@ -109,10 +109,6 @@ bool handleInput()
 				}
 			}
 		}
-	} else {
-		if (keysPressed[SDL_SCANCODE_C]){
-			player->golfMode.active = false;
-		} 
 	}
 
 #ifdef DEBUG_CONTROLS

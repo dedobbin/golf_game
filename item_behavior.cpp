@@ -1,6 +1,7 @@
 #include "item_behavior.hpp"
 #include <iostream>
 #include "living_entity.hpp"
+#include <assert.h>
 
 ItemBehavior::ItemBehavior(Item* owner)
 : Behavior(owner)
@@ -19,7 +20,12 @@ void ItemBehavior::interact(std::shared_ptr<Entity> e)
 	if (((Item*) owner)->itemType == CLUB){
 		auto holdingEntity = ((Item*)owner)->owner;
 		auto living = (LivingEntity*)holdingEntity;
-		std::cout << "DEBUG: golf mode" << std::endl;
-		living->golfMode.active = true;
+		assert(living->behavior);
+		if(living->behavior->grounded){
+			std::cout << "DEBUG: golf mode" << std::endl;
+			living->golfMode.active = true;
+			living->behavior->xSpeed = 0;
+			living->behavior->ySpeed = 0;
+		}
 	}
 }
