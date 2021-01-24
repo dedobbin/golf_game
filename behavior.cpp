@@ -62,6 +62,10 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 	// OR only checking entities in view, but that could lead to other problems later
 	// also Z will get all messed up when i resort list
 
+	if (owner->collision){
+		owner->collision->currentColliders = {};
+	}
+
 	switch(xPush){
 		case RIGHT:
 			addXSpeed(grounded ? owner->behavior->walkAcc : owner->behavior->walkAcc / 2);
@@ -102,6 +106,7 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 		if (collision){
 			collidee->collision->pushout(e, hDir, intersect);
 			collidee->collision->effect(e, hDir, intersect);
+			owner->collision->currentColliders.push_back(collidee);
 		}
 	}
 
@@ -166,7 +171,6 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 		if (animatedGraphic->curAnimationState == AnimationState::JUMP && owner->behavior->grounded){
 			animatedGraphic->changeState(AnimationState::DEFAULT);
 		}
-
 	}
 }
 

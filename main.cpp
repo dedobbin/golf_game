@@ -98,13 +98,16 @@ bool handleInput()
 		}
 
 		if (keysPressed[SDL_SCANCODE_C]){
-			std::cout << "TODO: check if collision with ball" << std::endl;
-			// if (has ball collison){
-			// 	if (player->heldItem){
-			// 		auto itemBehavior = (ItemBehavior*)player->heldItem->behavior.get();
-			// 		itemBehavior->interact(ball);
-			// 	}
-			// }
+			auto arr = player->collision->currentColliders;
+			auto i = std::find_if(arr.begin(),
+				arr.end(), 
+				[&](const auto& val){ return val->type == BALL; } );
+			if (i != arr.end()){
+				if (player->heldItem){
+					auto itemBehavior = (ItemBehavior*)player->heldItem->behavior.get();
+					itemBehavior->interact(*i);
+				}
+			}
 		}
 	} else {
 		if (keysPressed[SDL_SCANCODE_RIGHT]){
