@@ -69,6 +69,11 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
         return;
     }
 
+    // dont mess with entities in golfmode
+    if (collider->type == LIVING && ((LivingEntity*)collider)->golfMode && ((LivingEntity*)collider)->golfMode->active){
+        return;
+    }
+
     rect ownerRect = owner->collision->getRect();
     rect colliderRect = collider->collision->getRect();
 
