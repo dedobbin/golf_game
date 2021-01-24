@@ -7,5 +7,5 @@ Item::Item(std::string name, int x, int y, ItemType itemType, int w, int h)
 
 Item::~Item()
 {
-	//std::cout << "DEBUG: Item deconstructor" << std::endl;
+	std::cout << "DEBUG: Item deconstructor" << std::endl;
 }
