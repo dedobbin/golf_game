@@ -1,6 +1,6 @@
-#include "living_entity.hpp"
 #include <iostream>
 #include <assert.h>
+#include "living_entity.hpp"
 
 LivingEntity::LivingEntity(std::string name, int x, int y, int w, int h)
 : Entity(name, LIVING, x, y, w, h)
@@ -21,13 +21,18 @@ void LivingEntity::give(Item* item)
 	this->heldItem = item;
 }
 
-void LivingEntity::activateGolfMode(std::shared_ptr<Entity> ball)
+GolfMode::GolfMode(LivingEntity* owner)
+:owner(owner)
+{}
+
+void GolfMode::activate(std::shared_ptr<Entity> ball)
 {
 	std::cout << "DEBUG: golf mode" << std::endl;
-	golfMode.active = true;
-	golfMode.ball = ball;
-	behavior->xSpeed = 0;
-	behavior->ySpeed = 0;
-	pos.x = ball->pos.x;
-	pos.y = ball->pos.y;
+	assert(owner->behavior);
+	active = true;
+	ball = ball;
+	owner->behavior->xSpeed = 0;
+	owner->behavior->ySpeed = 0;
+	owner->pos.x = ball->pos.x;
+	owner->pos.y = ball->pos.y;
 }

@@ -80,7 +80,7 @@ bool handleInput()
 		}
 	}
 
-	if (!player->golfMode.active){
+	if (!player->golfMode->active){
 		if (keysPressed[SDL_SCANCODE_RIGHT]){
 			player->behavior->xPush = RIGHT;
 		} else if (player->behavior->xSpeed > 0){

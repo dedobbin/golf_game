@@ -36,6 +36,9 @@ LivingEntity* EntityFactory::createPlayer(int x, int y)
 	e->behavior = std::unique_ptr<Behavior>(new Behavior(e, true));
 	//e->behavior->gravity = false;
 	e->collision = std::unique_ptr<Collision>(new Collision(e, true));
+
+	e->golfMode = std::make_unique<GolfMode>(e);
+
 	return e;
 }
 
