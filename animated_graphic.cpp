@@ -1,5 +1,6 @@
 #include "animated_graphic.hpp"
 #include <iostream>
+#include "living_entity.hpp"
 
 // circ dep
 #include "entity.hpp"
@@ -45,6 +46,10 @@ void AnimatedGraphic::render(SDL_Renderer* renderer, Camera* camera)
 {	
 	auto sprite = getSprite();
 	
+	if (owner->type == LIVING  && ((LivingEntity*)owner)->heldItem){
+		((LivingEntity*)owner)->heldItem->graphic->render(renderer, camera);
+	}
+
 	auto pos = getPos(camera);
 	if (SDL_RenderCopy( renderer, sprite.spritesheet, &sprite.src, &pos) < 0){
 		std::cerr << "Failed to render sprite " + owner->name << std::endl;
