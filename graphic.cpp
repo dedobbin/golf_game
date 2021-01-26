@@ -26,14 +26,26 @@ void Graphic::render(SDL_Renderer* renderer, Camera* camera)
 	auto sprite = getSprite();
 
 	float angle = 0.0f;
+	SDL_RendererFlip flip = (SDL_RendererFlip)false;
 
 	if (owner->type == ITEM && ((Item*)owner)->owner){
-		angle = -18;
-		pos.x += ((Item*)owner)->owner->pos.w / 10 + 10;
-		pos.y -= 5;
+		if (((Item*)owner)->owner->type == LIVING){
+			auto living = (LivingEntity*)((Item*)owner)->owner;
+
+			if (living->golfMode && living->golfMode->active){
+				angle = -150;
+				pos.y -= living->pos.h / 2;
+				pos.x += living->pos.w / 3;
+				flip = (SDL_RendererFlip)true;
+			} else {
+				angle = -18;
+				pos.x += ((Item*)owner)->owner->pos.w / 10 + 10;
+				pos.y -= living->pos.w / 20;
+			}
+		}
 	}
 
-	if (SDL_RenderCopyEx( renderer, sprite.spritesheet, &sprite.src, &pos, angle, NULL, (SDL_RendererFlip)false) < 0){
+	if (SDL_RenderCopyEx( renderer, sprite.spritesheet, &sprite.src, &pos, angle, NULL, flip) < 0){
 		std::cerr << "Failed to render sprite " + owner->name << std::endl;
 	}
 }
