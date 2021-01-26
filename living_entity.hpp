@@ -13,10 +13,10 @@ class GolfMode
 		void activate(Entity* ball);
 		bool active = false;
 		void setDirection(direction dir);
+		direction _dir;
 	private:
 		Entity* _ball;
 		Entity* owner;
-		direction _dir;
 };
 
 class LivingEntity : public Entity

@@ -33,10 +33,16 @@ void Graphic::render(SDL_Renderer* renderer, Camera* camera)
 			auto living = (LivingEntity*)((Item*)owner)->owner;
 
 			if (living->golfMode && living->golfMode->active){
-				angle = -150;
-				pos.y -= living->pos.h / 2;
-				pos.x += living->pos.w / 3;
-				flip = (SDL_RendererFlip)true;
+				if (living->golfMode->_dir == RIGHT){
+					angle = -150;
+					pos.y -= living->pos.h / 2;
+					pos.x += living->pos.w / 3;
+					flip = (SDL_RendererFlip)true;
+				} else if (living->golfMode->_dir == LEFT){
+					angle = 150;
+					pos.y -= living->pos.h / 2;
+					pos.x -= living->pos.w / 2;
+				}
 			} else {
 				angle = -18;
 				pos.x += ((Item*)owner)->owner->pos.w / 10 + 10;
