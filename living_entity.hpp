@@ -10,11 +10,11 @@ class GolfMode
 {
 	public:
 		GolfMode(LivingEntity* owner);
-		void activate(std::shared_ptr<Entity> ball);
+		void activate(Entity* ball);
 		bool active = false;
 		void setDirection(direction dir);
 	private:
-		std::shared_ptr<Entity> _ball;
+		Entity* _ball;
 		Entity* owner;
 		direction _dir;
 };

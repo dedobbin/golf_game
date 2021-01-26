@@ -8,7 +8,7 @@ LivingEntity::LivingEntity(std::string name, int x, int y, int w, int h)
 
 LivingEntity::~LivingEntity()
 {
-	//std::cout << "DEBUG: LivingEntity deconstructor" << std::endl;
+	std::cout << "DEBUG: LivingEntity deconstructor" << std::endl;
 }
 
 void LivingEntity::give(Item* item)
@@ -25,7 +25,7 @@ GolfMode::GolfMode(LivingEntity* owner)
 :owner(owner)
 {}
 
-void GolfMode::activate(std::shared_ptr<Entity> ball)
+void GolfMode::activate(Entity* ball)
 {
 	std::cout << "DEBUG: golf mode" << std::endl;
 	assert(owner->behavior);

@@ -98,11 +98,11 @@ bool handleInput()
 		}
 
 		if (keysPressed[SDL_SCANCODE_C]){
-			auto arr = player->collision->currentColliders;
-			auto i = std::find_if(arr.begin(),
-				arr.end(), 
-				[&](const auto& val){ return val->type == BALL; } );
-			if (i != arr.end()){
+			auto i = std::find_if( player->collision->currentColliders.begin(),
+				player->collision->currentColliders.end(), 
+				[&](const auto val){ return val->type == BALL; } 
+			);
+			if (i != player->collision->currentColliders.end()){
 				if (player->heldItem){
 					auto itemBehavior = (ItemBehavior*)player->heldItem->behavior.get();
 					itemBehavior->interact(*i);

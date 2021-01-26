@@ -106,7 +106,7 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 		if (collision){
 			collidee->collision->pushout(e, hDir, intersect);
 			collidee->collision->effect(e, hDir, intersect);
-			owner->collision->currentColliders.push_back(collidee);
+			owner->collision->currentColliders.push_back(collidee.get());
 		}
 	}
 

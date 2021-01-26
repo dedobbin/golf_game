@@ -21,8 +21,8 @@ class Collision
 		/* To check if living entities and moving platforms etc can move through */
 		bool isNotOrSemiSolid();
 		rect getRect();
-		/* Reset in Behavior::behave()*/
-		std::vector<std::shared_ptr<Entity>> currentColliders;
+		/* Reset in Behavior::behave(), circ pointer, so don't use smrt */
+		std::vector<Entity*> currentColliders;
 	private:
 		Entity* owner;
 };
