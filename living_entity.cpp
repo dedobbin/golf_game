@@ -31,6 +31,7 @@ void GolfMode::activate(Entity* ball)
 	assert(owner->behavior);
 	active = true;
 	_ball = ball;
+	//Unsafe for multithreading..
 	owner->behavior->xSpeed = 0;
 	owner->behavior->ySpeed = 0;
 	setDirection(RIGHT);

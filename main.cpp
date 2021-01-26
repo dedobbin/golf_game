@@ -102,6 +102,7 @@ bool handleInput()
 				player->collision->currentColliders.end(), 
 				[&](const auto val){ return val->type == BALL; } 
 			);
+
 			if (i != player->collision->currentColliders.end()){
 				if (player->heldItem){
 					auto itemBehavior = (ItemBehavior*)player->heldItem->behavior.get();

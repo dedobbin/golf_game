@@ -180,6 +180,10 @@ void Visuals::renderEntity(Entity* entity)
 {
 	if (!camera->inView(entity->pos.x,entity->pos.y,entity->pos.w,entity->pos.h))
 		return;
+	if (entity->type == ITEM && ((Item*)entity)->owner){
+		/* When item is owned, owning entity takes care of drawing, easier to handle items in inventory (not draw) + z logic.. */
+		return;
+	}
  	entity->graphic->render(renderer, camera.get());
 }
 
