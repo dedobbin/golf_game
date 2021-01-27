@@ -3,7 +3,6 @@
 #include "assert.h"
 #include "item.hpp"
 #include "living_entity.hpp"
-#include "animated_graphic.hpp"
 
 // circ dep
 #include "entity.hpp"
@@ -28,10 +27,10 @@ void Behavior::addXSpeed(float n, bool clampZero)
 
 	if (grounded && gravity){
 		if ( xSpeed != 0 && (prevSpeed > 0 && n > 0) || (prevSpeed < 0 && n < 0) ){
-			((AnimatedGraphic*)owner->graphic.get())->changeState(AnimationState::WALK);
+			owner->graphic->changeState(AnimationState::WALK);
 		} else {
 			//TODO: i think this jank get called when not needed, animation looks good though..
-			((AnimatedGraphic*)owner->graphic.get())->changeState(AnimationState::DEFAULT);
+			owner->graphic->changeState(AnimationState::DEFAULT);
 		}
 	}
 
@@ -163,7 +162,7 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 		
 		// update some animations
 		// If movement was stopped by wall, dont keep walk animation
-		auto animatedGraphic = (AnimatedGraphic*)owner->graphic.get();
+		auto animatedGraphic = owner->graphic.get();
 		if (animatedGraphic->curAnimationState == AnimationState::WALK && owner->behavior->xSpeed == 0){
 			animatedGraphic->changeState(AnimationState::DEFAULT);
 		}
@@ -182,5 +181,5 @@ void Behavior::jump(){
 
 	grounded = false;
 	addYSpeed(-13.5);
-	((AnimatedGraphic*)owner->graphic.get())->changeState(AnimationState::JUMP);
+	owner->graphic->changeState(AnimationState::JUMP);
 }

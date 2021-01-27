@@ -6,7 +6,6 @@
 #include "entity.hpp"
 #include "living_entity.hpp"
 #include "rect.hpp"
-#include "animated_graphic.hpp"
 #include "entity_factory.hpp"
 #include <assert.h>
 #include <vector>
