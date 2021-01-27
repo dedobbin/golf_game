@@ -203,3 +203,8 @@ void Visuals::renderRectOverlay(int x, int y, int w, int h)
 	SDL_Rect rect = {x, y, w, h};
 	SDL_RenderDrawRect(renderer, &rect);
 }
+
+void Visuals::renderGolfMeter(GolfState state, int n)
+{
+	std::cout << "TODO: render golf meter" << std::endl;;
+}

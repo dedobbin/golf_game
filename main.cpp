@@ -160,7 +160,11 @@ void renderEverything()
 			if (e == player){
 				auto living = std::static_pointer_cast<LivingEntity>(player);
 				if (player->golfMode->active){
-					std::cout << "TODO: draw golf stuff" << std::endl;
+					if (player->golfMode->state == AIMING_POWER){
+						v.renderGolfMeter(AIMING_POWER, player->golfMode->power);
+					} else if (player->golfMode->state == AIMING_HEIGHT){
+						v.renderGolfMeter(AIMING_HEIGHT, player->golfMode->height);
+					}
 				}
 			}
 #ifdef DEBUG_DRAW 

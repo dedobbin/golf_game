@@ -3,21 +3,7 @@
 #include "item.hpp"
 #include "entity.hpp"
 #include <memory>
-#include "direction.hpp"
-
-class LivingEntity;
-class GolfMode 
-{
-	public:
-		GolfMode(LivingEntity* owner);
-		void activate(Entity* ball);
-		bool active = false;
-		void setDirection(direction dir);
-		direction _dir;
-	private:
-		Entity* _ball;
-		Entity* owner;
-};
+#include "golf_mode.hpp"
 
 class LivingEntity : public Entity
 {

@@ -8,6 +8,7 @@
 #include <SDL2/SDL_image.h>
 #include <unordered_map>
 #include <memory>
+#include "golf_mode.hpp"
 #include "graphic.hpp"
 #include "camera.hpp"
 #include "entity.hpp"
@@ -27,6 +28,7 @@ class Visuals
 		void renderRect(int x, int y, int w, int h);
 		// Overlay implies 'behind' the camera
 		void renderRectOverlay(int x, int y, int w, int h);
+		void renderGolfMeter(GolfState state, int n);
 		std::unique_ptr<Camera> camera;
 		std::unordered_map<std::string, SDL_Texture*> spritesheets;
 
