@@ -118,12 +118,6 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 
 	owner->pos.y += ySpeed;
 
-	std::shared_ptr<Entity> underneath;
-	std::shared_ptr<Entity> above;
-	std::shared_ptr<Entity> left;
-	std::shared_ptr<Entity> right;
-	std::shared_ptr<Entity> inside;
-
 	bool hasGroundUnder = false;
 	for (auto& collidee : entities){
 		if (e == collidee.get()) continue;
@@ -154,10 +148,15 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 
 	if (owner->type == LIVING){
 		auto living = (LivingEntity*)owner;
+		//held item is moved with player
 		if (living->heldItem){
 			auto item = living->heldItem;
 			item->pos.x = owner->pos.x;
 			item->pos.y = owner->pos.y;
+		}
+
+		if (living->golfMode && living->golfMode->active){
+			living->golfMode->tick();
 		}
 		
 		// update some animations

@@ -24,6 +24,7 @@ class GolfMode
 		float power = 0;
 		float height = 0;
 		int nPoints = 25;
+		void tick();
 	private:
 		Entity* _ball;
 		Entity* owner;

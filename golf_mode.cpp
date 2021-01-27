@@ -31,3 +31,12 @@ void GolfMode::setDirection(direction dir){
 		
 	}
 }
+
+void GolfMode::tick()
+{
+	if (state == AIMING_POWER){
+		power = power + 1 >= nPoints ? 0 : power + 1;
+	} else if (state == AIMING_HEIGHT){
+		height = height + 1 >= nPoints ? 0 : height + 1;
+	}
+}
