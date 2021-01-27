@@ -10,6 +10,7 @@
 // circ dep
 class Entity;
 
+/* wrapper to easy return a frame data + associated spritesheet that is kept in animation */
 struct Sprite 
 {
 	SDL_Texture* spritesheet = NULL;

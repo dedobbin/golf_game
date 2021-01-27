@@ -149,26 +149,33 @@ bool handleInput()
 
 void renderEverything()
 {
-			v.renderStart();
-		for (auto& e : entities){
-			if (e->type == ITEM){
-				int d = 4;
-			}
-			if (e->graphic){
-				v.renderEntity(e.get());
-#ifdef DEBUG_DRAW 
-				if (e->collision){
-					rect collisionRect = e->collision->getRect();
-					v.renderRect(collisionRect.x, collisionRect.y, collisionRect.w, collisionRect.h);
-				}
-#endif	
-			}
+	v.renderStart();
+	for (auto& e : entities){
+		if (e->type == ITEM){
+			int d = 4;
 		}
+		if (e->graphic){
+			v.renderEntity(e.get());
+
+			if (e == player){
+				auto living = std::static_pointer_cast<LivingEntity>(player);
+				if (player->golfMode->active){
+					std::cout << "TODO: draw golf stuff" << std::endl;
+				}
+			}
+#ifdef DEBUG_DRAW 
+			if (e->collision){
+				rect collisionRect = e->collision->getRect();
+				v.renderRect(collisionRect.x, collisionRect.y, collisionRect.w, collisionRect.h);
+			}
+#endif	
+		}
+	}
 #ifdef DEBUG_DRAW 
 	v.renderRectOverlay(0, 0, v.camera->camRect.w, v.camera->camRect.w);
 #endif	
 
-		v.renderEnd();
+	v.renderEnd();
 }
 
 int main (int argc, char* argv[])
