@@ -204,7 +204,33 @@ void Visuals::renderRectOverlay(int x, int y, int w, int h)
 	SDL_RenderDrawRect(renderer, &rect);
 }
 
-void Visuals::renderGolfMeter(GolfState state, int n)
+void Visuals::renderGolfMeter(GolfState state, int level, int nPoints)
 {
-	std::cout << "TODO: render golf meter" << std::endl;;
+	// std::cout << "DEBUG render golf meter" << std::endl;
+	// SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
+
+	if (state == AIMING_POWER){
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	} else if (state == AIMING_HEIGHT){
+		SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+	}
+
+	int x = 10, y = 10, w = 3, h = 30;
+	int pointSpacing = 5;
+
+	SDL_Rect cursor;
+
+	SDL_Rect rects[nPoints];
+	for (int i = 0; i < nPoints; i++){
+		rects[i] = {x, y, w, h};
+		if (i == level){
+			cursor = {x, y-2, w * 2, h+4};
+		}
+		x+= pointSpacing + w;
+	}
+	SDL_RenderFillRects(renderer, rects, nPoints);
+
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_RenderFillRect(renderer, &cursor);
+
 }

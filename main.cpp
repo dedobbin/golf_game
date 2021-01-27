@@ -157,16 +157,6 @@ void renderEverything()
 		if (e->graphic){
 			v.renderEntity(e.get());
 
-			if (e == player){
-				auto living = std::static_pointer_cast<LivingEntity>(player);
-				if (player->golfMode->active){
-					if (player->golfMode->state == AIMING_POWER){
-						v.renderGolfMeter(AIMING_POWER, player->golfMode->power);
-					} else if (player->golfMode->state == AIMING_HEIGHT){
-						v.renderGolfMeter(AIMING_HEIGHT, player->golfMode->height);
-					}
-				}
-			}
 #ifdef DEBUG_DRAW 
 			if (e->collision){
 				rect collisionRect = e->collision->getRect();
@@ -178,6 +168,14 @@ void renderEverything()
 #ifdef DEBUG_DRAW 
 	v.renderRectOverlay(0, 0, v.camera->camRect.w, v.camera->camRect.w);
 #endif	
+		
+	if (player->golfMode->active){
+		if (player->golfMode->state == AIMING_POWER){
+			v.renderGolfMeter(AIMING_POWER, player->golfMode->power, player->golfMode->nPoints);
+		} else if (player->golfMode->state == AIMING_HEIGHT){
+			v.renderGolfMeter(AIMING_HEIGHT, player->golfMode->height, player->golfMode->nPoints);
+		}
+	}
 
 	v.renderEnd();
 }

@@ -23,6 +23,7 @@ class GolfMode
 		GolfState state;
 		float power = 0;
 		float height = 0;
+		int nPoints = 25;
 	private:
 		Entity* _ball;
 		Entity* owner;

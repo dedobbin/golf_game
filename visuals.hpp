@@ -28,7 +28,7 @@ class Visuals
 		void renderRect(int x, int y, int w, int h);
 		// Overlay implies 'behind' the camera
 		void renderRectOverlay(int x, int y, int w, int h);
-		void renderGolfMeter(GolfState state, int n);
+		void renderGolfMeter(GolfState state, int level, int nPoints);
 		std::unique_ptr<Camera> camera;
 		std::unordered_map<std::string, SDL_Texture*> spritesheets;
 
