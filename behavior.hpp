@@ -19,8 +19,6 @@ class Behavior
 		/* overloaded functions should always call parent in normal cases */
 		virtual void behave(std::vector<std::shared_ptr<Entity>> entities);
 		void jump();
-		/* the x direction entity wants to go, used by behavior to add x speed */
-		direction xPush = NONE;
 		/* When slowing down, clampZero should be true so rounds to 0 eventually */
 		void addXSpeed(float n, bool clampZero = false);
 		/* When slowing down, clampZero should be true so rounds to 0 eventually */

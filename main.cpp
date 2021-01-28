@@ -80,11 +80,9 @@ bool handleInput()
 					if (e.key.keysym.scancode == SDL_SCANCODE_RIGHT){
 						player->golfMode->setDirection(RIGHT);
 					}
-
 					if (e.key.keysym.scancode == SDL_SCANCODE_LEFT){
 						player->golfMode->setDirection(LEFT);
 					}
-
 					if (e.key.keysym.scancode == SDL_SCANCODE_C){
 						player->golfMode->state = AIMING_POWER;
 					}
@@ -105,15 +103,15 @@ bool handleInput()
 
 	if (!player->golfMode->active){
 		if (keysPressed[SDL_SCANCODE_RIGHT]){
-			player->behavior->xPush = RIGHT;
+			player->xPush = RIGHT;
 		} else if (player->behavior->xSpeed > 0){
-			player->behavior->xPush = NONE;
+			player->xPush = NONE;
 		}
 
 		if (keysPressed[SDL_SCANCODE_LEFT]){
-			player->behavior->xPush = LEFT;
+			player->xPush = LEFT;
 		} else if (player->behavior->xSpeed < 0){
-			player->behavior->xPush = NONE;
+			player->xPush = NONE;
 		}
 
 		if (keysPressed[SDL_SCANCODE_Z]){

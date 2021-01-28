@@ -14,19 +14,7 @@ void EnemyBehavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 		return;
 	}
 
-	switch(xPush){
-		case NONE:
-			xPush = LEFT;
-			break;
-		case LEFT:
-			if (xSpeed == 0){
-				xPush = RIGHT;
-			}
-			break;
-		case RIGHT:
-			if (xSpeed == 0){
-				xPush = LEFT;
-			}
-			break;
-	}
+	//TODO: turn around when walk into wall
+	((LivingEntity*)owner)->xPush = LEFT;
+
 }

@@ -65,22 +65,6 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 		owner->collision->currentColliders = {};
 	}
 
-	switch(xPush){
-		case RIGHT:
-			addXSpeed(grounded ? owner->behavior->walkAcc : owner->behavior->walkAcc / 2);
-			break;
-		case LEFT:
-			addXSpeed(-(grounded ? owner->behavior->walkAcc : owner->behavior->walkAcc / 2));
-			break;
-		case NONE:
-			if (xSpeed > 0){
-				addXSpeed(-STOP_WALK_SLOW_DOWN_AMOUNT, true);
-			} else if (owner->behavior->xSpeed < 0){
-				addXSpeed(STOP_WALK_SLOW_DOWN_AMOUNT, true);
-			}
-			break;
-	}
-
 	if (gravity && !grounded){
 		addYSpeed(GRAVITY);
 	}
@@ -157,6 +141,22 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 
 		if (living->golfMode && living->golfMode->active){
 			living->golfMode->tick();
+		}
+
+		switch(living->xPush){
+			case RIGHT:
+				addXSpeed(grounded ? owner->behavior->walkAcc : owner->behavior->walkAcc / 2);
+				break;
+			case LEFT:
+				addXSpeed(-(grounded ? owner->behavior->walkAcc : owner->behavior->walkAcc / 2));
+				break;
+			case NONE:
+				if (xSpeed > 0){
+					addXSpeed(-STOP_WALK_SLOW_DOWN_AMOUNT, true);
+				} else if (owner->behavior->xSpeed < 0){
+					addXSpeed(STOP_WALK_SLOW_DOWN_AMOUNT, true);
+				}
+				break;
 		}
 		
 		// update some animations
