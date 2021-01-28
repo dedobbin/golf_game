@@ -93,7 +93,7 @@ bool handleInput()
 						player->golfMode->state = AIMING_HEIGHT;
 					}
 				} else if (player->golfMode->state == AIMING_HEIGHT){
-					std::cout << "TODO: shooot " << player->golfMode->power << ", " << player->golfMode->height << std::endl;
+					player->golfMode->state = SWINGING;
 				}
 			}
 
