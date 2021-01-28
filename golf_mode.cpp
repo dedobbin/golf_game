@@ -39,10 +39,23 @@ void GolfMode::tick()
 	if (state ==AIMING_POWER || state == AIMING_HEIGHT){
 		ticksAfterLastMeterMove ++;
 		if (ticksAfterLastMeterMove >= METER_CURSOR_MOVE_DELAY){
+			int* level;
 			if (state == AIMING_POWER){
-				power = power + 1 >= nPoints ? 0 : power + 1;
+				level = &power;
 			} else if (state == AIMING_HEIGHT){
-				height = height + 1 >= nPoints ? 0 : height + 1;
+				level = &height;
+			}
+			if (meterCursorDirection == RIGHT){
+				*level+=1;
+				if (*level >= nPoints - 1){
+					meterCursorDirection = LEFT;
+				}
+			} 
+			else if (meterCursorDirection == LEFT){
+				*level-=1;
+				if (*level <= 0){
+					meterCursorDirection = RIGHT;
+				}
 			}
 			ticksAfterLastMeterMove = 0;
 		}

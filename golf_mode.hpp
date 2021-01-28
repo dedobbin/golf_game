@@ -21,11 +21,12 @@ class GolfMode
 		void setDirection(direction dir);
 		direction _dir;
 		GolfState state;
-		float power = 0;
-		float height = 0;
+		int power = 0;
+		int height = 0;
 		int nPoints = 25;
 		//Used to delay speed of cursor
 		int ticksAfterLastMeterMove = 0;
+		direction meterCursorDirection = RIGHT;
 		void tick();
 	private:
 		Entity* _ball;
