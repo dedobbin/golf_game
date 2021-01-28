@@ -46,9 +46,9 @@ void GolfMode::tick()
 		if (ticksAfterLastMeterMove >= METER_CURSOR_MOVE_DELAY){
 			int* level;
 			if (state == AIMING_POWER){
-				level = &power;
+				level = &powerCursor;
 			} else if (state == AIMING_HEIGHT){
-				level = &height;
+				level = &heightCursor;
 			}
 			if (meterCursorDirection == RIGHT){
 				*level+=1;
@@ -74,8 +74,8 @@ void GolfMode::tick()
 
 void GolfMode::reset()
 {
-	power = 0;
-	height = 0;
+	powerCursor = 0;
+	heightCursor = 0;
 	ticksAfterLastMeterMove = 0;
 	ticksAfterStartSwinging = 0;
 }
@@ -86,12 +86,12 @@ void GolfMode::shoot()
 
 	//TODO: dont use direct values, use range based on owner
 	if (_dir == RIGHT){
-		_ball->behavior->addXSpeed(power);
+		_ball->behavior->addXSpeed(powerCursor);
 	} else if (_dir == LEFT){
-		_ball->behavior->addXSpeed(-power);
+		_ball->behavior->addXSpeed(-powerCursor);
 	}
 
-	_ball->behavior->addYSpeed(-height);
+	_ball->behavior->addYSpeed(-heightCursor);
 
 	reset();
 	active = false;

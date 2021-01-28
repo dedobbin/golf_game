@@ -184,9 +184,9 @@ void renderEverything()
 		
 	if (player->golfMode->active){
 		if (player->golfMode->state == AIMING_POWER){
-			v.renderGolfMeter(AIMING_POWER, player->golfMode->power, player->golfMode->nPoints);
+			v.renderGolfMeter(AIMING_POWER, player->golfMode->powerCursor, player->golfMode->nPoints);
 		} else if (player->golfMode->state == AIMING_HEIGHT){
-			v.renderGolfMeter(AIMING_HEIGHT, player->golfMode->height, player->golfMode->nPoints);
+			v.renderGolfMeter(AIMING_HEIGHT, player->golfMode->heightCursor, player->golfMode->nPoints);
 		}
 	}
 
