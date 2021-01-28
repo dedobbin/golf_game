@@ -166,11 +166,16 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 
 	/* friction */
 	if (xSpeed > 0){
-		if ( !(owner->type == LIVING && ((LivingEntity*)owner)->xPush == RIGHT) )
-			addXSpeed(-STOP_WALK_SLOW_DOWN_AMOUNT, true);
+		if ( !(owner->type == LIVING && ((LivingEntity*)owner)->xPush == RIGHT) ){
+			if (grounded){
+				addXSpeed(-FRICTION_GROUND, true);
+			}
+		}
 	} else if (xSpeed < 0){
-		if ( !(owner->type == LIVING && ((LivingEntity*)owner)->xPush == LEFT) )
-			addXSpeed(STOP_WALK_SLOW_DOWN_AMOUNT, true);
+		if ( !(owner->type == LIVING && ((LivingEntity*)owner)->xPush == LEFT) ){
+			if (grounded)
+				addXSpeed(FRICTION_GROUND, true);
+		}
 	}
 }
 

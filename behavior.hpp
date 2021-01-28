@@ -9,7 +9,7 @@
 class Entity;
 
 #define GRAVITY 0.65
-#define STOP_WALK_SLOW_DOWN_AMOUNT 0.35
+#define FRICTION_GROUND 0.35
 
 class Behavior
 {
