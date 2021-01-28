@@ -24,6 +24,8 @@ class GolfMode
 		float power = 0;
 		float height = 0;
 		int nPoints = 25;
+		//Used to delay speed of cursor
+		int ticksAfterLastMeterMove = 0;
 		void tick();
 	private:
 		Entity* _ball;
