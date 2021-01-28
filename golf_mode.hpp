@@ -28,8 +28,11 @@ class GolfMode
 		//Used to delay speed of cursor
 		int ticksAfterLastMeterMove = 0;
 		direction meterCursorDirection = RIGHT;
+		int ticksAfterStartSwinging = 0;
 		void tick();
 	private:
+		void reset();
+		void shoot();
 		Entity* _ball;
 		Entity* owner;
 };

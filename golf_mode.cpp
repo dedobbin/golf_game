@@ -4,6 +4,7 @@
 #include <assert.h>
 
 #define METER_CURSOR_MOVE_DELAY 3 // Meter cursor should move after this amount of ticks
+#define SWING_ANIMATION_LEN 10
 
 GolfMode::GolfMode(LivingEntity* owner)
 :owner(owner)
@@ -36,7 +37,7 @@ void GolfMode::setDirection(direction dir){
 
 void GolfMode::tick()
 {
-	if (state ==AIMING_POWER || state == AIMING_HEIGHT){
+	if (state == AIMING_POWER || state == AIMING_HEIGHT){
 		ticksAfterLastMeterMove ++;
 		if (ticksAfterLastMeterMove >= METER_CURSOR_MOVE_DELAY){
 			int* level;
@@ -59,5 +60,35 @@ void GolfMode::tick()
 			}
 			ticksAfterLastMeterMove = 0;
 		}
+	} else if (state == SWINGING){
+		ticksAfterStartSwinging ++;
+		if (ticksAfterStartSwinging >= SWING_ANIMATION_LEN){
+			shoot();
+		}
 	}
+}
+
+void GolfMode::reset()
+{
+	power = 0;
+	height = 0;
+	ticksAfterLastMeterMove = 0;
+	ticksAfterStartSwinging = 0;
+}
+
+void GolfMode::shoot()
+{
+	assert(_ball);
+
+	if (_dir == RIGHT){
+		_ball->behavior->addXSpeed(power);
+	} else if (_dir == RIGHT){
+		_ball->behavior->addXSpeed(-power);
+	}
+
+	_ball->behavior->addYSpeed(-height);
+
+	reset();
+	active = false;
+
 }

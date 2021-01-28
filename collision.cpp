@@ -143,7 +143,8 @@ bool Collision::isNotOrSemiSolid()
     if (owner->type == ITEM){
         return true;
     }
-	if (owner->type == BALL && (owner->behavior->xSpeed == 0 && owner->behavior->ySpeed == 0)){
+    if (owner->type == BALL){
+	//if (owner->type == BALL && (owner->behavior->xSpeed == 0 && owner->behavior->ySpeed == 0)){
         return true;
     }
 }
