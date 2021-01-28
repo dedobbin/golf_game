@@ -63,7 +63,7 @@ void Graphic::render(SDL_Renderer* renderer, Camera* camera)
 	float angle = 0.0f;
 	SDL_RendererFlip flip = (SDL_RendererFlip)false;
 	
-	if (owner->type == ITEM && ((Item*)owner)->owner){
+	if (owner->type == ITEM && ((Item*)owner)->itemType == CLUB && ((Item*)owner)->owner){
 		if (((Item*)owner)->owner->type == LIVING){
 			auto living = (LivingEntity*)((Item*)owner)->owner;
 
