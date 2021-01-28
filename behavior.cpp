@@ -150,13 +150,6 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 			case LEFT:
 				addXSpeed(-(grounded ? owner->behavior->walkAcc : owner->behavior->walkAcc / 2));
 				break;
-			case NONE:
-				if (xSpeed > 0){
-					addXSpeed(-STOP_WALK_SLOW_DOWN_AMOUNT, true);
-				} else if (owner->behavior->xSpeed < 0){
-					addXSpeed(STOP_WALK_SLOW_DOWN_AMOUNT, true);
-				}
-				break;
 		}
 		
 		// update some animations
@@ -169,6 +162,15 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 		if (animatedGraphic->curAnimationState == AnimationState::JUMP && owner->behavior->grounded){
 			animatedGraphic->changeState(AnimationState::DEFAULT);
 		}
+	}
+
+	/* friction */
+	if (xSpeed > 0){
+		if ( !(owner->type == LIVING && ((LivingEntity*)owner)->xPush == RIGHT) )
+			addXSpeed(-STOP_WALK_SLOW_DOWN_AMOUNT, true);
+	} else if (xSpeed < 0){
+		if ( !(owner->type == LIVING && ((LivingEntity*)owner)->xPush == LEFT) )
+			addXSpeed(STOP_WALK_SLOW_DOWN_AMOUNT, true);
 	}
 }
 
