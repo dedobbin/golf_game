@@ -13,9 +13,13 @@ GolfMode::GolfMode(LivingEntity* owner)
 void GolfMode::activate(Entity* ball)
 {
 	assert(owner->behavior);
+	assert(ball->behavior);
 	active = true;
-	_ball = ball;
 	//Unsafe for multithreading..
+	_ball = ball;
+	ball->behavior->xSpeed = 0;
+	ball->behavior->ySpeed = 0;
+	
 	owner->behavior->xSpeed = 0;
 	owner->behavior->ySpeed = 0;
 	state = AIMING_DIRECTION;

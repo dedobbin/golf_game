@@ -121,7 +121,7 @@ bool handleInput()
 		if (keysPressed[SDL_SCANCODE_C]){
 			auto i = std::find_if( player->collision->currentColliders.begin(),
 				player->collision->currentColliders.end(), 
-				[&](const auto val){ return val->type == BALL; } 
+				[&](const auto val){ return val->type == BALL && val->behavior && val->behavior->grounded; } 
 			);
 
 			if (i != player->collision->currentColliders.end()){
