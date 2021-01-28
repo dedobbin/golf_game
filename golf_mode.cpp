@@ -3,7 +3,7 @@
 #include "living_entity.hpp"
 #include <assert.h>
 
-#define METER_CURSOR_MOVE_DELAY 5 // Meter cursor should move after this amount of ticks
+#define METER_CURSOR_MOVE_DELAY 3 // Meter cursor should move after this amount of ticks
 
 GolfMode::GolfMode(LivingEntity* owner)
 :owner(owner)
@@ -17,7 +17,7 @@ void GolfMode::activate(Entity* ball)
 	//Unsafe for multithreading..
 	owner->behavior->xSpeed = 0;
 	owner->behavior->ySpeed = 0;
-	state = AIMING_POWER;
+	state = AIMING_DIRECTION;
 	setDirection(RIGHT);
 }
 
