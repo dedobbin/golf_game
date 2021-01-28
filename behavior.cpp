@@ -168,13 +168,13 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 	if (xSpeed > 0){
 		if ( !(owner->type == LIVING && ((LivingEntity*)owner)->xPush == RIGHT) ){
 			if (grounded){
-				addXSpeed(-FRICTION_GROUND, true);
+				addXSpeed(-frictionGround, true);
 			}
 		}
 	} else if (xSpeed < 0){
 		if ( !(owner->type == LIVING && ((LivingEntity*)owner)->xPush == LEFT) ){
 			if (grounded)
-				addXSpeed(FRICTION_GROUND, true);
+				addXSpeed(frictionGround, true);
 		}
 	}
 }

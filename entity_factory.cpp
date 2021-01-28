@@ -59,6 +59,7 @@ Entity* EntityFactory::createBall(int x, int y)
 	auto graphic = new Graphic(sheet, {32, 32, 6 , 6},  ball);
 	ball->graphic = std::unique_ptr<Graphic>(graphic);
 	ball->behavior = std::make_unique<Behavior>(ball);
+	ball->behavior->frictionGround = 0.05;
 	ball->collision = std::make_unique<Collision>(ball);
 	return ball;
 }

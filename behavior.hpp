@@ -9,7 +9,6 @@
 class Entity;
 
 #define GRAVITY 0.65
-#define FRICTION_GROUND 0.35
 
 class Behavior
 {
@@ -33,6 +32,7 @@ class Behavior
 		Entity* owner;
 		bool grounded = false;
 		bool pickupItems = false;
+		float frictionGround = 0.35;
 };
 
 #endif
