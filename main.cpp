@@ -85,11 +85,11 @@ bool handleInput()
 						player->golfMode->setDirection(LEFT);
 					}
 
-					if (e.key.keysym.scancode == SDL_SCANCODE_SPACE){
+					if (e.key.keysym.scancode == SDL_SCANCODE_C){
 						player->golfMode->state = AIMING_POWER;
 					}
 				} else if (player->golfMode->state == AIMING_POWER){
-					if (e.key.keysym.scancode == SDL_SCANCODE_SPACE){
+					if (e.key.keysym.scancode == SDL_SCANCODE_C){
 						player->golfMode->state = AIMING_HEIGHT;
 					}
 				} else if (player->golfMode->state == AIMING_HEIGHT){
