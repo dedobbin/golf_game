@@ -87,7 +87,7 @@ void GolfMode::shoot()
 	//TODO: dont use direct values, use range based on owner
 	if (_dir == RIGHT){
 		_ball->behavior->addXSpeed(power);
-	} else if (_dir == RIGHT){
+	} else if (_dir == LEFT){
 		_ball->behavior->addXSpeed(-power);
 	}
 
