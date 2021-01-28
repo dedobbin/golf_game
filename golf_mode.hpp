@@ -7,7 +7,6 @@ class Entity;
 
 enum GolfState 
 {
-	AIMING_DIRECTION,
 	AIMING_POWER,
 	AIMING_HEIGHT,
 	SWINGING, 

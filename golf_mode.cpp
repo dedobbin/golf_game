@@ -22,7 +22,7 @@ void GolfMode::activate(Entity* ball)
 	
 	owner->behavior->xSpeed = 0;
 	owner->behavior->ySpeed = 0;
-	state = AIMING_DIRECTION;
+	state = AIMING_POWER;
 	setDirection(RIGHT);
 }
 

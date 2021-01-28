@@ -76,22 +76,21 @@ bool handleInput()
 			keysPressed[e.key.keysym.scancode] = true;
 
 			if (player->golfMode->active){
-				if (player->golfMode->state == AIMING_DIRECTION){
+				if (player->golfMode->state == AIMING_POWER){
 					if (e.key.keysym.scancode == SDL_SCANCODE_RIGHT){
 						player->golfMode->setDirection(RIGHT);
 					}
 					if (e.key.keysym.scancode == SDL_SCANCODE_LEFT){
 						player->golfMode->setDirection(LEFT);
 					}
-					if (e.key.keysym.scancode == SDL_SCANCODE_C){
-						player->golfMode->state = AIMING_POWER;
-					}
-				} else if (player->golfMode->state == AIMING_POWER){
+					
 					if (e.key.keysym.scancode == SDL_SCANCODE_C){
 						player->golfMode->state = AIMING_HEIGHT;
 					}
 				} else if (player->golfMode->state == AIMING_HEIGHT){
-					player->golfMode->state = SWINGING;
+					if (e.key.keysym.scancode == SDL_SCANCODE_C){
+						player->golfMode->state = SWINGING;
+					}
 				}
 			}
 
