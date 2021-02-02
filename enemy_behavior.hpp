@@ -7,5 +7,5 @@ class EnemyBehavior : public Behavior
 {
 	public: 
 		EnemyBehavior(LivingEntity* owner);
-		void behave(std::vector<std::shared_ptr<Entity>> entities);
+		void behave();
 };

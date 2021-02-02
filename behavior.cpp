@@ -3,6 +3,7 @@
 #include "assert.h"
 #include "item.hpp"
 #include "living_entity.hpp"
+#include "world.hpp"
 
 // circ dep
 #include "entity.hpp"
@@ -55,12 +56,11 @@ void Behavior::addYSpeed(float n, bool clampZero)
 	}
 }
 
-void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
+void Behavior::behave()
 {
 	// TODO: this check all entities for collision 2 times, should optimize by sorting list, static entities on same place
 	// OR only checking entities in view, but that could lead to other problems later
 	// also Z will get all messed up when i resort list
-
 	if (owner->collision){
 		owner->collision->currentColliders = {};
 	}
@@ -80,7 +80,7 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 
 	owner->pos.x += xSpeed;
 
-	for (auto& collidee : entities){
+	for (auto& collidee : World::entities){
 		if (e == collidee.get()) continue;
 		
 		auto intersect = Collision::checkCollision(e, collidee.get());
@@ -103,7 +103,7 @@ void Behavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 	owner->pos.y += ySpeed;
 
 	bool hasGroundUnder = false;
-	for (auto& collidee : entities){
+	for (auto& collidee : World::entities){
 		if (e == collidee.get()) continue;
 		
 		auto intersect = Collision::checkCollision(e, collidee.get());

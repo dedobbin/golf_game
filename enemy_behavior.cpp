@@ -6,9 +6,9 @@ EnemyBehavior::EnemyBehavior(LivingEntity* owner)
 {}
 
 
-void EnemyBehavior::behave(std::vector<std::shared_ptr<Entity>> entities)
+void EnemyBehavior::behave()
 {
-	Behavior::behave(entities);
+	Behavior::behave();
 
 	if (!grounded){
 		return;
@@ -16,5 +16,4 @@ void EnemyBehavior::behave(std::vector<std::shared_ptr<Entity>> entities)
 
 	//TODO: turn around when walk into wall
 	((LivingEntity*)owner)->xPush = LEFT;
-
 }

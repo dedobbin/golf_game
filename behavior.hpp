@@ -16,7 +16,7 @@ class Behavior
 		Behavior(Entity* owner, bool pickupItems = false);
 		~Behavior();
 		/* overloaded functions should always call parent in normal cases */
-		virtual void behave(std::vector<std::shared_ptr<Entity>> entities);
+		virtual void behave();
 		void jump();
 		/* When slowing down, clampZero should be true so rounds to 0 eventually */
 		void addXSpeed(float n, bool clampZero = false);

@@ -7,10 +7,10 @@ ItemBehavior::ItemBehavior(Item* owner)
 : Behavior(owner)
 {}
 
-void ItemBehavior::behave(std::vector<std::shared_ptr<Entity>> entities)
+void ItemBehavior::behave()
 {
 	if (!((Item*) owner)->owner){
-		Behavior::behave(entities);
+		Behavior::behave();
 	};
 }
 

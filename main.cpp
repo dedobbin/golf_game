@@ -11,7 +11,7 @@
 #include <vector>
 #include "direction.hpp"
 #include "item_behavior.hpp"
-#include "world.cpp"
+#include "world.hpp"
 
 // #define DEBUG_DRAW
 // #define DEBUG_CAMERA
@@ -22,7 +22,6 @@ LazyFooTimer fpsTimer;
 LazyFooTimer capTimer;
 Visuals v;
 std::shared_ptr<LivingEntity> player;
-std::vector<std::shared_ptr<Entity>> entities;
 
 std::shared_ptr<Entity> followWithCam = NULL;
 
@@ -35,34 +34,34 @@ void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets
 	//TODO: get from file
 	EntityFactory factory(spritesheets);
 
-	entities.emplace_back(factory.createGolfClub(400, 0));
+	World::entities.emplace_back(factory.createGolfClub(400, 0));
 
-	entities.emplace_back(factory.createPlayer(200, 0));
-	player = std::static_pointer_cast<LivingEntity>(entities.back());
+	World::entities.emplace_back(factory.createPlayer(200, 0));
+	player = std::static_pointer_cast<LivingEntity>(World::entities.back());
 
-	entities.emplace_back(factory.createEnemy(300, 0));
+	World::entities.emplace_back(factory.createEnemy(300, 0));
 
-	entities.emplace_back(factory.createBall(300, 0));
+	World::entities.emplace_back(factory.createBall(300, 0));
 
 	int blockW = 100;
 	int blockH = 100;
 	int i = 0;
-	entities.emplace_back(factory.createBlock(i * blockW, 400 - blockH, blockW, blockH));
+	World::entities.emplace_back(factory.createBlock(i * blockW, 400 - blockH, blockW, blockH));
 	
 	for (i = 0; i < 15; i++){
-		entities.emplace_back(factory.createBlock(i * blockW, 400, blockW, blockH));
+		World::entities.emplace_back(factory.createBlock(i * blockW, 400, blockW, blockH));
 		if (i > 6){
 			if (i < 9){
-				entities.emplace_back(factory.createBlock(i * blockW, 200, blockW, blockH));
+				World::entities.emplace_back(factory.createBlock(i * blockW, 200, blockW, blockH));
 			}else {
-				entities.emplace_back(factory.createBlock(i * blockW, 100, blockW, blockH));
+				World::entities.emplace_back(factory.createBlock(i * blockW, 100, blockW, blockH));
 			}
 		}
 		// for (int j = 0; j < i ; j++){
 		// 	entities.emplace_back(factory.createBlock(i * blockW, 300 - (blockH/5) * j, blockW, blockH/5));
 		// }
 	}
-	entities.emplace_back(factory.createBlock(i * blockW - blockW, 400 - blockH, blockW, blockH));
+	World::entities.emplace_back(factory.createBlock(i * blockW - blockW, 400 - blockH, blockW, blockH));
 	
 }
 
@@ -164,7 +163,7 @@ bool handleInput()
 void renderEverything()
 {
 	v.renderStart();
-	for (auto& e : entities){
+	for (auto& e : World::entities){
 		if (e->type == ITEM){
 			int d = 4;
 		}
@@ -217,9 +216,9 @@ int main (int argc, char* argv[])
 		keepGoing = handleInput();
 
 		//Move etc all entities, collision etc
-		for (auto& e : entities){
+		for (auto& e : World::entities){
 			if (e->behavior){
-				e->behavior->behave(entities);
+				e->behavior->behave();
 			}
 		}
 
