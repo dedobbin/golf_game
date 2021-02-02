@@ -32,6 +32,7 @@ bool keysPressed[322] = {false};
 
 void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 {
+	//TODO: get from file
 	EntityFactory factory(spritesheets);
 
 	entities.emplace_back(factory.createGolfClub(400, 0));
