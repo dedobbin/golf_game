@@ -8,8 +8,6 @@
 // circ dep
 class Entity;
 
-#define GRAVITY 0.65
-
 class Behavior
 {
 	public:

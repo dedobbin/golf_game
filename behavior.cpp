@@ -66,7 +66,7 @@ void Behavior::behave()
 	}
 
 	if (gravity && !grounded){
-		addYSpeed(GRAVITY);
+		addYSpeed(World::gravity);
 	}
 
 	auto e = owner;
