@@ -11,7 +11,7 @@
 #include <vector>
 #include "direction.hpp"
 #include "item_behavior.hpp"
-
+#include "world.cpp"
 
 // #define DEBUG_DRAW
 // #define DEBUG_CAMERA
