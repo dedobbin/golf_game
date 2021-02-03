@@ -60,7 +60,6 @@ void Behavior::behave()
 {
 	// TODO: this check all entities for collision 2 times, should optimize by sorting list, static entities on same place
 	// OR only checking entities in view, but that could lead to other problems later
-	// also Z will get all messed up when i resort list
 	if (owner->collision){
 		owner->collision->currentColliders = {};
 	}
@@ -80,7 +79,7 @@ void Behavior::behave()
 
 	owner->pos.x += xSpeed;
 
-	for (auto& collidee : World::entities){
+	for (auto& collidee : World::entities){// check x move
 		if (e == collidee.get()) continue;
 		
 		auto intersect = Collision::checkCollision(e, collidee.get());
@@ -103,7 +102,7 @@ void Behavior::behave()
 	owner->pos.y += ySpeed;
 
 	bool hasGroundUnder = false;
-	for (auto& collidee : World::entities){
+	for (auto& collidee : World::entities){// check y move + check if is grounded
 		if (e == collidee.get()) continue;
 		
 		auto intersect = Collision::checkCollision(e, collidee.get());
