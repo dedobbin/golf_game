@@ -172,8 +172,7 @@ void renderEverything()
 
 #ifdef DEBUG_DRAW 
 			if (e->collision){
-				rect collisionRect = e->collision->getRect();
-				v.renderRect(collisionRect.x, collisionRect.y, collisionRect.w, collisionRect.h);
+				v.renderRect(e->pos.x, e->pos.y, e->pos.w, e->pos.h);
 			}
 #endif	
 		}

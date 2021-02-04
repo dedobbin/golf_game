@@ -68,8 +68,6 @@ void Behavior::behave()
 		addYSpeed(World::gravity);
 	}
 
-	auto e = owner;
-
 	direction hDir = NONE;
 	if (xSpeed > 0){
 		hDir = RIGHT;
@@ -80,14 +78,15 @@ void Behavior::behave()
 	owner->pos.x += xSpeed;
 
 	for (auto& collidee : World::entities){// check x move
-		if (e == collidee.get()) continue;
+		if (owner == collidee.get()) continue;
+		if (!collidee->collision) continue;
 		
-		auto intersect = Collision::checkCollision(e, collidee.get());
+		auto intersect = Collision::checkCollision(owner->pos, collidee->pos);
 		bool collision = intersect.w > 0 && intersect.h > 0;
 
 		if (collision){
-			collidee->collision->pushout(e, hDir, intersect);
-			collidee->collision->effect(e, hDir, intersect);
+			collidee->collision->pushout(owner, hDir, intersect);
+			collidee->collision->effect(owner, hDir, intersect);
 			owner->collision->currentColliders.push_back(collidee.get());
 		}
 	}
@@ -103,26 +102,25 @@ void Behavior::behave()
 
 	bool hasGroundUnder = false;
 	for (auto& collidee : World::entities){// check y move + check if is grounded
-		if (e == collidee.get()) continue;
+		if (owner == collidee.get()) continue;
+		if (!collidee->collision) continue;
 		
-		auto intersect = Collision::checkCollision(e, collidee.get());
+		auto intersect = Collision::checkCollision(owner->pos, collidee->pos);
 		bool collision = intersect.w > 0 && intersect.h > 0;
 
 		if (collision){
-			collidee->collision->pushout(e, vDir, intersect);
-			collidee->collision->effect(e, vDir, intersect);
+			collidee->collision->pushout(owner, vDir, intersect);
+			collidee->collision->effect(owner, vDir, intersect);
 		}
 
-
 		// check what is down
-		auto realPos = owner->pos;
-		owner->pos.y += 1;
-		auto intersect2 = Collision::checkCollision(e, collidee.get());
+		auto bellowPos = owner->pos;
+		bellowPos.y += 1;
+		auto intersect2 = Collision::checkCollision(bellowPos, collidee->pos);
 		auto collision2 = intersect2.w > 0 && intersect2.h > 0;
 		if (collision2 && !collidee->collision->isNotOrSemiSolid()){
 			hasGroundUnder = true;
 		}
-		owner->pos = realPos;
 	}
 
 	if (!hasGroundUnder){

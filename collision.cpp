@@ -17,16 +17,9 @@ Collision::~Collision()
 	//std::cout << "DEBUG: Collision deconstructor" << std::endl;
 }
 
-rect Collision::checkCollision(Entity* entityA, Entity* entityB)
+rect Collision::checkCollision(rect a, rect b)
 {
 	rect intersect = {0,0,0,0};
-
-	if (!entityA->collision || !entityB->collision){
-		return intersect;
-	}
-
-    rect a = entityA->collision->getRect();
-    rect b = entityB->collision->getRect();
 	
 	//Based on SDL_IntersectRect
 
@@ -74,8 +67,8 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
         return;
     }
 
-    rect ownerRect = owner->collision->getRect();
-    rect colliderRect = collider->collision->getRect();
+    rect ownerRect = owner->pos;
+    rect colliderRect = collider->pos;
 
     bool bothSolid = collider->collision->solid && owner->collision->solid;
 
@@ -119,20 +112,6 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
         }
         return false;
     }
-}
-
-rect Collision::getRect()
-{
-    // TODO: make dynamic
-    int wMargin = 3;
-    int hMargin = 0;
-
-    return {
-        owner->pos.x + wMargin,
-        owner->pos.y + hMargin,
-        owner->pos.w - wMargin * 2,
-        owner->pos.h - hMargin * 2
-    };
 }
 
 bool Collision::isNotOrSemiSolid()
