@@ -13,7 +13,8 @@ class Collision
 		Collision(Entity* owner, bool solid = true);
 		~Collision();
 		/* Returns intersect of collision */
-		static rect checkCollision(rect a, rect b);
+		static rect getIntersect(rect a, rect b);
+		static bool intersectCollides(rect intersect);
 		bool solid;
 		void pushout(Entity* collider, direction colliderDir, rect intersect);
 		/* Return true if entity needs to be removed from entity list */

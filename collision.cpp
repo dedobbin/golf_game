@@ -17,7 +17,7 @@ Collision::~Collision()
 	//std::cout << "DEBUG: Collision deconstructor" << std::endl;
 }
 
-rect Collision::checkCollision(rect a, rect b)
+rect Collision::getIntersect(rect a, rect b)
 {
 	rect intersect = {0,0,0,0};
 	
@@ -49,6 +49,11 @@ rect Collision::checkCollision(rect a, rect b)
     intersect.h = Amax - Amin;
 
 	return intersect; 
+}
+
+bool Collision::intersectCollides(rect intersect)
+{
+    return intersect.w > 0 && intersect.h > 0;
 }
 
 void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)

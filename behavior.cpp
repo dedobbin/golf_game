@@ -81,10 +81,9 @@ void Behavior::behave()
 		if (owner == collidee.get()) continue;
 		if (!collidee->collision) continue;
 		
-		auto intersect = Collision::checkCollision(owner->pos, collidee->pos);
-		bool collision = intersect.w > 0 && intersect.h > 0;
+		auto intersect = Collision::getIntersect(owner->pos, collidee->pos);
 
-		if (collision){
+		if (Collision::intersectCollides(intersect)){
 			collidee->collision->pushout(owner, hDir, intersect);
 			collidee->collision->effect(owner, hDir, intersect);
 			owner->collision->currentColliders.push_back(collidee.get());
@@ -105,10 +104,9 @@ void Behavior::behave()
 		if (owner == collidee.get()) continue;
 		if (!collidee->collision) continue;
 		
-		auto intersect = Collision::checkCollision(owner->pos, collidee->pos);
-		bool collision = intersect.w > 0 && intersect.h > 0;
+		auto intersect = Collision::getIntersect(owner->pos, collidee->pos);
 
-		if (collision){
+		if (Collision::intersectCollides(intersect)){
 			collidee->collision->pushout(owner, vDir, intersect);
 			collidee->collision->effect(owner, vDir, intersect);
 		}
@@ -116,9 +114,8 @@ void Behavior::behave()
 		// check what is down
 		auto bellowPos = owner->pos;
 		bellowPos.y += 1;
-		auto intersect2 = Collision::checkCollision(bellowPos, collidee->pos);
-		auto collision2 = intersect2.w > 0 && intersect2.h > 0;
-		if (collision2 && !collidee->collision->isNotOrSemiSolid()){
+		auto intersect2 = Collision::getIntersect(bellowPos, collidee->pos);
+		if (Collision::intersectCollides(intersect2) && !collidee->collision->isNotOrSemiSolid()){
 			hasGroundUnder = true;
 		}
 	}
