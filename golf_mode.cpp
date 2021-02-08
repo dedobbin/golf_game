@@ -2,6 +2,7 @@
 
 #include "living_entity.hpp"
 #include <assert.h>
+#include <iostream>
 
 #define METER_CURSOR_MOVE_DELAY 3 // Meter cursor should move after this amount of ticks
 #define SWING_ANIMATION_LEN 10
@@ -12,29 +13,41 @@ GolfMode::GolfMode(LivingEntity* owner)
 
 void GolfMode::activate(Entity* ball)
 {
+	std::cout << "DEBUG activate golf mode " << std::endl;
 	assert(owner->behavior);
 	assert(ball->behavior);
 	active = true;
 	//Unsafe for multithreading..
 	_ball = ball;
+
+	setDirection(RIGHT);
+
 	ball->behavior->xSpeed = 0;
 	ball->behavior->ySpeed = 0;
 	
 	owner->behavior->xSpeed = 0;
 	owner->behavior->ySpeed = 0;
 	state = AIMING_POWER;
-	setDirection(RIGHT);
 }
 
-void GolfMode::setDirection(direction dir){
+bool GolfMode::setDirection(direction dir)
+{
 	assert(_ball);
 	assert(dir == LEFT || dir == RIGHT);
 	//owner->pos.y = _ball->pos.y;
 	_dir = dir;
+	auto newPos = owner->pos;
 	if (dir == LEFT){
-		owner->pos.x = _ball->pos.x - owner->pos.w / 2;
+		newPos.x = _ball->pos.x - owner->pos.w / 2;
 	} else if (dir == RIGHT){
-		owner->pos.x = _ball->pos.x - owner->pos.w / 2 + _ball->pos.w;
+		newPos.x = _ball->pos.x - owner->pos.w / 2 + _ball->pos.w;
+	}
+	if (owner->collision->isValidPos(newPos)){
+		owner->pos = newPos;
+		return true;
+	} else {
+		std::cout << "DEBUG: dont assume position" << std::endl;
+		return false;
 	}
 }
 

@@ -4,6 +4,7 @@
 
 #include "item.hpp"
 #include "living_entity.hpp"
+#include "world.hpp"
 
 //circ dep
 #include "entity.hpp"
@@ -56,14 +57,37 @@ bool Collision::intersectCollides(rect intersect)
     return intersect.w > 0 && intersect.h > 0;
 }
 
+bool Collision::isValidPos(rect pos)
+{
+    if (!solid){
+        return true;
+    }
+
+    for (auto& e : World::entities){
+        if (e.get() == owner){
+            continue;
+        }
+        if (!e->collision){
+            continue;
+        }
+        if (e->collision->isNotOrSemiSolid() && isNotOrSemiSolid()){
+            continue;
+        }    
+
+        if (intersectCollides(getIntersect(pos, e->pos))){
+            return false;
+        }
+    }
+    return true;
+}
+
 void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
 {
     if (!collider->collision){
         return;
     }
 
-    if ((isNotOrSemiSolid() && ((collider->collision->isNotOrSemiSolid() || collider->type == LIVING)) 
-        || (isNotOrSemiSolid() || owner->type == LIVING) && collider->collision->isNotOrSemiSolid())){
+    if (isNotOrSemiSolid() && collider->collision->isNotOrSemiSolid()){
         return;
     }
 
@@ -122,6 +146,9 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
 bool Collision::isNotOrSemiSolid()
 {
     if (!solid){
+        return true;
+    }
+    if (owner->type == LIVING){
         return true;
     }
     if (owner->type == ITEM){

@@ -18,7 +18,7 @@ class GolfMode
 		GolfMode(LivingEntity* owner);
 		void activate(Entity* ball);
 		bool active = false;
-		void setDirection(direction dir);
+		bool setDirection(direction dir);
 		direction _dir;
 		GolfState state;
 		//Used to delay speed of cursor

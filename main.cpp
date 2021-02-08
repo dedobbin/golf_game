@@ -13,7 +13,7 @@
 #include "item_behavior.hpp"
 #include "world.hpp"
 
-// #define DEBUG_DRAW
+#define DEBUG_DRAW
 // #define DEBUG_CAMERA
 // #define DEBUG_CONTROLS
 
@@ -34,21 +34,21 @@ void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets
 	//TODO: get from file
 	EntityFactory factory(spritesheets);
 
-	World::entities.emplace_back(factory.createGolfClub(400, 0));
+	World::entities.emplace_back(factory.createGolfClub(100, 0));
 
-	World::entities.emplace_back(factory.createPlayer(200, 0));
+	World::entities.emplace_back(factory.createPlayer(100, 0));
 	player = std::static_pointer_cast<LivingEntity>(World::entities.back());
 
 	World::entities.emplace_back(factory.createEnemy(300, 0));
 
-	World::entities.emplace_back(factory.createBall(300, 0));
+	World::entities.emplace_back(factory.createBall(100, 0));
 
 	int blockW = 100;
 	int blockH = 100;
 	int i = 0;
 	World::entities.emplace_back(factory.createBlock(i * blockW, 400 - blockH, blockW, blockH));
 	
-	for (i = 0; i < 15; i++){
+	for (i = 0; i < 2; i++){
 		World::entities.emplace_back(factory.createBlock(i * blockW, 400, blockW, blockH));
 		if (i > 6){
 			if (i < 9){
@@ -57,12 +57,11 @@ void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets
 				World::entities.emplace_back(factory.createBlock(i * blockW, 100, blockW, blockH));
 			}
 		}
-		// for (int j = 0; j < i ; j++){
-		// 	entities.emplace_back(factory.createBlock(i * blockW, 300 - (blockH/5) * j, blockW, blockH/5));
-		// }
+		for (int j = 0; j < i ; j++){
+			entities.emplace_back(factory.createBlock(i * blockW, 300 - (blockH/5) * j, blockW, blockH/5));
+		}
 	}
 	World::entities.emplace_back(factory.createBlock(i * blockW - blockW, 400 - blockH, blockW, blockH));
-	
 }
 
 /* Returns false if quit */
