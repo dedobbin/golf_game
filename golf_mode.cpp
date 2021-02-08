@@ -13,41 +13,33 @@ GolfMode::GolfMode(LivingEntity* owner)
 
 void GolfMode::activate(Entity* ball)
 {
-	std::cout << "DEBUG activate golf mode " << std::endl;
 	assert(owner->behavior);
 	assert(ball->behavior);
-	active = true;
-	//Unsafe for multithreading..
-	_ball = ball;
-
-	setDirection(RIGHT);
+	assert(ball->collision);
 
 	ball->behavior->xSpeed = 0;
 	ball->behavior->ySpeed = 0;
 	
 	owner->behavior->xSpeed = 0;
 	owner->behavior->ySpeed = 0;
+
+	active = true;
+	//Unsafe for multithreading..
+	_ball = ball;
+
+	setDirection(RIGHT);
+
 	state = AIMING_POWER;
 }
 
-bool GolfMode::setDirection(direction dir)
+void GolfMode::setDirection(direction dir)
 {
-	assert(_ball);
-	assert(dir == LEFT || dir == RIGHT);
-	//owner->pos.y = _ball->pos.y;
 	_dir = dir;
-	auto newPos = owner->pos;
-	if (dir == LEFT){
-		newPos.x = _ball->pos.x - owner->pos.w / 2;
-	} else if (dir == RIGHT){
-		newPos.x = _ball->pos.x - owner->pos.w / 2 + _ball->pos.w;
-	}
-	if (owner->collision->isValidPos(newPos)){
-		owner->pos = newPos;
-		return true;
-	} else {
-		std::cout << "DEBUG: dont assume position" << std::endl;
-		return false;
+
+	if (_dir == RIGHT){
+		_ball->pos.x = owner->pos.x + owner->pos.w  - _ball->pos.w;
+	} else if(_dir == LEFT){
+		_ball->pos.x = owner->pos.x;
 	}
 }
 
@@ -86,6 +78,7 @@ void GolfMode::tick()
 
 void GolfMode::reset()
 {
+	_ball = NULL;
 	powerCursor = 0;
 	heightCursor = 0;
 	ticksAfterLastMeterMove = 0;
@@ -107,5 +100,4 @@ void GolfMode::shoot()
 
 	reset();
 	active = false;
-
 }
