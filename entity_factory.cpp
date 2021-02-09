@@ -96,6 +96,7 @@ LivingEntity* EntityFactory::createEnemy(int x, int y)
 	animatedGraphic->animations.insert({AnimationState::JUMP, std::unique_ptr<Animation>(jumpAnimation)});
 
 	e->behavior = std::unique_ptr<EnemyBehavior>(new EnemyBehavior(e));
+	e->behavior->maxWalkSpeed = 3.0;
 	//e->behavior->gravity = false;
 	e->collision = std::unique_ptr<Collision>(new Collision(e, true));
 	return e;
