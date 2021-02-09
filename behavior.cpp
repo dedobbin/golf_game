@@ -15,10 +15,11 @@ Behavior::Behavior(Entity* owner, bool pickupItems)
 void Behavior::addXSpeed(float n, bool clampZero)
 {
 	int prevSpeed = xSpeed;
-	if (xSpeed + n > maxXSpeed){
-		xSpeed = maxXSpeed;
-	} else if (xSpeed + n < -maxXSpeed){
-		xSpeed = -maxXSpeed;
+	float max = grounded ? maxWalkSpeed : maxXSpeed;
+	if (xSpeed + n > max){
+		xSpeed = max;
+	} else if (xSpeed + n < -max){
+		xSpeed = -max;
 	} else {
 		xSpeed += n;
 	}
