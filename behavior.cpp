@@ -140,10 +140,10 @@ void Behavior::behave()
 
 		switch(living->xPush){
 			case RIGHT:
-				addXSpeed(grounded ? owner->behavior->walkAcc : owner->behavior->walkAcc / 2);
+				addXSpeed(grounded ? owner->behavior->walkAcc : owner->behavior->walkAcc / 4);
 				break;
 			case LEFT:
-				addXSpeed(-(grounded ? owner->behavior->walkAcc : owner->behavior->walkAcc / 2));
+				addXSpeed(-(grounded ? owner->behavior->walkAcc : owner->behavior->walkAcc / 4));
 				break;
 		}
 		

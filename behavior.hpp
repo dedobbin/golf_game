@@ -24,8 +24,8 @@ class Behavior
 		float walkAcc = 0.2;
 		float xSpeed = 0; //should be set through addXSpeed(), would be better to properly private but eh
 		float ySpeed = 0; //should be set through addXSpeed(), would be better to properly private but eh 
-		float maxXSpeed = 7.0;
-		float maxWalkSpeed = 3.0;
+		float maxXSpeed = 20.0;
+		float maxWalkSpeed = 5.5;
 		float maxYSpeed = 20.0;
 		bool gravity = true;
 		Entity* owner;
