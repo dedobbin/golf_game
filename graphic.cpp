@@ -69,26 +69,13 @@ void Graphic::render(SDL_Renderer* renderer, Camera* camera)
 			//TODO: improve swing animation
 			if (living->golfMode && living->golfMode->active){
 				if (living->golfMode->_dir == RIGHT){
-					angle = -150;
-					pos.y -= living->pos.h / 2;
-					pos.x += living->pos.w / 3;
+					angle = 18;
 					flip = (SDL_RendererFlip)true;
-					if (living->golfMode->state == SWINGING){
-						angle -= 20 * living->golfMode->ticksAfterStartSwinging;
-						pos.y += 3 * living->golfMode->ticksAfterStartSwinging;
-						pos.x += 1 * living->golfMode->ticksAfterStartSwinging;
-					}
 				} else if (living->golfMode->_dir == LEFT){
-					angle = 150;
-					pos.y -= living->pos.h / 2;
-					pos.x -= living->pos.w / 2;
-					if (living->golfMode->state == SWINGING){
-						angle += 20 * living->golfMode->ticksAfterStartSwinging;
-						pos.y -= 3 * living->golfMode->ticksAfterStartSwinging;
-						pos.x -= 1 * living->golfMode->ticksAfterStartSwinging;
-					}
+					angle = -18;
+					pos.x += living->pos.w / 2;
 				}
-			} else {
+			} else { //put on back
 				angle = -18;
 				pos.x += ((Item*)owner)->owner->pos.w / 10 + 10;
 				pos.y -= living->pos.w / 20;
