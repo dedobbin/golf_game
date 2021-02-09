@@ -72,8 +72,7 @@ bool handleInput()
 		if (e.type == SDL_QUIT){
 			return false;
 		} else if (e.type == SDL_KEYDOWN){
-			keysPressed[e.key.keysym.scancode] = true;
-
+			
 			if (player->golfMode->active){
 				if (player->golfMode->state == AIMING_POWER){
 					if (e.key.keysym.scancode == SDL_SCANCODE_RIGHT){
@@ -90,11 +89,25 @@ bool handleInput()
 					if (e.key.keysym.scancode == SDL_SCANCODE_C){
 						player->golfMode->state = SWINGING;
 					}
+				} 
+			} else {
+				if (e.key.keysym.scancode == SDL_SCANCODE_C){
+					auto i = std::find_if( player->collision->currentColliders.begin(),
+					player->collision->currentColliders.end(), 
+					[&](const auto val){ return val->type == BALL && val->behavior && val->behavior->grounded; } 
+					);
+
+					if (i != player->collision->currentColliders.end()){
+						if (player->heldItem){
+							auto itemBehavior = (ItemBehavior*)player->heldItem->behavior.get();
+							itemBehavior->interact(*i);
+						}
+					}
 				}
 			}
 
-
-		} else  if (e.type == SDL_KEYUP){
+			keysPressed[e.key.keysym.scancode] = true;
+		} else if (e.type == SDL_KEYUP){
 			keysPressed[e.key.keysym.scancode] = false;
 		}
 	}
@@ -114,20 +127,6 @@ bool handleInput()
 
 		if (keysPressed[SDL_SCANCODE_Z]){
 			player->behavior->jump();
-		}
-
-		if (keysPressed[SDL_SCANCODE_C]){
-			auto i = std::find_if( player->collision->currentColliders.begin(),
-				player->collision->currentColliders.end(), 
-				[&](const auto val){ return val->type == BALL && val->behavior && val->behavior->grounded; } 
-			);
-
-			if (i != player->collision->currentColliders.end()){
-				if (player->heldItem){
-					auto itemBehavior = (ItemBehavior*)player->heldItem->behavior.get();
-					itemBehavior->interact(*i);
-				}
-			}
 		}
 	}
 
