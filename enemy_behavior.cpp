@@ -5,7 +5,6 @@ EnemyBehavior::EnemyBehavior(LivingEntity* owner)
 : Behavior(owner)
 {}
 
-
 void EnemyBehavior::behave()
 {
 	Behavior::behave();

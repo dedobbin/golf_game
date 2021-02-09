@@ -21,6 +21,7 @@ class Behavior
 		/* When slowing down, clampZero should be true so rounds to 0 eventually */
 		void addYSpeed(float n, bool clampZero = false);
 		int getState();
+		void destroy();
 		float walkAcc = 0.2;
 		float xSpeed = 0; //should be set through addXSpeed(), would be better to properly private but eh
 		float ySpeed = 0; //should be set through addXSpeed(), would be better to properly private but eh 
@@ -32,6 +33,7 @@ class Behavior
 		bool grounded = false;
 		bool pickupItems = false;
 		float frictionGround = 0.35;
+		bool destroyed = false;;
 };
 
 #endif

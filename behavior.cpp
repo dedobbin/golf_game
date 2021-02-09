@@ -35,7 +35,6 @@ void Behavior::addXSpeed(float n, bool clampZero)
 			owner->graphic->changeState(AnimationState::DEFAULT);
 		}
 	}
-
 }
 
 Behavior::~Behavior()
@@ -61,6 +60,11 @@ void Behavior::behave()
 {
 	// TODO: this check all entities for collision 2 times, should optimize by sorting list, static entities on same place
 	// OR only checking entities in view, but that could lead to other problems later
+	
+	if (destroyed){
+		return;
+	}
+	
 	if (owner->collision){
 		owner->collision->currentColliders = {};
 	}
@@ -174,7 +178,8 @@ void Behavior::behave()
 	}
 }
 
-void Behavior::jump(){
+void Behavior::jump()
+{
 	//TODO: shouldn't be able to jump if something above that is not item etc
 	if (!grounded){
 		return;
@@ -183,4 +188,13 @@ void Behavior::jump(){
 	grounded = false;
 	addYSpeed(-13.5);
 	owner->graphic->changeState(AnimationState::JUMP);
+}
+
+void Behavior::destroy()
+{
+	//TODO: drop held item(s)
+	if (owner->graphic){
+		owner->graphic->changeState(AnimationState::DEAD);
+	}
+	destroyed = true;
 }

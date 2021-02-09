@@ -31,7 +31,8 @@ enum AnimationState
 	WALK,
 	JUMP,
 	ATTACK,
-	FALL
+	FALL,
+	DEAD
 };
 
 class Animation
