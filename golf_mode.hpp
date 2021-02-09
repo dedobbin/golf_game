@@ -19,7 +19,7 @@ class GolfMode
 		void activate(Entity* ball);
 		bool active = false;
 		void setDirection(direction dir);
-		direction _dir;
+		direction _dir = RIGHT;
 		GolfState state;
 		//Used to delay speed of cursor
 		int ticksAfterLastMeterMove = 0;

@@ -28,13 +28,14 @@ void GolfMode::activate(Entity* ball)
 	//Unsafe for multithreading..
 	_ball = ball;
 
-	setDirection(RIGHT);
+	setDirection(_dir); //reuse last dir
 
 	state = AIMING_POWER;
 }
 
 void GolfMode::setDirection(direction dir)
 {
+	assert(dir == RIGHT || dir == LEFT);
 	_dir = dir;
 
 	if (_dir == RIGHT){
