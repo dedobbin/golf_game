@@ -196,13 +196,23 @@ void Behavior::jump()
 
 void Behavior::destroy()
 {
-	//TODO: drop held item(s)
-	gravity = false;
-	if (owner->collision){
-		owner->collision->solid = false;
-	} 
-	if (owner->graphic){
-		owner->graphic->changeState(AnimationState::DEAD);
+	if (owner->type == LIVING){
+		auto livingOwner = (LivingEntity*)owner;
+		gravity = false;
+		if (owner->collision){
+			owner->collision->solid = false;
+		}
+
+		pickupItems = false;
+
+		if (livingOwner->heldItem){
+			auto item = livingOwner->heldItem;
+			item->owner = NULL;
+			livingOwner->heldItem = NULL;
+		}
+		if (owner->graphic){
+			owner->graphic->changeState(AnimationState::DEAD);
+		}
 	}
 	destroyed = true;
 }

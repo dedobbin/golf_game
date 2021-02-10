@@ -34,7 +34,7 @@ void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets
 	//TODO: get from file
 	EntityFactory factory(spritesheets);
 
-	World::entities.emplace_back(factory.createGolfClub(100, 0));
+	World::entities.emplace_back(factory.createGolfClub(300, 0));
 
 	World::entities.emplace_back(factory.createPlayer(100, 0));
 	player = std::static_pointer_cast<LivingEntity>(World::entities.back());
