@@ -35,8 +35,13 @@ LivingEntity* EntityFactory::createPlayer(int x, int y)
 
 	auto deadAnimation = new Animation(deathSheet);
 	deadAnimation->frames.push_back(std::make_unique<Frame>(0, 0, 32, 32));
+	deadAnimation->frames.push_back(std::make_unique<Frame>(32, 0, 32, 32));
+	deadAnimation->frames.push_back(std::make_unique<Frame>(64, 0, 32, 32));
+	deadAnimation->frames.push_back(std::make_unique<Frame>(96, 0, 32, 32));
+	deadAnimation->frames.push_back(std::make_unique<Frame>(128, 0, 32, 32));
+	deadAnimation->frames.push_back(std::make_unique<Frame>(0, 32, 32, 32));
+	deadAnimation->frames.push_back(std::make_unique<Frame>(32, 32, 32, 32));
 	animatedGraphic->animations.insert({AnimationState::DEAD, std::unique_ptr<Animation>(deadAnimation)});
-
 
 	e->behavior = std::unique_ptr<Behavior>(new Behavior(e, true));
 	//e->behavior->gravity = false;
