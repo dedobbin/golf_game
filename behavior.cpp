@@ -197,6 +197,10 @@ void Behavior::jump()
 void Behavior::destroy()
 {
 	//TODO: drop held item(s)
+	gravity = false;
+	if (owner->collision){
+		owner->collision->solid = false;
+	} 
 	if (owner->graphic){
 		owner->graphic->changeState(AnimationState::DEAD);
 	}
