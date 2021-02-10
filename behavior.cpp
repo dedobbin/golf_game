@@ -29,10 +29,14 @@ void Behavior::addXSpeed(float n, bool clampZero)
 
 	if (grounded && gravity){
 		if ( xSpeed != 0 && (prevSpeed > 0 && n > 0) || (prevSpeed < 0 && n < 0) ){
-			owner->graphic->changeState(AnimationState::WALK);
+			if (owner->graphic->curAnimationState == DEFAULT){
+				owner->graphic->changeState(AnimationState::WALK);
+			}
 		} else {
 			//TODO: i think this jank get called when not needed, animation looks good though..
-			owner->graphic->changeState(AnimationState::DEFAULT);
+			if (owner->graphic->curAnimationState == AnimationState::WALK){
+				owner->graphic->changeState(AnimationState::DEFAULT);
+			}
 		}
 	}
 }
