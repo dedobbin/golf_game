@@ -12,7 +12,7 @@ void EnemyBehavior::behave()
 	if (!grounded){
 		return;
 	}
-	if ( ((LivingEntity*)owner)->livingEntityType == ENEMY_A ){
+	if ( ((LivingEntity*)owner)->livingEntityType == ENEMY_A){
 		switch (((LivingEntity*)owner)->xPush ){
 			case LEFT:
 				if (!owner->collision->isValidPos({
@@ -37,7 +37,7 @@ void EnemyBehavior::behave()
 				break;
 
 			case NONE:
-				((LivingEntity*)owner)->xPush = LEFT;
+				((LivingEntity*)owner)->xPush = RIGHT;
 				break;
 		}
 	}

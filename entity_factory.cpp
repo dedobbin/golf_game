@@ -12,7 +12,7 @@ LivingEntity* EntityFactory::createPlayer(int x, int y)
 {
 	auto sheet = spritesheets.at("spritesheet1");
 
-	auto e = new LivingEntity("player", PLAYER, x, y, 70, 100);
+	auto e = new LivingEntity("player", PLAYER, x, y, 100, 100);
 	e->graphic = std::unique_ptr<Graphic>(new Graphic(e));
 
 	auto animatedGraphic = e->graphic.get();
@@ -29,6 +29,11 @@ LivingEntity* EntityFactory::createPlayer(int x, int y)
 	auto jumpAnimation = new Animation(sheet);
 	jumpAnimation->frames.push_back(std::make_unique<Frame>(32, 0, 32, 32));
 	animatedGraphic->animations.insert({AnimationState::JUMP, std::unique_ptr<Animation>(jumpAnimation)});
+
+	auto deadAnimation = new Animation(sheet);
+	deadAnimation->frames.push_back(std::make_unique<Frame>(32, 32, 32, 32));
+	animatedGraphic->animations.insert({AnimationState::DEAD, std::unique_ptr<Animation>(deadAnimation)});
+
 
 	e->behavior = std::unique_ptr<Behavior>(new Behavior(e, true));
 	//e->behavior->gravity = false;
@@ -78,7 +83,7 @@ LivingEntity* EntityFactory::createEnemy(int x, int y)
 {
 	auto sheet = spritesheets.at("spritesheet4");
 
-	LivingEntity* e = new LivingEntity("enemy", ENEMY_A, x, y, 70, 100);
+	LivingEntity* e = new LivingEntity("enemy", ENEMY_A, x, y, 100, 100);
 	e->graphic = std::unique_ptr<Graphic>(new Graphic(e));
 	auto animatedGraphic = (Graphic*)e->graphic.get();
 

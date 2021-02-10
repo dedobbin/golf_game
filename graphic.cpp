@@ -46,6 +46,11 @@ void Graphic::changeState(AnimationState newState)
 Sprite Graphic::getSprite()
 {
 	auto animation = animations[curAnimationState].get();
+	if (!animation){
+		std::cout << "DEBUG: requesting invalid animation " << curAnimationState << ", using DEFAULT as fallback.. " << std::endl;
+		curAnimationState = DEFAULT;
+		animation = animations[curAnimationState].get();
+	}
 	auto curFrame = animation->frames[animation->curFrame].get();
 	return {animation->spritesheet, curFrame->src};
 }
