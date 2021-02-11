@@ -215,6 +215,13 @@ int main (int argc, char* argv[])
 		//Move etc all entities, collision etc
 		for (auto& e : World::entities){
 			if (e->behavior){
+				
+				/* debug */
+				// if (e->type == BALL){
+				// 	std::cout << e->behavior->xSpeed << ", " << e->behavior->ySpeed << std::endl;
+
+				// }
+				
 				e->behavior->behave();
 			}
 		}

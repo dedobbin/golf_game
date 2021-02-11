@@ -44,7 +44,7 @@ void Graphic::changeState(AnimationState newState)
 		int debug = 4;
 	}
 
-	std::cout << "DEBUG animation change " << owner->name << ": " << curAnimationState << " -> " << newState << std::endl;
+	//std::cout << "DEBUG animation change " << owner->name << ": " << curAnimationState << " -> " << newState << std::endl;
 	curAnimationState = newState;
 }
 

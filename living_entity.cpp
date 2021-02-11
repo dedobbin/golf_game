@@ -28,7 +28,6 @@ void LivingEntity::ignoreEffectsTick()
 		// auto entity = iter->first;
 		// auto n = iter->second;
 		iter->second--;
-		std::cout << "ignoring"  << std::endl;
 		if (iter->second <= 0){
 			iter = ignoreEffectsMap.erase(iter);
 		} else {

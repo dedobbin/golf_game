@@ -154,7 +154,7 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
                 }
             case BALL:
                 assert(owner->behavior);
-                if (! (owner->behavior->xSpeed == 0 && owner->behavior->ySpeed == 0)){
+                if  (owner->behavior->xSpeed > 5 || owner->behavior->ySpeed > 5){
                     collider->behavior->destroy();
                 }
                 
