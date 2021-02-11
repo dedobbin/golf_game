@@ -33,7 +33,7 @@ class Behavior
 		bool grounded = false;
 		bool pickupItems = false;
 		float frictionGround = 0.35;
-		bool destroyed = false;;
+		bool destroyed = false;
 };
 
 #endif

@@ -129,6 +129,9 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
 
 bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
 {
+    if (owner->behavior && owner->behavior->destroyed){
+        return false;
+    }
     if (collider->type == LIVING){
         auto livingCollider = (LivingEntity*) collider;
         if (livingCollider->ignoreEffectsMap.find(owner) != livingCollider->ignoreEffectsMap.end()){
