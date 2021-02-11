@@ -23,10 +23,16 @@ void LivingEntity::give(Item* item)
 
 void LivingEntity::ignoreEffectsTick()
 {
-	for(auto iter = ignoreEffectsMap.begin(); iter != ignoreEffectsMap.end(); ++iter)
+	for(auto iter = ignoreEffectsMap.begin(); iter != ignoreEffectsMap.end();)
 	{
 		// auto entity = iter->first;
 		// auto n = iter->second;
-		std::cout << iter->second << std::endl;
+		iter->second--;
+		std::cout << "ignoring"  << std::endl;
+		if (iter->second <= 0){
+			iter = ignoreEffectsMap.erase(iter);
+		} else {
+			++iter;
+		}
 	}
 }

@@ -155,7 +155,7 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
             case BALL:
                 assert(owner->behavior);
                 if (! (owner->behavior->xSpeed == 0 && owner->behavior->ySpeed == 0)){
-                    std::cout << "DEBUG: ball touches " << collider->name << std::endl;
+                    collider->behavior->destroy();
                 }
                 
                 return false;
