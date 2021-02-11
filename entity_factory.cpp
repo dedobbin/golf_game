@@ -61,7 +61,7 @@ Item* EntityFactory::createGolfClub(int x, int y)
 	auto sheet = spritesheets.at("spritesheet2");
 
 	auto club = new Item("golf_club", x, y, CLUB, 32, 100);
-	auto clubGraphic = new Graphic(sheet, {0, 32, 6 , 25},  club);
+	auto clubGraphic = new Graphic(sheet, {0, 32, 6 , 20},  club);
 	club->graphic = std::unique_ptr<Graphic>(clubGraphic);
 	club->behavior = std::make_unique<ItemBehavior>(club);
 	club->collision = std::make_unique<Collision>(club);
