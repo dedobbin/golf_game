@@ -26,6 +26,7 @@ class GolfMode
 		direction meterCursorDirection = RIGHT;
 		int ticksAfterStartSwinging = 0;
 		void tick();
+		Entity* _ball;
 
 		/** graphic stuff  **/
 		int powerCursor = 0;
@@ -35,6 +36,5 @@ class GolfMode
 	private:
 		void reset();
 		void shoot();
-		Entity* _ball;
 		Entity* owner;
 };

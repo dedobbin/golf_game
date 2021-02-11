@@ -5,6 +5,7 @@
 #include "item.hpp"
 #include "living_entity.hpp"
 #include "world.hpp"
+#include "assert.h"
 
 //circ dep
 #include "entity.hpp"
@@ -146,6 +147,13 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
                     }
                     return false;
                 }
+            case BALL:
+                assert(owner->behavior);
+                if (! (owner->behavior->xSpeed == 0 && owner->behavior->ySpeed == 0)){
+                    std::cout << "DEBUG: ball touches " << collider->name << std::endl;
+                }
+                
+                return false;
         }
         return false;
     }
