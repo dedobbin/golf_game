@@ -131,7 +131,7 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
 {
     if (collider->type == LIVING){
         auto livingCollider = (LivingEntity*) collider;
-        if (livingCollider->ignoreEffectsMap[owner]){
+        if (livingCollider->ignoreEffectsMap.find(owner) != livingCollider->ignoreEffectsMap.end()){
             std::cout << "DEBUG:" << livingCollider->name <<  " ignored effects of " << owner->name << std::endl;
             return false;
         }

@@ -23,4 +23,5 @@ class LivingEntity : public Entity
 		LivingEntityType livingEntityType;
 		/* stores entities should be ignored and for amount of ticks */
 		std::unordered_map<Entity*, int> ignoreEffectsMap;
+		void ignoreEffectsTick();
 };

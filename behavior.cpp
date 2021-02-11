@@ -146,6 +146,8 @@ void Behavior::behave()
 			living->golfMode->tick();
 		}
 
+		living->ignoreEffectsTick();
+
 		switch(living->xPush){
 			case RIGHT:
 				addXSpeed(grounded ? owner->behavior->walkAcc : owner->behavior->walkAcc / 4);
