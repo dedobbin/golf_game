@@ -130,6 +130,11 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
 bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
 {
     if (collider->type == LIVING){
+        auto livingCollider = (LivingEntity*) collider;
+        if (livingCollider->ignoreEffectsMap[owner]){
+            std::cout << "DEBUG:" << livingCollider->name <<  " ignored effects of " << owner->name << std::endl;
+            return false;
+        }
         switch(owner->type){
             case ITEM:{
                     //if not owned by an entity, its on the field

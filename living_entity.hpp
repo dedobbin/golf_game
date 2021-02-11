@@ -21,4 +21,6 @@ class LivingEntity : public Entity
 		Item* heldItem = NULL;
 		std::unique_ptr<GolfMode> golfMode;
 		LivingEntityType livingEntityType;
+		/* stores entities should be ignored and for amount of ticks */
+		std::unordered_map<Entity*, int> ignoreEffectsMap;
 };

@@ -100,6 +100,8 @@ void GolfMode::shoot()
 
 	_ball->behavior->addYSpeed(-heightCursor);
 
+	((LivingEntity*)owner)->ignoreEffectsMap[_ball] = 10;
+
 	reset();
 	active = false;
 }
