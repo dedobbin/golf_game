@@ -3,6 +3,7 @@
 #include "visuals.hpp"
 #include "living_entity.hpp"
 #include <iostream>
+#include <string.h>
 
 //TODO: place in utils file
 void strip_ext(char *fname)
@@ -16,6 +17,11 @@ void strip_ext(char *fname)
         (*(end - 1) != '\\' && *(end - 1) != '/')) {
         *end = '\0';
     }  
+}
+
+bool ends_with(char* haystack, char* needle)
+{
+	return (strlen(haystack) > strlen(needle) && !strcmp(haystack + strlen(haystack) - strlen(needle), needle));
 }
 
 Visuals::Visuals()
@@ -48,6 +54,10 @@ bool Visuals::loadSpritesheets(std::string path)
 			continue;
 		}
 		
+		if (!ends_with(ent->d_name, ".png")){
+			continue;
+		}
+
 		auto location = path + "/" + ent->d_name;
 		strip_ext(ent->d_name);
 		spritesheets[ent->d_name] = loadTexture(location);
