@@ -4,3 +4,7 @@ a.out
 *.a
 *.o
 *.so
+index.data
+index.html
+index.js
+index.wasm

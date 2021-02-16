@@ -155,6 +155,8 @@ void Behavior::behave()
 			case LEFT:
 				addXSpeed(-(grounded ? owner->behavior->walkAcc : owner->behavior->walkAcc / 4));
 				break;
+			default:
+				break;
 		}
 		
 		// update some animations

@@ -146,25 +146,26 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
                         auto living = (LivingEntity*) collider;
                         living->give(item);
                     }
-                    return false;
                 }
+                return false;
             case LIVING:
                 if (collider->behavior){
                     if ( ((LivingEntity*)owner)->livingEntityType == ENEMY_A){
                         collider->behavior->destroy();
                     }
-                    return false;
                 }
+                return false;
             case BALL:
                 assert(owner->behavior);
                 if  (owner->behavior->xSpeed > 5 || owner->behavior->ySpeed > 5){
                     collider->behavior->destroy();
                 }
-                
+                return false;
+            default:
                 return false;
         }
-        return false;
     }
+    return false;
 }
 
 bool Collision::isNotOrSemiSolid()
