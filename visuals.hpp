@@ -15,6 +15,12 @@
 #define SCREEN_W 920
 #define SCREEN_H 640
 
+struct context
+{
+    SDL_Renderer *renderer;
+    int iteration;
+};
+
 class Visuals
 {
 	public:
@@ -30,9 +36,9 @@ class Visuals
 		void renderGolfMeter(GolfState state, int level, int nPoints);
 		std::unique_ptr<Camera> camera;
 		std::unordered_map<std::string, SDL_Texture*> spritesheets;
+		context ctx;
 
 	private:
-		bool initSDL();
 		bool loadSpritesheets(std::string dir);
 		bool loadSpritesheet(std::string name);
 		bool createWindow(std::string title);

@@ -12,6 +12,7 @@
 #include "direction.hpp"
 #include "item_behavior.hpp"
 #include "world.hpp"
+#include <emscripten.h>
 
 #define DEBUG_DRAW
 // #define DEBUG_CAMERA
@@ -190,62 +191,82 @@ void renderEverything()
 	v.renderEnd();
 }
 
+
+void mainloop(void *arg)
+{
+    context *ctx = static_cast<context*>(arg);
+    SDL_Renderer *renderer = ctx->renderer;
+    
+    SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
+    SDL_RenderClear(renderer);
+
+    SDL_RenderPresent(renderer);
+    ctx->iteration++;
+
+}
+
 int main (int argc, char* argv[])
 {
-	assert(v.spritesheets.size() > 0);
-	generateEntities(v.spritesheets);
+    const int simulate_infinite_loop = 1; // call the function repeatedly
+    const int fps = -1; // call the function as fast as the browser wants to render (typically 60fps)
+
+    emscripten_set_main_loop_arg(mainloop, &v.ctx, fps, simulate_infinite_loop);
+
+
+// 	assert(v.spritesheets.size() > 0);
+// 	generateEntities(v.spritesheets);
 	
-	assert(player);
-	followWithCam = player;
+// 	assert(player);
+// 	followWithCam = player;
 	
-	int countedFrames = 0;
-	const int FPS = 60;
-	const int SCREEN_TICK_PER_FRAME = 1000 / FPS;
+// 	int countedFrames = 0;
+// 	const int FPS = 60;
+// 	const int SCREEN_TICK_PER_FRAME = 1000 / FPS;
 
-	bool keepGoing = true;
+// 	bool keepGoing = true;
 
-	fpsTimer.start();
+// 	fpsTimer.start();
 
-	while(keepGoing){
-		capTimer.start();
+// 	while(keepGoing){
+// 		capTimer.start();
 
-		keepGoing = handleInput();
+// 		keepGoing = handleInput();
 
-		//Move etc all entities, collision etc
-		for (auto& e : World::entities){
-			if (e->behavior){
+// 		//Move etc all entities, collision etc
+// 		for (auto& e : World::entities){
+// 			if (e->behavior){
 				
-				/* debug */
-				// if (e->type == BALL){
-				// 	std::cout << e->behavior->xSpeed << ", " << e->behavior->ySpeed << std::endl;
+// 				/* debug */
+// 				// if (e->type == BALL){
+// 				// 	std::cout << e->behavior->xSpeed << ", " << e->behavior->ySpeed << std::endl;
 
-				// }
+// 				// }
 				
-				e->behavior->behave();
-			}
-		}
+// 				e->behavior->behave();
+// 			}
+// 		}
 
-#ifndef DEBUG_CAMERA
-		v.camera->camRect.x = followWithCam->pos.x - v.camera->camRect.w / 2;
-		v.camera->camRect.y = followWithCam->pos.y - v.camera->camRect.h / 2;
-#endif
+// #ifndef DEBUG_CAMERA
+// 		v.camera->camRect.x = followWithCam->pos.x - v.camera->camRect.w / 2;
+// 		v.camera->camRect.y = followWithCam->pos.y - v.camera->camRect.h / 2;
+// #endif
 
-		renderEverything();
+// 		renderEverything();
 
-		float avgFps = countedFrames / ( fpsTimer.getTicks() / 1000.f );
-		if( avgFps > 2000000 ){
-			avgFps = 0;
-		}
-		//std::cout << "FPS: " << avgFps << std::endl;
-		++countedFrames;
-		int frameTicks = capTimer.getTicks();
-		if( frameTicks < SCREEN_TICK_PER_FRAME ){
-			//Wait remaining time
-			SDL_Delay( SCREEN_TICK_PER_FRAME - frameTicks );
-		}
-	}
+// 		float avgFps = countedFrames / ( fpsTimer.getTicks() / 1000.f );
+// 		if( avgFps > 2000000 ){
+// 			avgFps = 0;
+// 		}
+// 		//std::cout << "FPS: " << avgFps << std::endl;
+// 		++countedFrames;
+// 		int frameTicks = capTimer.getTicks();
+// 		if( frameTicks < SCREEN_TICK_PER_FRAME ){
+// 			//Wait remaining time
+// 			SDL_Delay( SCREEN_TICK_PER_FRAME - frameTicks );
+// 		}
+// 	}
 
-	std::cout << "DEBUG: game end" << std::endl;
+// 	std::cout << "DEBUG: game end" << std::endl;
 	return 0;
 }
 

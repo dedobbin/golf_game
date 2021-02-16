@@ -26,14 +26,23 @@ bool ends_with(char* haystack, char* needle)
 
 Visuals::Visuals()
 {
-	if (!initSDL()){
-		exit(1);
-	}
+  	SDL_Init(SDL_INIT_VIDEO);
+    SDL_Window *window;
+    SDL_Renderer *renderer;
+    SDL_CreateWindowAndRenderer(SCREEN_W, SCREEN_H, 0, &window, &renderer);
 
-	defaultSpritesheetPath = "./assets/spritesheets";
-	loadSpritesheets(defaultSpritesheetPath);
+    ctx.renderer = renderer;
+    ctx.iteration = 0;
 
-	camera = std::make_unique<Camera>(200, 0, 900, 700);
+
+	// if (!initSDL()){
+	// 	exit(1);
+	// }
+
+	// defaultSpritesheetPath = "./assets/spritesheets";
+	// loadSpritesheets(defaultSpritesheetPath);
+
+	// camera = std::make_unique<Camera>(200, 0, 900, 700);
 }
 
 Visuals::~Visuals()
@@ -85,38 +94,6 @@ SDL_Texture* Visuals::getSpritesheet(std::string name)
 		loadSpritesheet(name);
 	}
 	return spritesheets.at(name);
-}
-
-bool Visuals::initSDL()
-{
-	if( SDL_Init( SDL_INIT_EVERYTHING ) < 0 ) {
-		std::cerr << "Could not init SDL: " << SDL_GetError() << std::endl;	
-		return false;
-	}
-	
-	if (!createWindow("plat")){
-		return false;
-	}
-
-	renderer = SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED );
-	if( renderer == NULL ){
-		std::cerr << "Could not create renderer: " << SDL_GetError() << std::endl;	
-		return false;
-	}
-
-	//SDL_SetRenderDrawColor( _r, 0xFF, 0xFF, 0xFF, 0xFF );
-	if (SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND) < 0){
-		std::cerr << "Could not set blend mode: " << SDL_GetError() << std::endl;	
-		return false;
-	}
-
-	int imgFlags = IMG_INIT_PNG;
-	if( !( IMG_Init( imgFlags ) & imgFlags ) ){
-		std::cerr << "Could not init SDL_image: " << SDL_GetError() << std::endl;	
-		return false;
-	}
-	 //TODO: init sound
-	 return true;
 }
 
 bool Visuals::createWindow(std::string title)
