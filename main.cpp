@@ -198,7 +198,6 @@ int main (int argc, char* argv[])
 	assert(player);
 	followWithCam = player;
 	
-	
 	int countedFrames = 0;
 	const int FPS = 60;
 	const int SCREEN_TICK_PER_FRAME = 1000 / FPS;
