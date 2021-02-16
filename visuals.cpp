@@ -115,15 +115,6 @@ bool Visuals::initSDL()
 		std::cerr << "Could not init SDL_image: " << SDL_GetError() << std::endl;	
 		return false;
 	}
-	if( TTF_Init() == -1 ){
-		std::cerr << "Could not init SDL_font: " << SDL_GetError() << std::endl;	
-		return false;
-	}
-	font = TTF_OpenFont( "assets/OpenSans-Regular.ttf", 28 );
-	if( font == NULL ){
-		std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;	
-        return false;
-    }
 	 //TODO: init sound
 	 return true;
 }
@@ -136,21 +127,6 @@ bool Visuals::createWindow(std::string title)
             return false;
         }
 	return true;
-}
-
-const int Visuals::renderText(std::string text, SDL_Color color, int x, int y, int h) const
-{
-	std::cerr << "TODO: implement render text" << std::endl;
-	exit(1);
-	// SDL_Surface* textSurface = TTF_RenderText_Solid(font, text.c_str(), color);
-	// SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
-	// int textW = text.length() * getRelativeCharW(h);
-	// SDL_Rect textRect = {x, y, textW, h};
-	
-	// SDL_RenderCopy(renderer, textTexture, NULL, &textRect); 
-	// SDL_FreeSurface(textSurface);
-	// SDL_DestroyTexture(textTexture);
-	// return textW;		
 }
 
 SDL_Texture* Visuals::loadTexture( std::string path) const

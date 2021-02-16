@@ -44,7 +44,6 @@ class Visuals
 
 		SDL_Window* window;
 		SDL_Renderer* renderer;
-		TTF_Font* font;
 };
 
 #endif
