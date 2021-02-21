@@ -3,6 +3,7 @@
 //#include "graphic.hpp"
 #include "enemy_behavior.hpp"
 #include "item_behavior.hpp"
+#include <assert.h>
 
 EntityFactory::EntityFactory(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 :spritesheets(spritesheets)
@@ -55,8 +56,8 @@ LivingEntity* EntityFactory::createPlayer(int x, int y)
 
 Item* EntityFactory::createGolfClub(int x, int y)
 {
-	auto sheet = spritesheets.at("spritesheet2");
-
+	auto sheet = spritesheets["spritesheet2"];
+	assert(sheet);
 	auto club = new Item("golf_club", x, y, CLUB, 32, 100);
 	auto clubGraphic = new Graphic(sheet, {0, 32, 6 , 20},  club);
 	club->graphic = std::unique_ptr<Graphic>(clubGraphic);

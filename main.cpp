@@ -2,7 +2,6 @@
 #include <memory>
 #include <algorithm>
 #include "visuals.hpp"
-#include "sdl_utils.hpp"
 #include "entity.hpp"
 #include "living_entity.hpp"
 #include "rect.hpp"
@@ -19,8 +18,6 @@
 // #define DEBUG_CONTROLS
 
 //TODO: get rid of globals so functions can go to own files etc
-LazyFooTimer fpsTimer;
-LazyFooTimer capTimer;
 Visuals v;
 std::shared_ptr<LivingEntity> player;
 
@@ -63,6 +60,38 @@ void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets
 		// }
 	}
 	World::entities.emplace_back(factory.createBlock(i * blockW - blockW, 400 - blockH, blockW, blockH));
+}
+
+void renderEverything()
+{
+	v.renderStart();
+	for (auto& e : World::entities){
+		if (e->type == ITEM){
+			int d = 4;
+		}
+		if (e->graphic){
+			v.renderEntity(e.get());
+
+#ifdef DEBUG_DRAW 
+			if (e->collision){
+				v.renderRect(e->pos.x, e->pos.y, e->pos.w, e->pos.h);
+			}
+#endif	
+		}
+	}
+#ifdef DEBUG_DRAW 
+	v.renderRectOverlay(0, 0, v.camera->camRect.w, v.camera->camRect.w);
+#endif	
+		
+	if (player->golfMode->active){
+		if (player->golfMode->state == AIMING_POWER){
+			v.renderGolfMeter(AIMING_POWER, player->golfMode->powerCursor, player->golfMode->nPoints);
+		} else if (player->golfMode->state == AIMING_HEIGHT){
+			v.renderGolfMeter(AIMING_HEIGHT, player->golfMode->heightCursor, player->golfMode->nPoints);
+		}
+	}
+
+	v.renderEnd();
 }
 
 /* Returns false if quit */
@@ -159,114 +188,46 @@ bool handleInput()
 	return true;
 }
 
-void renderEverything()
-{
-	v.renderStart();
-	for (auto& e : World::entities){
-		if (e->type == ITEM){
-			int d = 4;
-		}
-		if (e->graphic){
-			v.renderEntity(e.get());
-
-#ifdef DEBUG_DRAW 
-			if (e->collision){
-				v.renderRect(e->pos.x, e->pos.y, e->pos.w, e->pos.h);
-			}
-#endif	
-		}
-	}
-#ifdef DEBUG_DRAW 
-	v.renderRectOverlay(0, 0, v.camera->camRect.w, v.camera->camRect.w);
-#endif	
-		
-	if (player->golfMode->active){
-		if (player->golfMode->state == AIMING_POWER){
-			v.renderGolfMeter(AIMING_POWER, player->golfMode->powerCursor, player->golfMode->nPoints);
-		} else if (player->golfMode->state == AIMING_HEIGHT){
-			v.renderGolfMeter(AIMING_HEIGHT, player->golfMode->heightCursor, player->golfMode->nPoints);
-		}
-	}
-
-	v.renderEnd();
-}
-
 
 void mainloop(void *arg)
 {
-    context *ctx = static_cast<context*>(arg);
-    SDL_Renderer *renderer = ctx->renderer;
-    
-    SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
-    SDL_RenderClear(renderer);
+	context *ctx = static_cast<context*>(arg);
 
-    SDL_RenderPresent(renderer);
+	handleInput();
+
+	//Move etc all entities, collision etc
+	for (auto& e : World::entities){
+		if (e->behavior){
+			e->behavior->behave();
+		}
+	}
+
+#ifndef DEBUG_CAMERA
+	v.camera->camRect.x = followWithCam->pos.x - v.camera->camRect.w / 2;
+	v.camera->camRect.y = followWithCam->pos.y - v.camera->camRect.h / 2;
+#endif
+
+	renderEverything();
+
     ctx->iteration++;
-
 }
 
 int main (int argc, char* argv[])
 {
-    const int simulate_infinite_loop = 1; // call the function repeatedly
-    const int fps = -1; // call the function as fast as the browser wants to render (typically 60fps)
-
-    emscripten_set_main_loop_arg(mainloop, &v.ctx, fps, simulate_infinite_loop);
-
-
-// 	assert(v.spritesheets.size() > 0);
-// 	generateEntities(v.spritesheets);
 	
-// 	assert(player);
-// 	followWithCam = player;
+	v.loadSpritesheets(v.defaultSpritesheetPath);
+	//v.loadSpritesheet("spritesheet1");
+	assert(v.spritesheets.size() > 0);
+	generateEntities(v.spritesheets);
 	
-// 	int countedFrames = 0;
-// 	const int FPS = 60;
-// 	const int SCREEN_TICK_PER_FRAME = 1000 / FPS;
+	assert(player);
+	followWithCam = player;
 
-// 	bool keepGoing = true;
+    const int simulate_infinite_loop = 60;
+    const int fps = -1; 
+	
+	emscripten_set_main_loop_arg(mainloop, &v.ctx, fps, simulate_infinite_loop);
 
-// 	fpsTimer.start();
-
-// 	while(keepGoing){
-// 		capTimer.start();
-
-// 		keepGoing = handleInput();
-
-// 		//Move etc all entities, collision etc
-// 		for (auto& e : World::entities){
-// 			if (e->behavior){
-				
-// 				/* debug */
-// 				// if (e->type == BALL){
-// 				// 	std::cout << e->behavior->xSpeed << ", " << e->behavior->ySpeed << std::endl;
-
-// 				// }
-				
-// 				e->behavior->behave();
-// 			}
-// 		}
-
-// #ifndef DEBUG_CAMERA
-// 		v.camera->camRect.x = followWithCam->pos.x - v.camera->camRect.w / 2;
-// 		v.camera->camRect.y = followWithCam->pos.y - v.camera->camRect.h / 2;
-// #endif
-
-// 		renderEverything();
-
-// 		float avgFps = countedFrames / ( fpsTimer.getTicks() / 1000.f );
-// 		if( avgFps > 2000000 ){
-// 			avgFps = 0;
-// 		}
-// 		//std::cout << "FPS: " << avgFps << std::endl;
-// 		++countedFrames;
-// 		int frameTicks = capTimer.getTicks();
-// 		if( frameTicks < SCREEN_TICK_PER_FRAME ){
-// 			//Wait remaining time
-// 			SDL_Delay( SCREEN_TICK_PER_FRAME - frameTicks );
-// 		}
-// 	}
-
-// 	std::cout << "DEBUG: game end" << std::endl;
 	return 0;
 }
 

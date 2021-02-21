@@ -26,29 +26,23 @@ class Visuals
 	public:
 		Visuals();
 		~Visuals();
-		void renderStart();
 		SDL_Texture* getSpritesheet(std::string);
+		void renderStart();
 		void renderEnd();
 		void renderEntity(Entity* entity);
 		void renderRect(int x, int y, int w, int h);
 		// Overlay implies 'behind' the camera
 		void renderRectOverlay(int x, int y, int w, int h);
+		bool loadSpritesheets(std::string dir);
+		void loadSpritesheet(std::string name);
 		void renderGolfMeter(GolfState state, int level, int nPoints);
 		std::unique_ptr<Camera> camera;
+		const std::string defaultSpritesheetPath = "./assets/spritesheets";
 		std::unordered_map<std::string, SDL_Texture*> spritesheets;
 		context ctx;
 
 	private:
-		bool loadSpritesheets(std::string dir);
-		bool loadSpritesheet(std::string name);
-		bool createWindow(std::string title);
-		const int renderText(std::string text, SDL_Color color, int x, int y, int h) const;
 		SDL_Texture* loadTexture( std::string path) const;
-
-		std::string defaultSpritesheetPath = ".";
-
-		SDL_Window* window;
-		SDL_Renderer* renderer;
 };
 
 #endif
