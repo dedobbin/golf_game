@@ -13,7 +13,7 @@
 #include "world.hpp"
 #include <emscripten.h>
 
-#define DEBUG_DRAW
+// #define DEBUG_DRAW
 // #define DEBUG_CAMERA
 // #define DEBUG_CONTROLS
 
@@ -32,19 +32,22 @@ void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets
 	//TODO: get from file
 	EntityFactory factory(spritesheets);
 
-	World::entities.emplace_back(factory.createGolfClub(100, 0));
+	World::entities.emplace_back(factory.createGolfClub(700, 0));
 
-	World::entities.emplace_back(factory.createEnemy(400, 0));
+	World::entities.emplace_back(factory.createEnemy(100, 0));
 
-	World::entities.emplace_back(factory.createPlayer(100, 0));
+	World::entities.emplace_back(factory.createPlayer(4000, 0));
 	player = std::static_pointer_cast<LivingEntity>(World::entities.back());
 
-	World::entities.emplace_back(factory.createBall(250, 0));
+	World::entities.emplace_back(factory.createBall(350, 0));
 
 	int blockW = 100;
 	int blockH = 100;
 	int i = 0;
-	World::entities.emplace_back(factory.createBlock(i * blockW, 400 - blockH, blockW, blockH));
+
+	for (i = 0; i < 400; i+=100){
+		World::entities.emplace_back(factory.createBlock(0, i, blockW, blockH));
+	}
 	
 	for (i = 0; i < 20; i++){
 		World::entities.emplace_back(factory.createBlock(i * blockW, 400, blockW, blockH));
@@ -52,7 +55,7 @@ void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets
 			if (i < 9){
 				World::entities.emplace_back(factory.createBlock(i * blockW, 200, blockW, blockH));
 			}else {
-				World::entities.emplace_back(factory.createBlock(i * blockW, 100, blockW, blockH));
+				World::entities.emplace_back(factory.createBlock(i * blockW, 0, blockW, blockH));
 			}
 		}
 		// for (int j = 0; j < i ; j++){
@@ -60,6 +63,23 @@ void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets
 		// }
 	}
 	World::entities.emplace_back(factory.createBlock(i * blockW - blockW, 400 - blockH, blockW, blockH));
+
+
+	for (i = 21; i < 60; i++){
+		if (rand() % 2 == 0){
+			World::entities.emplace_back(factory.createBlock(i * blockW, 400, blockW, blockH));
+		}
+	}
+
+	for (i = 21; i < 60; i++){
+		if (rand() % 2 == 0){
+			World::entities.emplace_back(factory.createBlock(i * blockW, 300, blockW, blockH));
+		}
+	}
+
+	World::entities.emplace_back(factory.createBlock(player->pos.x, player->pos.y + 200, blockW, blockH));
+
+
 }
 
 void renderEverything()

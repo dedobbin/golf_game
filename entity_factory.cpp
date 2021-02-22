@@ -13,7 +13,7 @@ LivingEntity* EntityFactory::createPlayer(int x, int y)
 {
 	auto sheet = spritesheets.at("spritesheet1");
 
-	auto e = new LivingEntity("player", PLAYER, x, y, 100, 100);
+	auto e = new LivingEntity("player", PLAYER, x, y, 80, 100);
 	e->graphic = std::unique_ptr<Graphic>(new Graphic(e));
 
 	auto animatedGraphic = e->graphic.get();
@@ -93,7 +93,7 @@ LivingEntity* EntityFactory::createEnemy(int x, int y)
 {
 	auto sheet = spritesheets.at("spritesheet4");
 
-	LivingEntity* e = new LivingEntity("enemy", ENEMY_A, x, y, 100, 100);
+	LivingEntity* e = new LivingEntity("enemy", ENEMY_A, x, y, 80, 100);
 	e->graphic = std::unique_ptr<Graphic>(new Graphic(e));
 	auto animatedGraphic = (Graphic*)e->graphic.get();
 

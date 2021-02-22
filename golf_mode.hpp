@@ -23,7 +23,7 @@ class GolfMode
 		GolfState state;
 		//Used to delay speed of cursor
 		int ticksAfterLastMeterMove = 0;
-		direction meterCursorDirection = RIGHT;
+		direction meterCursorDirection = LEFT;
 		int ticksAfterStartSwinging = 0;
 		void tick();
 		Entity* _ball;
