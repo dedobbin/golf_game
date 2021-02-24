@@ -43,12 +43,28 @@ void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets
 
 	int x = 0; 
 	int y = 300;
-	int blockW = 100;
-	int blockH = 100;
+	int w = 100;
+	int h = 100;
 	for (int i = 0; i < 50; i++){
-		x = i * blockW;
-		World::entities.emplace_back(factory.createBlock(x, y));
+		x = i * w;
+		World::entities.emplace_back(factory.createBlock(x, y, w, h));
 	}
+
+	h = 10;
+	w = 100;
+	x = player->pos.x - w * 2;
+	y = y - h;
+	for (int i =0; i < 5;i ++){
+		World::entities.emplace_back(factory.createBlock(x, y, w, h));
+		x-= w;
+		y-=10;
+	}
+
+	h = 30;
+	w = 100;
+	x = player->pos.x + w * 2;
+	y = 300 - h;
+	World::entities.emplace_back(factory.createBlock(x, y, w, h));
 }
 
 void renderEverything()
