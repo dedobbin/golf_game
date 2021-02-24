@@ -102,6 +102,13 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
 
     bool bothSolid = collider->collision->solid && owner->collision->solid;
 
+    //allow going up slopes
+    if (colliderDir == LEFT || colliderDir == RIGHT){
+        if (intersect.h <= collider->pos.h / 10){//TODO: get rid of magic number
+            return;
+        }
+    }
+
     if (collider->behavior){
         switch(colliderDir){
             case DOWN: case NONE:
