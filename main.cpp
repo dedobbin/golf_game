@@ -78,8 +78,6 @@ void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets
 	}
 
 	World::entities.emplace_back(factory.createBlock(player->pos.x, player->pos.y + 200, blockW, blockH));
-
-
 }
 
 void renderEverything()
@@ -208,7 +206,6 @@ bool handleInput()
 	return true;
 }
 
-
 void mainloop(void *arg)
 {
 	context *ctx = static_cast<context*>(arg);
@@ -232,9 +229,8 @@ void mainloop(void *arg)
     ctx->iteration++;
 }
 
-int main (int argc, char* argv[])
+int main(int argc, char* argv[])
 {
-	
 	v.loadSpritesheets(v.defaultSpritesheetPath);
 	//v.loadSpritesheet("spritesheet1");
 	assert(v.spritesheets.size() > 0);
