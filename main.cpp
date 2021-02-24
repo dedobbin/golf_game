@@ -36,7 +36,7 @@ void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets
 
 	World::entities.emplace_back(factory.createEnemy(100, 0));
 
-	World::entities.emplace_back(factory.createPlayer(500, 0));
+	World::entities.emplace_back(factory.createPlayer(3000, 0));
 	player = std::static_pointer_cast<LivingEntity>(World::entities.back());
 
 	World::entities.emplace_back(factory.createBall(300, 0));
@@ -45,7 +45,7 @@ void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets
 	int y = 300;
 	int blockW = 100;
 	int blockH = 100;
-	for (int i = 0; i < 1000; i++){
+	for (int i = 0; i < 50; i++){
 		x = i * blockW;
 		World::entities.emplace_back(factory.createBlock(x, y));
 	}
