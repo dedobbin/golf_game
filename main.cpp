@@ -210,8 +210,8 @@ int main(int argc, char* argv[])
 	assert(player);
 	followWithCam = player;
 
-    const int simulate_infinite_loop = 60;
-    const int fps = -1; 
+    const int simulate_infinite_loop = 1;
+    const int fps = 60; 
 	
 	emscripten_set_main_loop_arg(mainloop, &v.ctx, fps, simulate_infinite_loop);
 
