@@ -36,48 +36,19 @@ void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets
 
 	World::entities.emplace_back(factory.createEnemy(100, 0));
 
-	World::entities.emplace_back(factory.createPlayer(4000, 0));
+	World::entities.emplace_back(factory.createPlayer(500, 0));
 	player = std::static_pointer_cast<LivingEntity>(World::entities.back());
 
-	World::entities.emplace_back(factory.createBall(350, 0));
+	World::entities.emplace_back(factory.createBall(300, 0));
 
+	int x = 0; 
+	int y = 300;
 	int blockW = 100;
 	int blockH = 100;
-	int i = 0;
-
-	for (i = 0; i < 400; i+=100){
-		World::entities.emplace_back(factory.createBlock(0, i, blockW, blockH));
+	for (int i = 0; i < 1000; i++){
+		x = i * blockW;
+		World::entities.emplace_back(factory.createBlock(x, y));
 	}
-	
-	for (i = 0; i < 20; i++){
-		World::entities.emplace_back(factory.createBlock(i * blockW, 400, blockW, blockH));
-		if (i > 6){
-			if (i < 9){
-				World::entities.emplace_back(factory.createBlock(i * blockW, 200, blockW, blockH));
-			}else {
-				World::entities.emplace_back(factory.createBlock(i * blockW, 0, blockW, blockH));
-			}
-		}
-		// for (int j = 0; j < i ; j++){
-		// 	World::entities.emplace_back(factory.createBlock(i * blockW, 300 - (blockH/5) * j, blockW, blockH/5));
-		// }
-	}
-	World::entities.emplace_back(factory.createBlock(i * blockW - blockW, 400 - blockH, blockW, blockH));
-
-
-	for (i = 21; i < 60; i++){
-		if (rand() % 2 == 0){
-			World::entities.emplace_back(factory.createBlock(i * blockW, 400, blockW, blockH));
-		}
-	}
-
-	for (i = 21; i < 60; i++){
-		if (rand() % 2 == 0){
-			World::entities.emplace_back(factory.createBlock(i * blockW, 300, blockW, blockH));
-		}
-	}
-
-	World::entities.emplace_back(factory.createBlock(player->pos.x, player->pos.y + 200, blockW, blockH));
 }
 
 void renderEverything()
