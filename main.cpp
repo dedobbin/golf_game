@@ -45,7 +45,7 @@ void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets
 	int y = 300;
 	int w = 100;
 	int h = 100;
-	for (int i = 0; i < 10; i++){
+	for (int i = 0; i < 50; i++){
 		x = i * w;
 		World::entities.emplace_back(factory.createBlock(x, y, w, h));
 	}
