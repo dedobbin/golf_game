@@ -65,6 +65,15 @@ void Behavior::behave()
 	// TODO: this check all entities for collision 2 times, should optimize by sorting list, static entities on same place
 	// OR only checking entities in view, but that could lead to other problems later
 	
+	if (owner->pos.y < 0 || owner->pos.y > World::h - owner->pos.h
+	|| owner->pos.x < 0 || owner->pos.x > World::w - owner->pos.w){
+		std::cout << "DEBUG: fell of the world" << std::endl;
+		if (owner->behavior){
+			owner->behavior->destroy(false);
+		}
+	}
+
+
 	if (destroyed){
 		return;
 	}
@@ -158,7 +167,7 @@ void Behavior::behave()
 			default:
 				break;
 		}
-		
+
 		// update some animations
 		// If movement was stopped by wall, dont keep walk animation
 		auto animatedGraphic = owner->graphic.get();
@@ -198,7 +207,7 @@ void Behavior::jump()
 	owner->graphic->changeState(AnimationState::JUMP);
 }
 
-void Behavior::destroy()
+void Behavior::destroy(bool animation)
 {
 	if (owner->type == LIVING){
 		auto livingOwner = (LivingEntity*)owner;
@@ -215,7 +224,11 @@ void Behavior::destroy()
 			livingOwner->heldItem = NULL;
 		}
 		if (owner->graphic){
-			owner->graphic->changeState(AnimationState::DEAD);
+			if (animation && owner->graphic->animations[AnimationState::DEAD]){
+				owner->graphic->changeState(AnimationState::DEAD);
+			} else {
+				owner->graphic = NULL;
+			}
 		}
 	}
 	destroyed = true;

@@ -59,7 +59,9 @@ Sprite Graphic::getSprite()
 
 void Graphic::render(SDL_Renderer* renderer, Camera* camera)
 {	
-	
+	if (owner->graphic->curAnimationState == NO_SPRITE){
+		return;
+	}
 	if (owner->type == LIVING  && ((LivingEntity*)owner)->heldItem && ((LivingEntity*)owner)->golfMode && !((LivingEntity*)owner)->golfMode->active){
 		((LivingEntity*)owner)->heldItem->graphic->render(renderer, camera);
 	}

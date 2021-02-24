@@ -27,6 +27,7 @@ class Frame
 
 enum AnimationState
 {
+	NO_SPRITE,
 	DEFAULT,
 	WALK,
 	JUMP,
