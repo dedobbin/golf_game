@@ -13,7 +13,7 @@
 #include "world.hpp"
 #include <emscripten.h>
 
-// #define DEBUG_DRAW
+#define DEBUG_DRAW
 // #define DEBUG_CAMERA
 // #define DEBUG_CONTROLS
 
@@ -27,8 +27,9 @@ rect playerStartPos = {200, 0};
 
 bool keysPressed[322] = {false};
 
-void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets)
+void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 {
+	World::entities = {};
 	//TODO: get from file
 	EntityFactory factory(spritesheets);
 
@@ -45,7 +46,7 @@ void generateEntities(std::unordered_map<std::string, SDL_Texture*> spritesheets
 	int y = 300;
 	int w = 100;
 	int h = 100;
-	for (int i = 0; i < 50; i++){
+	for (int i = 0; i < 35; i++){
 		x = i * w;
 		World::entities.emplace_back(factory.createBlock(x, y, w, h));
 	}
@@ -108,6 +109,13 @@ bool handleInput()
 			return false;
 		} else if (e.type == SDL_KEYDOWN){
 			
+			if (player->behavior->destroyed){
+				if (e.key.keysym.scancode == SDL_SCANCODE_SPACE){
+					std::cout << "DEBUG: restart" << std::endl;
+					return false;
+				}
+			}
+
 			if (player->golfMode->active){
 				if (player->golfMode->state == AIMING_POWER){
 					if (e.key.keysym.scancode == SDL_SCANCODE_RIGHT){
@@ -197,7 +205,11 @@ void mainloop(void *arg)
 {
 	context *ctx = static_cast<context*>(arg);
 
-	handleInput();
+	bool keepGoing = handleInput();
+	if(!keepGoing){
+		setupWorld(v.spritesheets);
+		//emscripten_cancel_main_loop();
+	}
 
 	//Move etc all entities, collision etc
 	for (auto& e : World::entities){
@@ -221,15 +233,18 @@ int main(int argc, char* argv[])
 	v.loadSpritesheets(v.defaultSpritesheetPath);
 	//v.loadSpritesheet("spritesheet1");
 	assert(v.spritesheets.size() > 0);
-	generateEntities(v.spritesheets);
-	
+	std::cout << "DEBUG: game starts" << std::endl;
+	setupWorld(v.spritesheets);
+
 	assert(player);
 	followWithCam = player;
 
-    const int simulate_infinite_loop = 1;
-    const int fps = 60; 
-	
+	const int simulate_infinite_loop = 1;
+	const int fps = 60; 
+
+
 	emscripten_set_main_loop_arg(mainloop, &v.ctx, fps, simulate_infinite_loop);
+	std::cout << "DEBUG: game ends" << std::endl;
 
 	return 0;
 }
