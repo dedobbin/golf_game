@@ -29,8 +29,12 @@ bool keysPressed[322] = {false};
 
 void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 {
+	//TODO: get everything from file
+	World::w = 10000000;
+	World::h = 1500;
+
 	World::entities = {};
-	//TODO: get from file
+
 	EntityFactory factory(spritesheets);
 
 	World::entities.emplace_back(factory.createGolfClub(700, 0));
