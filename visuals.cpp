@@ -149,5 +149,11 @@ void Visuals::renderGolfMeter(GolfState state, int level, int nPoints)
 
 	SDL_SetRenderDrawColor(ctx.renderer, 0, 0, 0, 255);
 	SDL_RenderFillRect(ctx.renderer, &cursor);
+}
 
+void Visuals::renderGameOver()
+{
+	SDL_SetRenderDrawColor(ctx.renderer, 0, 0, 0, 255);
+	SDL_Rect rect = {0, 0, SCREEN_W, SCREEN_H};
+	SDL_RenderFillRect(ctx.renderer, &rect);
 }

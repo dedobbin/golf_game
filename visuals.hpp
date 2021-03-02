@@ -31,6 +31,7 @@ class Visuals
 		void renderEnd();
 		void renderEntity(Entity* entity);
 		void renderRect(int x, int y, int w, int h);
+		void renderGameOver();
 		// Overlay implies 'behind' the camera
 		void renderRectOverlay(int x, int y, int w, int h);
 		bool loadSpritesheets(std::string dir);

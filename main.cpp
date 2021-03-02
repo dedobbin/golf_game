@@ -13,6 +13,9 @@
 #include "world.hpp"
 #include <emscripten.h>
 
+#define DELAY_BEFORE_GAMEOVER 120 //time between player dying and game over screen popping up
+int ticksAfterPlayedDied = 0;
+
 #define DEBUG_DRAW
 // #define DEBUG_CAMERA
 // #define DEBUG_CONTROLS
@@ -34,6 +37,7 @@ void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 	World::h = 1500;
 
 	World::entities = {};
+	ticksAfterPlayedDied = 0;
 
 	EntityFactory factory(spritesheets);
 
@@ -78,9 +82,6 @@ void renderEverything()
 {
 	v.renderStart();
 	for (auto& e : World::entities){
-		if (e->type == ITEM){
-			int d = 4;
-		}
 		if (e->graphic){
 			v.renderEntity(e.get());
 
@@ -94,8 +95,13 @@ void renderEverything()
 #ifdef DEBUG_DRAW 
 	v.renderRectOverlay(0, 0, v.camera->camRect.w, v.camera->camRect.w);
 #endif	
-		
-	if (player->golfMode->active){
+	
+	if (player->behavior->destroyed){
+		ticksAfterPlayedDied ++;
+		if (ticksAfterPlayedDied >= DELAY_BEFORE_GAMEOVER){
+			v.renderGameOver();
+		}
+	} else if (player->golfMode->active){
 		if (player->golfMode->state == AIMING_POWER){
 			v.renderGolfMeter(AIMING_POWER, player->golfMode->powerCursor, player->golfMode->nPoints);
 		} else if (player->golfMode->state == AIMING_HEIGHT){

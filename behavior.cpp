@@ -67,7 +67,6 @@ void Behavior::behave()
 	
 	if (owner->pos.y < 0 || owner->pos.y > World::h - owner->pos.h
 	|| owner->pos.x < 0 || owner->pos.x > World::w - owner->pos.w){
-		std::cout << "DEBUG: fell of the world" << std::endl;
 		if (owner->behavior){
 			owner->behavior->destroy(false);
 		}
