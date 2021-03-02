@@ -66,6 +66,8 @@ void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 	x = player->pos.x + w * 2;
 	y = 300 - h;
 	World::entities.emplace_back(factory.createBlock(x, y, w, h));
+
+	followWithCam = player;
 }
 
 void renderEverything()
@@ -173,15 +175,6 @@ bool handleInput()
 		}
 	}
 
-#ifdef DEBUG_CONTROLS
-	if (keysPressed[SDL_SCANCODE_BACKSPACE]){
-		player->pos.x = playerStartPos.x;
-		player->pos.y = playerStartPos.y;
-		player->behavior->xSpeed = 0;
-		player->behavior->ySpeed = 0;
-	}
-#endif
-
 #ifdef DEBUG_CAMERA
 		int camSpeed = 5;
 		if (keysPressed[SDL_SCANCODE_D]){
@@ -235,9 +228,6 @@ int main(int argc, char* argv[])
 	assert(v.spritesheets.size() > 0);
 	std::cout << "DEBUG: game starts" << std::endl;
 	setupWorld(v.spritesheets);
-
-	assert(player);
-	followWithCam = player;
 
 	const int simulate_infinite_loop = 1;
 	const int fps = 60; 
