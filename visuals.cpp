@@ -172,14 +172,19 @@ void Visuals::renderGolfMeter(GolfState state, int level, int nPoints)
 	SDL_RenderFillRect(ctx.renderer, &cursor);
 }
 
-int Visuals::createText(std::string text, SDL_Color color)
+int Visuals::createText(std::string text, SDL_Color color, int x, int y, bool behindCamera)
 {
+	if (!behindCamera){
+		std::cout << "DEBUG: Drawing text in front of camera currently not supported" << std::endl;
+		return - 1;
+	}
+
 	SDL_Surface* surface = TTF_RenderText_Solid(gFont, text.c_str(), color);
 	if (surface != NULL){
 		auto texture = SDL_CreateTextureFromSurface(ctx.renderer, surface);
 		if (texture != NULL){
 			std::cout << "DEBUG loaded text " << text << std::endl;
-			texts.insert({curTextIndex ++, {surface->w, surface->h, texture}});
+			texts.insert({curTextIndex ++, {x, y, surface->w, surface->h, texture, true}});
 			return curTextIndex - 1;
 		} else {
 			std::cout << "DEBUG: Unable to create text texture: " << SDL_GetError() << std::endl;
@@ -189,25 +194,27 @@ int Visuals::createText(std::string text, SDL_Color color)
 	}
 	return -1;
 }
-void Visuals::renderText(unsigned int textIndex, int x, int y, bool behindCamera)
-{
-	if (!behindCamera){
-		std::cout << "DEBUG: Drawing text in front of camera currently not supported" << std::endl;
-		return;
-	}
 
-	if (texts.find(textIndex) == texts.end()){
-		std::cout << "Text " << textIndex << " does not exist" << std::endl;
-		return;
-	}
-	auto text = texts[textIndex];
-	SDL_Rect pos = {x, y, text.w, text.h};
-	if (SDL_RenderCopy(ctx.renderer, text.texture, NULL, &pos) < 0){
-		std::cout << "Failed to render sprite text" << std::endl;
+void Visuals::renderTexts()
+{
+	for (auto& text : texts){
+		if (text.second.display){
+			SDL_Rect pos = {text.second.x, text.second.y, text.second.w, text.second.h};
+			//std::cout << "DEBUG: Render text at " << pos.x << "," << pos.y << "," << pos.w << "," << pos.h <<std::endl;
+			if (SDL_RenderCopy(ctx.renderer, text.second.texture, NULL, &pos) < 0){
+				std::cout << "Failed to render sprite text" << std::endl;
+			}
+		}
 	}
 }
 
-
+void Visuals::destroyAllTexts()
+{
+	for (auto& text : texts){
+		SDL_DestroyTexture(text.second.texture);
+	}
+	texts = {};
+}
 
 void Visuals::renderGameOver()
 {
@@ -215,7 +222,7 @@ void Visuals::renderGameOver()
 	SDL_Rect rect = {0, 0, SCREEN_W, SCREEN_H};
 	SDL_RenderFillRect(ctx.renderer, &rect);
 	if (gameOverTextIndex < 0){
-		gameOverTextIndex = createText("You died - press space to start over", {255, 0, 255, 255});
+		gameOverTextIndex = createText("You died - press space to start over", {255, 0, 255, 255}, SCREEN_W / 4, SCREEN_H / 2 );
 	}
-	renderText(gameOverTextIndex, SCREEN_W / 4, SCREEN_H / 2);
+	texts[gameOverTextIndex].display = true;
 }

@@ -24,9 +24,12 @@ struct context
 
 struct Text
 {
+	int x = 0;
+	int y = 0;
 	int w = 0;
 	int h = 0;
 	SDL_Texture* texture = NULL;
+	bool display = true;
 };
 
 class Visuals
@@ -40,9 +43,10 @@ class Visuals
 		void renderEntity(Entity* entity);
 		void renderRect(int x, int y, int w, int h);
 		/* returns ID */
-		int createText(std::string text, SDL_Color color);
-		void renderText(unsigned int textIndex, int x, int y, bool behindCamera = true);
+		int createText(std::string text, SDL_Color color, int x, int y, bool behindCamera = true);
+		void renderTexts();
 		void renderGameOver();
+		void destroyAllTexts();
 		// Overlay implies 'behind' the camera
 		void renderRectOverlay(int x, int y, int w, int h);
 		bool loadSpritesheets(std::string dir);

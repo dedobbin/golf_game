@@ -39,6 +39,8 @@ void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 	World::entities = {};
 	ticksAfterPlayedDied = 0;
 
+	v.destroyAllTexts();
+
 	EntityFactory factory(spritesheets);
 
 	World::entities.emplace_back(factory.createGolfClub(700, 0));
@@ -109,6 +111,7 @@ void renderEverything()
 		}
 	}
 
+	v.renderTexts();
 	v.renderEnd();
 }
 
@@ -241,7 +244,6 @@ int main(int argc, char* argv[])
 
 	const int simulate_infinite_loop = 1;
 	const int fps = 60; 
-
 
 	emscripten_set_main_loop_arg(mainloop, &v.ctx, fps, simulate_infinite_loop);
 	std::cout << "DEBUG: game ends" << std::endl;
