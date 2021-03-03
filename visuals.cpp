@@ -5,10 +5,23 @@
 #include <iostream>
 #include "utils.hpp"
 
+int curTextIndex = 0;
+int gameOverTextIndex = -1;
+
 Visuals::Visuals()
 {
  	SDL_Init(SDL_INIT_VIDEO);
- 
+ 	
+	if (TTF_Init() == -1){
+		std::cout << "Failed to init SDL_ttf: " <<  TTF_GetError() << std::endl;
+	}
+
+	gFont = TTF_OpenFont("assets/OpenSans-Regular.ttf", 28);
+	if (gFont == NULL){
+		std::cout << "Failed to load font: " <<  TTF_GetError() << std::endl;
+	}
+
+
 	SDL_Window* window;
 	SDL_Renderer* renderer;
  
@@ -25,6 +38,14 @@ Visuals::~Visuals()
 	for (auto sheet : spritesheets){
 		SDL_DestroyTexture(sheet.second);
 	}
+
+	for (auto text : texts){
+		SDL_DestroyTexture(text.second.texture);
+	}
+
+	TTF_CloseFont(gFont);
+	TTF_Quit();
+	IMG_Quit();
 	SDL_Quit();
 }
 
@@ -151,9 +172,50 @@ void Visuals::renderGolfMeter(GolfState state, int level, int nPoints)
 	SDL_RenderFillRect(ctx.renderer, &cursor);
 }
 
+int Visuals::createText(std::string text, SDL_Color color)
+{
+	SDL_Surface* surface = TTF_RenderText_Solid(gFont, text.c_str(), color);
+	if (surface != NULL){
+		auto texture = SDL_CreateTextureFromSurface(ctx.renderer, surface);
+		if (texture != NULL){
+			std::cout << "DEBUG loaded text " << text << std::endl;
+			texts.insert({curTextIndex ++, {surface->w, surface->h, texture}});
+			return curTextIndex - 1;
+		} else {
+			std::cout << "DEBUG: Unable to create text texture: " << SDL_GetError() << std::endl;
+		}
+	} else {
+		std::cout << "DEBUG: Unable to create text surface: " << SDL_GetError() << std::endl;
+	}
+	return -1;
+}
+void Visuals::renderText(unsigned int textIndex, int x, int y, bool behindCamera)
+{
+	if (!behindCamera){
+		std::cout << "DEBUG: Drawing text in front of camera currently not supported" << std::endl;
+		return;
+	}
+
+	if (texts.find(textIndex) == texts.end()){
+		std::cout << "Text " << textIndex << " does not exist" << std::endl;
+		return;
+	}
+	auto text = texts[textIndex];
+	SDL_Rect pos = {x, y, text.w, text.h};
+	if (SDL_RenderCopy(ctx.renderer, text.texture, NULL, &pos) < 0){
+		std::cout << "Failed to render sprite text" << std::endl;
+	}
+}
+
+
+
 void Visuals::renderGameOver()
 {
 	SDL_SetRenderDrawColor(ctx.renderer, 0, 0, 0, 255);
 	SDL_Rect rect = {0, 0, SCREEN_W, SCREEN_H};
 	SDL_RenderFillRect(ctx.renderer, &rect);
+	if (gameOverTextIndex < 0){
+		gameOverTextIndex = createText("You died - press space to start over", {255, 0, 255, 255});
+	}
+	renderText(gameOverTextIndex, SCREEN_W / 4, SCREEN_H / 2);
 }

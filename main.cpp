@@ -13,7 +13,7 @@
 #include "world.hpp"
 #include <emscripten.h>
 
-#define DELAY_BEFORE_GAMEOVER 120 //time between player dying and game over screen popping up
+#define DELAY_BEFORE_GAMEOVER 30 //time between player dying and game over screen popping up
 int ticksAfterPlayedDied = 0;
 
 #define DEBUG_DRAW
