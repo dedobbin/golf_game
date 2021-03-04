@@ -7,5 +7,5 @@ all:
 	$(GCC) *.cpp $(COMPILER_FLAGS) $(LINKER_FLAGS)
 
 wasm:
-	$(EMCC) *.cpp --debug -s USE_SDL=2 -s USE_SDL_IMAGE=2  -s USE_SDL_TTF=2 -s SDL2_IMAGE_FORMATS='["png"]' -s DISABLE_EXCEPTION_CATCHING=0 \
+	$(EMCC) *.cpp --debug -s USE_SDL=2 -s USE_SDL_IMAGE=2  -s USE_SDL_TTF=2 -s SDL2_IMAGE_FORMATS='["png"]' -s DISABLE_EXCEPTION_CATCHING=0 -s ALLOW_MEMORY_GROWTH=1 \
 	--preload-file assets -o index.js

@@ -183,7 +183,6 @@ int Visuals::createText(std::string text, int x, int y, SDL_Color color, bool be
 	if (surface != NULL){
 		auto texture = SDL_CreateTextureFromSurface(ctx.renderer, surface);
 		if (texture != NULL){
-			std::cout << "DEBUG loaded text " << text << std::endl;
 			texts.insert({curTextIndex ++, {x, y, surface->w, surface->h, texture, color, true}});
 			return curTextIndex - 1;
 		} else {
@@ -237,7 +236,6 @@ void Visuals::updateText(std::string text, int textId)
 	if (surface != NULL){
 		auto texture = SDL_CreateTextureFromSurface(ctx.renderer, surface);
 		if (texture != NULL){
-			std::cout << "DEBUG loaded text " << text << std::endl;
 			SDL_DestroyTexture(texts[textId].texture);
 			texts[textId].texture = texture;
 			texts[textId].w = surface->w;

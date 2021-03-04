@@ -11,6 +11,7 @@
 #include "direction.hpp"
 #include "item_behavior.hpp"
 #include "world.hpp"
+#include "sdl_utils.hpp"
 #include <emscripten.h>
 
 #define DELAY_BEFORE_GAMEOVER 30 //time between player dying and game over screen popping up
@@ -31,6 +32,7 @@ rect playerStartPos = {200, 0};
 bool keysPressed[322] = {false};
 
 int fpsTextIndex = -1;
+LazyFooTimer fpsTimer;
 
 void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 {
@@ -231,9 +233,17 @@ void mainloop(void *arg)
 
 	renderEverything();
 
-    ctx->iteration++;
 
-	v.updateText("45", fpsTextIndex);
+	//Calculate and correct fps
+	float avgFPS = ctx->iteration / (fpsTimer.getTicks() / 1000.f);
+	if (avgFPS > 2000000)
+	{
+		avgFPS = 0;
+	}
+
+	v.updateText(std::to_string(static_cast<int>(avgFPS)), fpsTextIndex);
+
+	ctx->iteration++;
 }
 
 int main(int argc, char* argv[])
@@ -246,6 +256,7 @@ int main(int argc, char* argv[])
 	std::cout << "DEBUG: game starts" << std::endl;
 	setupWorld(v.spritesheets);
 
+	fpsTimer.start();
 	const int simulate_infinite_loop = 1;
 	const int fps = 60; 
 
