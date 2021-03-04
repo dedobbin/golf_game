@@ -234,12 +234,13 @@ void mainloop(void *arg)
 	renderEverything();
 
 
-	//Calculate and correct fps
+#ifdef DEBUG_DRAW 
 	float avgFPS = ctx->iteration / (fpsTimer.getTicks() / 1000.f);
 	if (avgFPS > 2000000)
 	{
 		avgFPS = 0;
 	}
+#endif
 
 	v.updateText(std::to_string(static_cast<int>(avgFPS)), fpsTextIndex);
 
