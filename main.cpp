@@ -210,8 +210,13 @@ bool handleInput()
 }
 
 void mainloop(void *arg)
-{
+{	
 	context *ctx = static_cast<context*>(arg);
+	
+	float avgFps = ctx->iteration / (fpsTimer.getTicks() / 1000.f);
+	if (avgFps > 2000000){
+		avgFps = 0;
+	}
 
 	bool keepGoing = handleInput();
 	if(!keepGoing){
@@ -233,17 +238,11 @@ void mainloop(void *arg)
 
 	renderEverything();
 
+	ctx->iteration++;
 
 #ifdef DEBUG_DRAW 
-	float avgFPS = ctx->iteration / (fpsTimer.getTicks() / 1000.f);
-	if (avgFPS > 2000000)
-	{
-		avgFPS = 0;
-	}
-	v.updateText(std::to_string(static_cast<int>(avgFPS)), fpsTextIndex);
+	v.updateText(std::to_string(static_cast<int>(avgFps)), fpsTextIndex);
 #endif
-
-	ctx->iteration++;
 }
 
 int main(int argc, char* argv[])
@@ -258,7 +257,7 @@ int main(int argc, char* argv[])
 
 	fpsTimer.start();
 	const int simulate_infinite_loop = 1;
-	const int fps = 60; 
+	const int fps = -1; //defaults to 60, but setting it to 60 seems to trigger EM_TIMING_SETTIMEOUT, causing frames to drop from 60 when theres actual load?
 
 	emscripten_set_main_loop_arg(mainloop, &v.ctx, fps, simulate_infinite_loop);
 	std::cout << "DEBUG: game ends" << std::endl;
