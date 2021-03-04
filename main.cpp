@@ -240,9 +240,8 @@ void mainloop(void *arg)
 	{
 		avgFPS = 0;
 	}
-#endif
-
 	v.updateText(std::to_string(static_cast<int>(avgFPS)), fpsTextIndex);
+#endif
 
 	ctx->iteration++;
 }
