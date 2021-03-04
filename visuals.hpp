@@ -16,6 +16,8 @@
 #define SCREEN_W 920
 #define SCREEN_H 640
 
+extern int gameOverTextIndex;
+
 struct context
 {
     SDL_Renderer *renderer;
@@ -29,6 +31,7 @@ struct Text
 	int w = 0;
 	int h = 0;
 	SDL_Texture* texture = NULL;
+	SDL_Color color = {255, 0, 255, 255};
 	bool display = true;
 };
 
@@ -42,16 +45,20 @@ class Visuals
 		void renderEnd();
 		void renderEntity(Entity* entity);
 		void renderRect(int x, int y, int w, int h);
-		/* returns ID */
-		int createText(std::string text, SDL_Color color, int x, int y, bool behindCamera = true);
-		void renderTexts();
-		void renderGameOver();
-		void destroyAllTexts();
 		// Overlay implies 'behind' the camera
 		void renderRectOverlay(int x, int y, int w, int h);
+		void renderGolfMeter(GolfState state, int level, int nPoints);
+
+		/* returns ID */
+		int createText(std::string text, int x, int y, SDL_Color color = {255, 0, 255, 255}, bool behindCamera = true);
+		void renderTexts();
+		void renderGameOver();
+		void destroyText(int textId);
+		void destroyAllText();
+		void updateText(std::string text, int textId);
+
 		bool loadSpritesheets(std::string dir);
 		void loadSpritesheet(std::string name);
-		void renderGolfMeter(GolfState state, int level, int nPoints);
 		std::unique_ptr<Camera> camera;
 		const std::string defaultSpritesheetPath = "./assets/spritesheets";
 		std::unordered_map<std::string, SDL_Texture*> spritesheets;

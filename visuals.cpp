@@ -6,7 +6,7 @@
 #include "utils.hpp"
 
 int curTextIndex = 0;
-int gameOverTextIndex = -1;
+int gameOverTextIndex = -1; 
 
 Visuals::Visuals()
 {
@@ -172,7 +172,7 @@ void Visuals::renderGolfMeter(GolfState state, int level, int nPoints)
 	SDL_RenderFillRect(ctx.renderer, &cursor);
 }
 
-int Visuals::createText(std::string text, SDL_Color color, int x, int y, bool behindCamera)
+int Visuals::createText(std::string text, int x, int y, SDL_Color color, bool behindCamera)
 {
 	if (!behindCamera){
 		std::cout << "DEBUG: Drawing text in front of camera currently not supported" << std::endl;
@@ -184,7 +184,7 @@ int Visuals::createText(std::string text, SDL_Color color, int x, int y, bool be
 		auto texture = SDL_CreateTextureFromSurface(ctx.renderer, surface);
 		if (texture != NULL){
 			std::cout << "DEBUG loaded text " << text << std::endl;
-			texts.insert({curTextIndex ++, {x, y, surface->w, surface->h, texture, true}});
+			texts.insert({curTextIndex ++, {x, y, surface->w, surface->h, texture, color, true}});
 			return curTextIndex - 1;
 		} else {
 			std::cout << "DEBUG: Unable to create text texture: " << SDL_GetError() << std::endl;
@@ -198,7 +198,7 @@ int Visuals::createText(std::string text, SDL_Color color, int x, int y, bool be
 void Visuals::renderTexts()
 {
 	for (auto& text : texts){
-		if (text.second.display){
+		if (text.second.display && text.second.texture){
 			SDL_Rect pos = {text.second.x, text.second.y, text.second.w, text.second.h};
 			//std::cout << "DEBUG: Render text at " << pos.x << "," << pos.y << "," << pos.w << "," << pos.h <<std::endl;
 			if (SDL_RenderCopy(ctx.renderer, text.second.texture, NULL, &pos) < 0){
@@ -208,12 +208,46 @@ void Visuals::renderTexts()
 	}
 }
 
-void Visuals::destroyAllTexts()
+void Visuals::destroyText(int textId)
+{
+	if (texts.find(textId) == texts.end()){
+		std::cout << "DEBUG: Tried to destroy non-existing text " << textId << std::endl;
+		return;
+	}
+	texts[textId].display = false;
+	SDL_DestroyTexture(texts[textId].texture);
+}
+
+void Visuals::destroyAllText()
 {
 	for (auto& text : texts){
 		SDL_DestroyTexture(text.second.texture);
 	}
 	texts = {};
+}
+
+void Visuals::updateText(std::string text, int textId)
+{
+	if (texts.find(textId) == texts.end()){
+		std::cout << "DEBUG: Tried updating non-existing text " << textId << " with '" << text << "'" << std::endl;
+		return;
+	}
+	SDL_Color color = texts[textId].color;
+	SDL_Surface* surface = TTF_RenderText_Solid(gFont, text.c_str(), color);
+	if (surface != NULL){
+		auto texture = SDL_CreateTextureFromSurface(ctx.renderer, surface);
+		if (texture != NULL){
+			std::cout << "DEBUG loaded text " << text << std::endl;
+			SDL_DestroyTexture(texts[textId].texture);
+			texts[textId].texture = texture;
+			texts[textId].w = surface->w;
+			texts[textId].h = surface->h;
+		} else {
+			std::cout << "DEBUG: Unable to create text texture: " << SDL_GetError() << std::endl;
+		}
+	} else {
+		std::cout << "DEBUG: Unable to create text surface: " << SDL_GetError() << std::endl;
+	}
 }
 
 void Visuals::renderGameOver()
@@ -222,7 +256,7 @@ void Visuals::renderGameOver()
 	SDL_Rect rect = {0, 0, SCREEN_W, SCREEN_H};
 	SDL_RenderFillRect(ctx.renderer, &rect);
 	if (gameOverTextIndex < 0){
-		gameOverTextIndex = createText("You died - press space to start over", {255, 0, 255, 255}, SCREEN_W / 4, SCREEN_H / 2 );
+		gameOverTextIndex = createText("You died - press space to start over", SCREEN_W / 4, SCREEN_H / 2, {255, 0, 255, 255});
 	}
 	texts[gameOverTextIndex].display = true;
 }

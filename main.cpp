@@ -30,6 +30,8 @@ rect playerStartPos = {200, 0};
 
 bool keysPressed[322] = {false};
 
+int fpsTextIndex = -1;
+
 void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 {
 	//TODO: get everything from file
@@ -38,8 +40,6 @@ void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 
 	World::entities = {};
 	ticksAfterPlayedDied = 0;
-
-	v.destroyAllTexts();
 
 	EntityFactory factory(spritesheets);
 
@@ -126,7 +126,7 @@ bool handleInput()
 			
 			if (player->behavior->destroyed){
 				if (e.key.keysym.scancode == SDL_SCANCODE_SPACE){
-					std::cout << "DEBUG: restart" << std::endl;
+					v.destroyText(gameOverTextIndex);
 					return false;
 				}
 			}
@@ -232,10 +232,14 @@ void mainloop(void *arg)
 	renderEverything();
 
     ctx->iteration++;
+
+	v.updateText("45", fpsTextIndex);
 }
 
 int main(int argc, char* argv[])
 {
+	fpsTextIndex = v.createText("0", 10, 10);
+
 	v.loadSpritesheets(v.defaultSpritesheetPath);
 	//v.loadSpritesheet("spritesheet1");
 	assert(v.spritesheets.size() > 0);
