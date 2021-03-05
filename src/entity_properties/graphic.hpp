@@ -1,11 +1,11 @@
 #pragma once
 
 #include <vector>
-#include "graphic.hpp"
-#include "camera.hpp"
 #include <map>
 #include <SDL2/SDL.h>
 #include <memory>
+#include "../entity_properties/graphic.hpp"
+#include "../visuals/camera.hpp"
 
 // circ dep
 class Entity;

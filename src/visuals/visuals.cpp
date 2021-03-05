@@ -1,9 +1,9 @@
 #include <iostream>
 #include <dirent.h>
-#include "visuals.hpp"
-#include "living_entity.hpp"
 #include <iostream>
-#include "utils.hpp"
+#include "../visuals/visuals.hpp"
+#include "../entities/living_entity.hpp"
+#include "../utils/utils.hpp"
 
 int curTextIndex = 0;
 int gameOverTextIndex = -1; 

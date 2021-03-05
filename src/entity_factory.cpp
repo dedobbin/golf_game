@@ -1,9 +1,9 @@
 #include "entity_factory.hpp"
 #include <memory>
-//#include "graphic.hpp"
-#include "enemy_behavior.hpp"
-#include "item_behavior.hpp"
 #include <assert.h>
+//#include "graphic.hpp"
+#include "entity_properties/enemy_behavior.hpp"
+#include "entity_properties/item_behavior.hpp"
 
 EntityFactory::EntityFactory(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 :spritesheets(spritesheets)

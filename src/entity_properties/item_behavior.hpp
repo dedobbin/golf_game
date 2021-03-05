@@ -1,7 +1,7 @@
 #pragma once
 
-#include "behavior.hpp"
-#include "item.hpp"
+#include "../entity_properties/behavior.hpp"
+#include "../entities/item.hpp"
 
 class ItemBehavior : public Behavior
 {

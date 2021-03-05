@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <memory>
-#include "entity.hpp"
+#include "entities/entity.hpp"
 
 class World
 {

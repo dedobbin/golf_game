@@ -8,10 +8,10 @@
 #include <SDL2/SDL_ttf.h>
 #include <unordered_map>
 #include <memory>
-#include "golf_mode.hpp"
-#include "graphic.hpp"
+#include "../entity_properties/golf_mode.hpp"
+#include "../entity_properties/graphic.hpp"
+#include "../entities/entity.hpp"
 #include "camera.hpp"
-#include "entity.hpp"
 
 #define SCREEN_W 920
 #define SCREEN_H 640

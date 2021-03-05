@@ -1,12 +1,12 @@
-#include "behavior.hpp"
 #include "iostream"
 #include "assert.h"
-#include "item.hpp"
-#include "living_entity.hpp"
-#include "world.hpp"
+#include "../entity_properties/behavior.hpp"
+#include "../entities/item.hpp"
+#include "../entities/living_entity.hpp"
+#include "../world.hpp"
 
 // circ dep
-#include "entity.hpp"
+#include "../entities/entity.hpp"
 
 Behavior::Behavior(Entity* owner, bool pickupItems)
 : owner(owner), pickupItems(pickupItems)

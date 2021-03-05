@@ -1,11 +1,11 @@
 #ifndef __ENTITY_HPP__
 #define __ENTITY_HPP__
 
-#include "visuals.hpp"
-#include "behavior.hpp"
-#include "collision.hpp"
-#include "rect.hpp"
 #include <memory>
+#include "../visuals/visuals.hpp"
+#include "../entity_properties/behavior.hpp"
+#include "../entity_properties/collision.hpp"
+#include "../utils/rect.hpp"
 
 enum entityType {
 	STATIC_SOLID, 

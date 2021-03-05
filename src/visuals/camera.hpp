@@ -1,7 +1,7 @@
 #ifndef __CAMERA_HPP__
 #define __CAMERA_HPP__
 
-#include "rect.hpp"
+#include "../utils/rect.hpp"
 
 class Camera
 {

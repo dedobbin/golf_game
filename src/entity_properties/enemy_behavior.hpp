@@ -1,7 +1,7 @@
 #pragma once
 
 #include "behavior.hpp"
-#include "living_entity.hpp"
+#include "../entities/living_entity.hpp"
 
 class EnemyBehavior : public Behavior
 {

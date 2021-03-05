@@ -1,14 +1,13 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <cmath>
-
-#include "item.hpp"
-#include "living_entity.hpp"
-#include "world.hpp"
-#include "assert.h"
+#include <assert.h>
+#include "../entities/item.hpp"
+#include "../entities/living_entity.hpp"
+#include "../world.hpp"
 
 //circ dep
-#include "entity.hpp"
+#include "../entities/entity.hpp"
 
 Collision::Collision(Entity* owner, bool solid)
 :owner(owner), solid(solid)

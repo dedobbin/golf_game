@@ -1,8 +1,8 @@
 #ifndef __COLLISION_HPP__
 #define __COLLISION_HPP__
 
-#include "rect.hpp"
-#include "direction.hpp"
+#include "../utils/rect.hpp"
+#include "../utils/direction.hpp"
 
 // circ dep
 class Entity;

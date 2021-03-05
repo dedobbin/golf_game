@@ -1,8 +1,7 @@
 #include "golf_mode.hpp"
-
-#include "living_entity.hpp"
 #include <assert.h>
 #include <iostream>
+#include "../entities/living_entity.hpp"
 
 #define METER_CURSOR_MOVE_DELAY 3 // Meter cursor should move after this amount of ticks
 #define SWING_ANIMATION_LEN 10

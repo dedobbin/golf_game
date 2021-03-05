@@ -1,7 +1,7 @@
 #pragma once
 
-#include "living_entity.hpp"
-#include "entity.hpp"
+#include "entities/living_entity.hpp"
+#include "entities/entity.hpp"
 //#include <SDL2/SDL.h>
 
 class EntityFactory 

@@ -1,9 +1,9 @@
 #include "graphic.hpp"
 #include <iostream>
-#include "living_entity.hpp"
+#include "../entities/living_entity.hpp"
 
 // circ dep
-#include "entity.hpp"
+#include "../entities/entity.hpp"
 
 Animation::Animation(SDL_Texture* spritesheet)
 : spritesheet(spritesheet)

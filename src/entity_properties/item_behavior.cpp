@@ -1,7 +1,8 @@
 #include "item_behavior.hpp"
 #include <iostream>
-#include "living_entity.hpp"
 #include <assert.h>
+#include "../entities/living_entity.hpp"
+
 
 ItemBehavior::ItemBehavior(Item* owner)
 : Behavior(owner)

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "direction.hpp"
+#include "../utils/direction.hpp"
 
 class LivingEntity;
 class Entity;

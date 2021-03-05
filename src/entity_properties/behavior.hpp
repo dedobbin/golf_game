@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <memory>
-#include "direction.hpp"
+#include "../utils/direction.hpp"
 
 // circ dep
 class Entity;

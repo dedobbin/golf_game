@@ -1,18 +1,18 @@
 #include <iostream>
 #include <memory>
 #include <algorithm>
-#include "visuals.hpp"
-#include "entity.hpp"
-#include "living_entity.hpp"
-#include "rect.hpp"
-#include "entity_factory.hpp"
 #include <assert.h>
 #include <vector>
-#include "direction.hpp"
-#include "item_behavior.hpp"
-#include "world.hpp"
-#include "sdl_utils.hpp"
 #include <emscripten.h>
+#include "visuals/visuals.hpp"
+#include "entities/entity.hpp"
+#include "entities/living_entity.hpp"
+#include "entity_properties/item_behavior.hpp"
+#include "utils/rect.hpp"
+#include "utils/direction.hpp"
+#include "utils/sdl_utils.hpp"
+#include "entity_factory.hpp"
+#include "world.hpp"
 
 #define DELAY_BEFORE_GAMEOVER 30 //time between player dying and game over screen popping up
 int ticksAfterPlayedDied = 0;

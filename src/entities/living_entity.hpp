@@ -3,7 +3,7 @@
 #include "item.hpp"
 #include "entity.hpp"
 #include <memory>
-#include "golf_mode.hpp"
+#include "../entity_properties/golf_mode.hpp"
 
 enum LivingEntityType {
 	ENEMY_A,
