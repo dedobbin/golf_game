@@ -188,22 +188,7 @@ void fillWorld(std::shared_ptr<Block> block)
 }
 
 void Import::importLevel(std::string filePath, std::unordered_map<std::string, SDL_Texture*> _spriteSheets)
-{
-	// DIR *dir;
-	// struct dirent *ent;
-	// dir = opendir ("assets/levels");
-	// if (dir) {
-	// 	while ((ent = readdir (dir)) != NULL) {
-	// 		if (strcmp(ent->d_name, ".") == 0 ^ strcmp(ent->d_name, "..") == 0){
-	// 			continue;
-	// 		}
-	// 		std::cout << ent->d_name << std::endl;
-	// 	}
-	// 	closedir (dir);
-	// } else {
-	// 	std::cout << "Failed to open dir" << std::endl;
-	// }
-	
+{	
 	spriteSheets = _spriteSheets;
 	assert(spriteSheets.size() > 0);
 
@@ -211,12 +196,10 @@ void Import::importLevel(std::string filePath, std::unordered_map<std::string, S
   	std::string content((std::istreambuf_iterator<char>(ifs)),
                        (std::istreambuf_iterator<char>()));
 
-	std::cout << "DEBUG: " << filePath << "," << content << std::endl;
-
 	// std::string content = "{type=metadata;}{type=entity;{type=graphic;sprite=3;}}";
 	
 	auto topBlock = blockify(content);
-	printBlock(topBlock);
+	//printBlock(topBlock);
 	//printBlock(topBlock->blocks[1]);
 }
 

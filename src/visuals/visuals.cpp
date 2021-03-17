@@ -16,7 +16,7 @@ Visuals::Visuals()
 		std::cout << "Failed to init SDL_ttf: " <<  TTF_GetError() << std::endl;
 	}
 
-	gFont = TTF_OpenFont((ASSETS_PATH + std::string("/OpenSans-Regular.ttf")).c_str(), 28);
+	gFont = TTF_OpenFont((RESOURCES_PATH + std::string("/OpenSans-Regular.ttf")).c_str(), 28);
 	if (gFont == NULL){
 		std::cout << "Failed to load font: " <<  TTF_GetError() << std::endl;
 	}

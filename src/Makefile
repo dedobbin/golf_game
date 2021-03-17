@@ -3,7 +3,7 @@ EMCC=emcc
 all:
 	$(EMCC) utils/*.cpp entity_properties/*.cpp entities/*.cpp visuals/*.cpp *.cpp \
 	--debug -s USE_SDL=2 -s USE_SDL_IMAGE=2  -s USE_SDL_TTF=2 -s SDL2_IMAGE_FORMATS='["png"]' -s DISABLE_EXCEPTION_CATCHING=0 -s ALLOW_MEMORY_GROWTH=1 \
-	--preload-file ../assets --preload-file ../levels -o index.js; \
+	--preload-file ../resources -o index.js; \
 	 $(MAKE) copy-to-build-folder
 
 copy-to-build-folder:

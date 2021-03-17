@@ -17,9 +17,9 @@
 #define SCREEN_H 640
 
 #ifdef __EMSCRIPTEN__
-	#define ASSETS_PATH "assets"
+	#define RESOURCES_PATH "resources"
 #else
-	#define ASSETS_PATH "../assets"
+	#define RESOURCES_PATH "../resources"
 #endif
 
 extern int gameOverTextIndex;
@@ -66,7 +66,7 @@ class Visuals
 		bool loadSpritesheets(std::string dir);
 		void loadSpritesheet(std::string name);
 		std::unique_ptr<Camera> camera;
-		const std::string defaultSpritesheetPath = ASSETS_PATH + std::string("/spritesheets");
+		const std::string defaultSpritesheetPath = RESOURCES_PATH + std::string("/spritesheets");
 		std::unordered_map<std::string, SDL_Texture*> spritesheets;
 		context ctx;
 		TTF_Font* gFont = NULL;

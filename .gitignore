@@ -1,5 +1,5 @@
 .vscode
-assets
+resources
 a.out
 *.a
 *.o
@@ -8,3 +8,4 @@ index.data
 index.js
 index.wasm
 build
+*.gch
