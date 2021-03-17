@@ -13,6 +13,7 @@
 #include "utils/sdl_utils.hpp"
 #include "entity_factory.hpp"
 #include "world.hpp"
+#include "import_level.hpp"
 
 #define DELAY_BEFORE_GAMEOVER 30 //time between player dying and game over screen popping up
 int ticksAfterPlayedDied = 0;
@@ -36,50 +37,51 @@ LazyFooTimer fpsTimer;
 
 void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 {
+	Import::importLevel(ASSETS_PATH + std::string("/levels/1.wsp"), spritesheets);
 	//TODO: get everything from file
-	World::w = 10000000;
-	World::h = 1500;
+	// World::w = 10000000;
+	// World::h = 1500;
 
-	World::entities = {};
-	ticksAfterPlayedDied = 0;
+	// World::entities = {};
+	// ticksAfterPlayedDied = 0;
 
-	EntityFactory factory(spritesheets);
+	// EntityFactory factory(spritesheets);
 
-	World::entities.emplace_back(factory.createGolfClub(700, 0));
+	// World::entities.emplace_back(factory.createGolfClub(700, 0));
 
-	World::entities.emplace_back(factory.createEnemy(100, 0));
+	// World::entities.emplace_back(factory.createEnemy(100, 0));
 
-	World::entities.emplace_back(factory.createPlayer(3000, 0));
-	player = std::static_pointer_cast<LivingEntity>(World::entities.back());
+	// World::entities.emplace_back(factory.createPlayer(3000, 0));
+	// player = std::static_pointer_cast<LivingEntity>(World::entities.back());
 
-	World::entities.emplace_back(factory.createBall(300, 0));
+	// World::entities.emplace_back(factory.createBall(300, 0));
 
-	int x = 0; 
-	int y = 300;
-	int w = 100;
-	int h = 100;
-	for (int i = 0; i < 35; i++){
-		x = i * w;
-		World::entities.emplace_back(factory.createBlock(x, y, w, h));
-	}
+	// int x = 0; 
+	// int y = 300;
+	// int w = 100;
+	// int h = 100;
+	// for (int i = 0; i < 35; i++){
+	// 	x = i * w;
+	// 	World::entities.emplace_back(factory.createBlock(x, y, w, h));
+	// }
 
-	h = 10;
-	w = 100;
-	x = player->pos.x - w * 2;
-	y = y - h;
-	for (int i =0; i < 5;i ++){
-		World::entities.emplace_back(factory.createBlock(x, y, w, h));
-		x-= w;
-		y-=10;
-	}
+	// h = 10;
+	// w = 100;
+	// x = player->pos.x - w * 2;
+	// y = y - h;
+	// for (int i =0; i < 5;i ++){
+	// 	World::entities.emplace_back(factory.createBlock(x, y, w, h));
+	// 	x-= w;
+	// 	y-=10;
+	// }
 
-	h = 30;
-	w = 100;
-	x = player->pos.x + w * 2;
-	y = 300 - h;
-	World::entities.emplace_back(factory.createBlock(x, y, w, h));
+	// h = 30;
+	// w = 100;
+	// x = player->pos.x + w * 2;
+	// y = 300 - h;
+	// World::entities.emplace_back(factory.createBlock(x, y, w, h));
 
-	followWithCam = player;
+	// followWithCam = player;
 }
 
 void renderEverything()
@@ -251,9 +253,10 @@ int main(int argc, char* argv[])
 
 	v.loadSpritesheets(v.defaultSpritesheetPath);
 	//v.loadSpritesheet("spritesheet1");
-	assert(v.spritesheets.size() > 0);
-	std::cout << "DEBUG: game starts" << std::endl;
+	
 	setupWorld(v.spritesheets);
+	
+	std::cout << "DEBUG: game starts" << std::endl;
 
 	fpsTimer.start();
 	const int simulate_infinite_loop = 1;

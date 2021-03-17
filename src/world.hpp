@@ -11,4 +11,5 @@ class World
 		static float gravity;
 		static int w;
 		static int h;
+		static std::string name;
 };

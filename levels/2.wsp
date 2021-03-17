@@ -1,0 +1,15 @@
+metadata
+{
+	name=level 01;
+	w=100000;
+	h=600;
+}
+living_entity
+{
+	name=player;
+	type=living;
+	property
+	{
+		type=behavior;
+	}
+}

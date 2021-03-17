@@ -3,7 +3,7 @@ EMCC=emcc
 all:
 	$(EMCC) utils/*.cpp entity_properties/*.cpp entities/*.cpp visuals/*.cpp *.cpp \
 	--debug -s USE_SDL=2 -s USE_SDL_IMAGE=2  -s USE_SDL_TTF=2 -s SDL2_IMAGE_FORMATS='["png"]' -s DISABLE_EXCEPTION_CATCHING=0 -s ALLOW_MEMORY_GROWTH=1 \
-	--preload-file ../assets -o index.js; \
+	--preload-file ../assets --preload-file ../levels -o index.js; \
 	 $(MAKE) copy-to-build-folder
 
 copy-to-build-folder:
@@ -12,6 +12,10 @@ copy-to-build-folder:
 	cp index.js ../build
 	cp index.wasm ../build
 	cp index.data ../build
+
+test-import:
+	g++ import_level.cpp world.cpp entities/*.cpp entity_properties/*.cpp utils/utils.cpp visuals/*.cpp \
+	-g -w -lSDL2 -lSDL2_ttf  -lSDL2_image -lSDL2_mixer -ldump_lib 
 
 clean:
 	rm -f index.js index.wasm index.data
