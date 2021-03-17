@@ -9,6 +9,7 @@
 
 #include "world.hpp"
 #include "utils/utils.hpp"
+#include "entities/living_entity.hpp"
 
 std::unordered_map<std::string, SDL_Texture*> spriteSheets;
 
@@ -130,25 +131,36 @@ void fillWorld(std::shared_ptr<Block> block)
 		World::h = std::stoi(attr["world_h"]);
 		World::gravity = std::stof(attr["world_gravity"]);
 	} else if (attr["type"]=="entity"){
+		Entity* entity = NULL;
 		auto pos = explode(attr["pos"], ',');
 		
-		auto entity = new Entity(
-			attr["name"],
-			entityType::STATIC_SOLID, //placeholder
-			std::stoi(pos[0]),
-			std::stoi(pos[1]),
-			std::stoi(pos[2]),
-			std::stoi(pos[0])
-		);
 		if (attr["entity_type"] == "living"){
-			entity->type = entityType::LIVING;
+			entity = new LivingEntity(
+				attr["name"],
+				LivingEntityType::ENEMY_A, //placeholder
+				std::stoi(pos[0]),
+				std::stoi(pos[1]),
+				std::stoi(pos[2]),
+				std::stoi(pos[0])
+			);
+			//TODO: set living entity type
+
+		} else {
+			//TODO: set entity type
+			entity = new Entity(
+				attr["name"],
+				entityType::STATIC_SOLID, //placeholder
+				std::stoi(pos[0]),
+				std::stoi(pos[1]),
+				std::stoi(pos[2]),
+				std::stoi(pos[0])
+			);
 		}
 
 		/* Entitiy properties like gravity, behavior etc */
 		for (auto& property : block->blocks){
 			auto propAttr = property->attributes;
-			if (propAttr["type"] == "graphic"){
-				std::cout << "DEBUG level importer graphic " << std::endl; 
+			if (propAttr["type"] == "graphic"){ 
 				entity->graphic = std::make_unique<Graphic>(entity);
 				for (auto& graphicProperties: property->blocks){
 					auto graphAttr = graphicProperties->attributes;
@@ -158,9 +170,9 @@ void fillWorld(std::shared_ptr<Block> block)
 						for (auto& rect : parseFramePosStr(graphAttr["frames"])){
 							animation->frames.push_back(std::make_unique<Frame>(rect.x, rect.y, rect.w, rect.h));
 						}
-
-						animation->animationSpeed = std::stoi(graphAttr["speed"]);
-						animation->loop = (bool)std::stoi(graphAttr["loop"]);
+						//TODO: optional stuff
+						// animation->animationSpeed = std::stoi(graphAttr["speed"]);
+						// animation->loop = (bool)std::stoi(graphAttr["loop"]);
 
 						if (graphAttr["animation_type"]=="default"){
 							entity->graphic->animations[DEFAULT] = std::move(animation);
@@ -178,7 +190,6 @@ void fillWorld(std::shared_ptr<Block> block)
 			}
 		}
 
-		//TODO: should insert as living entity
 		World::entities.emplace_back(entity);
 	}
 
@@ -201,6 +212,7 @@ void Import::importLevel(std::string filePath, std::unordered_map<std::string, S
 	auto topBlock = blockify(content);
 	//printBlock(topBlock);
 	//printBlock(topBlock->blocks[1]);
+	fillWorld(topBlock);
 }
 
 //for testing
@@ -208,8 +220,6 @@ void Import::importLevel(std::string filePath, std::unordered_map<std::string, S
 // {
 // 	auto visuals = std::make_shared<Visuals>();
 // 	visuals->loadSpritesheets(visuals->defaultSpritesheetPath);
-// 	spriteSheets = visuals->spritesheets;
-// 	assert(spriteSheets.size() > 0);
-// 	Import::importLevel("../levels/1.wsp");
+// 	Import::importLevel(RESOURCES_PATH + std::string("/levels/1.wsp"), visuals->spritesheets);
 // 	return 0;
 // }

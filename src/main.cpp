@@ -38,6 +38,16 @@ LazyFooTimer fpsTimer;
 void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 {
 	Import::importLevel(RESOURCES_PATH + std::string("/levels/1.wsp"), spritesheets);
+    
+	auto it = std::find_if(World::entities.begin(), World::entities.end(), [](const auto& x){
+		return x->name == "player";
+	});
+
+	std::shared_ptr<LivingEntity> p = std::static_pointer_cast<LivingEntity>(*it);
+	player = p;
+	followWithCam = player;
+
+
 	//TODO: get everything from file
 	// World::w = 10000000;
 	// World::h = 1500;
