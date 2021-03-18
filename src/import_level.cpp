@@ -170,10 +170,14 @@ void fillWorld(std::shared_ptr<Block> block)
 						for (auto& rect : parseFramePosStr(graphAttr["frames"])){
 							animation->frames.push_back(std::make_unique<Frame>(rect.x, rect.y, rect.w, rect.h));
 						}
-						//TODO: optional stuff
-						// animation->animationSpeed = std::stoi(graphAttr["speed"]);
-						// animation->loop = (bool)std::stoi(graphAttr["loop"]);
 
+						if (graphAttr.find("speed") != graphAttr.end()){
+							animation->animationSpeed = std::stoi(graphAttr["speed"]);
+						} 
+						if (graphAttr.find("loop") != graphAttr.end()){
+							animation->loop = (bool)std::stoi(graphAttr["loop"]);
+						} 
+						std::cout << "DEBUG: " << graphAttr["animation_type"] << " speed:" << animation->animationSpeed << std::endl;
 						if (graphAttr["animation_type"]=="default"){
 							entity->graphic->animations[DEFAULT] = std::move(animation);
 						} else if (graphAttr["animation_type"]=="walk") {

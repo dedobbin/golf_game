@@ -49,7 +49,6 @@ void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 	player = p;
 	followWithCam = player;
 
-
 	//TODO: get everything from file
 	// World::w = 10000000;
 	// World::h = 1500;
