@@ -141,7 +141,7 @@ void fillWorld(std::shared_ptr<Block> block)
 				std::stoi(pos[0]),
 				std::stoi(pos[1]),
 				std::stoi(pos[2]),
-				std::stoi(pos[0])
+				std::stoi(pos[3])
 			);
 			//TODO: set living entity type
 
@@ -153,7 +153,7 @@ void fillWorld(std::shared_ptr<Block> block)
 				std::stoi(pos[0]),
 				std::stoi(pos[1]),
 				std::stoi(pos[2]),
-				std::stoi(pos[0])
+				std::stoi(pos[3])
 			);
 		}
 

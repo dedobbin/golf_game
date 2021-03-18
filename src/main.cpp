@@ -3,7 +3,9 @@
 #include <algorithm>
 #include <assert.h>
 #include <vector>
+#ifdef __EMSCRIPTEN__
 #include <emscripten.h>
+#endif
 #include "visuals/visuals.hpp"
 #include "entities/entity.hpp"
 #include "entities/living_entity.hpp"
@@ -112,12 +114,12 @@ void renderEverything()
 	v.renderRectOverlay(0, 0, v.camera->camRect.w, v.camera->camRect.w);
 #endif	
 	
-	if (player->behavior->destroyed){
+	if (player->behavior && player->behavior->destroyed){
 		ticksAfterPlayedDied ++;
 		if (ticksAfterPlayedDied >= DELAY_BEFORE_GAMEOVER){
 			v.renderGameOver();
 		}
-	} else if (player->golfMode->active){
+	} else if (player->golfMode && player->golfMode->active){
 		if (player->golfMode->state == AIMING_POWER){
 			v.renderGolfMeter(AIMING_POWER, player->golfMode->powerCursor, player->golfMode->nPoints);
 		} else if (player->golfMode->state == AIMING_HEIGHT){
@@ -138,14 +140,14 @@ bool handleInput()
 			return false;
 		} else if (e.type == SDL_KEYDOWN){
 			
-			if (player->behavior->destroyed){
+			if (player->behavior && player->behavior->destroyed){
 				if (e.key.keysym.scancode == SDL_SCANCODE_SPACE){
 					v.destroyText(gameOverTextIndex);
 					return false;
 				}
 			}
 
-			if (player->golfMode->active){
+			if (player->golfMode && player->golfMode->active){
 				if (player->golfMode->state == AIMING_POWER){
 					if (e.key.keysym.scancode == SDL_SCANCODE_RIGHT){
 						player->golfMode->setDirection(RIGHT);
@@ -164,15 +166,17 @@ bool handleInput()
 				} 
 			} else {
 				if (e.key.keysym.scancode == SDL_SCANCODE_C){
-					auto i = std::find_if( player->collision->currentColliders.begin(),
-					player->collision->currentColliders.end(), 
-					[&](const auto val){ return val->type == BALL && val->behavior && val->behavior->grounded; } 
-					);
+					if (player->collision){
+						auto i = std::find_if( player->collision->currentColliders.begin(),
+							player->collision->currentColliders.end(), 
+							[&](const auto val){ return val->type == BALL && val->behavior && val->behavior->grounded; } 
+						);
 
-					if (i != player->collision->currentColliders.end()){
-						if (player->heldItem){
-							auto itemBehavior = (ItemBehavior*)player->heldItem->behavior.get();
-							itemBehavior->interact(*i);
+						if (i != player->collision->currentColliders.end()){
+							if (player->heldItem){
+								auto itemBehavior = (ItemBehavior*)player->heldItem->behavior.get();
+								itemBehavior->interact(*i);
+							}
 						}
 					}
 				}
@@ -184,7 +188,7 @@ bool handleInput()
 		}
 	}
 
-	if (!player->golfMode->active){
+	if (player->golfMode && !player->golfMode->active){
 		if (keysPressed[SDL_SCANCODE_RIGHT]){
 			player->xPush = RIGHT;
 		} else if (player->behavior->xSpeed > 0){
@@ -221,7 +225,34 @@ bool handleInput()
 	return true;
 }
 
-void mainloop(void *arg)
+void startGameNative()
+{
+	while(true){
+		float avgFps = v.ctx.iteration / (fpsTimer.getTicks() / 1000.f);
+		if (avgFps > 2000000){
+			avgFps = 0;
+		}
+		bool keepGoing = handleInput();
+		if (!keepGoing){
+			break;
+		}
+#ifndef DEBUG_CAMERA
+		v.camera->camRect.x = followWithCam->pos.x - v.camera->camRect.w / 2;
+		v.camera->camRect.y = followWithCam->pos.y - v.camera->camRect.h / 2;
+#endif
+
+		renderEverything();
+
+		v.ctx.iteration++;
+
+#ifdef DEBUG_DRAW 
+		v.updateText(std::to_string(static_cast<int>(avgFps)), fpsTextIndex);
+#endif
+	//TODO: framecap and early finish
+	}
+}
+
+void emscriptenLoop(void *arg)
 {	
 	context *ctx = static_cast<context*>(arg);
 	
@@ -269,11 +300,15 @@ int main(int argc, char* argv[])
 	std::cout << "DEBUG: game starts" << std::endl;
 
 	fpsTimer.start();
+#ifdef __EMSCRIPTEN__
 	const int simulate_infinite_loop = 1;
 	const int fps = -1; //defaults to 60, but setting it to 60 seems to trigger EM_TIMING_SETTIMEOUT, causing frames to drop from 60 when theres actual load?
+	emscripten_set_main_loop_arg(emscriptenLoop, &v.ctx, fps, simulate_infinite_loop);
+#else
+	startGameNative();
+#endif
 
-	emscripten_set_main_loop_arg(mainloop, &v.ctx, fps, simulate_infinite_loop);
-	std::cout << "DEBUG: game ends" << std::endl;
+std::cout << "DEBUG: game ends" << std::endl;
 
 	return 0;
 }
