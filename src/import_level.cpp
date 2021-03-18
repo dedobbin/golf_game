@@ -92,6 +92,12 @@ std::vector<rect> parseFramePosStr(std::string frameStr)
 
 	std::vector<rect> output; 
 
+	frameStr.erase(std::remove_if(frameStr.begin(), frameStr.end(), 
+		[](unsigned char x){
+			return std::isspace(x);
+		}), frameStr.end()
+	);
+
 	const std::regex r("(\\[[0-9]+,[0-9]+,[0-9]+,[0-9]+\\],*)");  
 	
 	while(frameStr != ""){
@@ -177,7 +183,7 @@ void fillWorld(std::shared_ptr<Block> block)
 						if (graphAttr.find("loop") != graphAttr.end()){
 							animation->loop = (bool)std::stoi(graphAttr["loop"]);
 						} 
-						std::cout << "DEBUG: " << graphAttr["animation_type"] << " speed:" << animation->animationSpeed << std::endl;
+
 						if (graphAttr["animation_type"]=="default"){
 							entity->graphic->animations[DEFAULT] = std::move(animation);
 						} else if (graphAttr["animation_type"]=="walk") {
