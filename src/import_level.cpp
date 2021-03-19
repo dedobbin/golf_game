@@ -85,7 +85,6 @@ void printBlock(std::shared_ptr<Block> block)
 	}
 }
 
-
 std::vector<rect> parseFramePosStr(std::string frameStr)
 {
 	//frameStr = "[32,0,32,32],[64,0,32,32],[12,34,56,78]"; 
@@ -128,21 +127,60 @@ std::vector<rect> parseFramePosStr(std::string frameStr)
 	return output;
 }
 
-void fillWorld(std::shared_ptr<Block> block)
+void parseMetaData(std::shared_ptr<Block> block)
 {
 	auto attr = block->attributes;
-	if (attr["type"] == "metadata"){
-		World::name = attr["name"];
-		World::w = std::stoi(attr["world_w"]);
-		World::h = std::stoi(attr["world_h"]);
-		World::gravity = std::stof(attr["world_gravity"]);
-	} else if (attr["type"]=="entity"){
+	World::name = attr["name"];
+	World::w = std::stoi(attr["world_w"]);
+	World::h = std::stoi(attr["world_h"]);
+	World::gravity = std::stof(attr["world_gravity"]);
+}
+
+Graphic* parseGraphic(std::shared_ptr<Block> graphicBlock, Entity* owner)
+{
+	auto graphic = new Graphic(owner);
+	for (auto& graphicProperties: graphicBlock->blocks){
+		auto graphAttr = graphicProperties->attributes;
+		if (graphAttr["type"] == "animation"){
+			auto animation = std::make_unique<Animation>(spriteSheets.at(graphAttr["spritesheet"]));
+			for (auto& rect : parseFramePosStr(graphAttr["frames"])){
+				animation->frames.push_back(std::make_unique<Frame>(rect.x, rect.y, rect.w, rect.h));
+			}
+
+			if (graphAttr.find("speed") != graphAttr.end()){
+				animation->animationSpeed = std::stoi(graphAttr["speed"]);
+			} 
+			if (graphAttr.find("loop") != graphAttr.end()){
+				animation->loop = (bool)std::stoi(graphAttr["loop"]);
+			} 
+
+			if (graphAttr["animation_type"]=="default"){
+				graphic->animations[DEFAULT] = std::move(animation);
+			} else if (graphAttr["animation_type"]=="walk") {
+				graphic->animations[WALK] =  std::move(animation);
+			} else if (graphAttr["animation_type"]=="jump") {
+				graphic->animations[JUMP] =  std::move(animation);
+			} else if (graphAttr["animation_type"]=="fall") {
+				graphic->animations[FALL] =  std::move(animation);
+			} else if (graphAttr["animation_type"]=="dead") {
+				graphic->animations[DEAD] =  std::move(animation);
+			}
+		}
+	} 
+	return graphic;
+}
+
+void fillWorld(std::shared_ptr<Block> block)
+{
+	if (block->attributes["type"] == "metadata"){
+		parseMetaData(block);
+	} else if (block->attributes["type"]=="entity"){
 		Entity* entity = NULL;
-		auto pos = explode(attr["pos"], ',');
+		auto pos = explode(block->attributes["pos"], ',');
 		
-		if (attr["entity_type"] == "living"){
+		if (block->attributes["entity_type"] == "living"){
 			entity = new LivingEntity(
-				attr["name"],
+				block->attributes["name"],
 				LivingEntityType::ENEMY_A, //placeholder
 				std::stoi(pos[0]),
 				std::stoi(pos[1]),
@@ -154,7 +192,7 @@ void fillWorld(std::shared_ptr<Block> block)
 		} else {
 			//TODO: set entity type
 			entity = new Entity(
-				attr["name"],
+				block->attributes["name"],
 				entityType::STATIC_SOLID, //placeholder
 				std::stoi(pos[0]),
 				std::stoi(pos[1]),
@@ -167,36 +205,8 @@ void fillWorld(std::shared_ptr<Block> block)
 		for (auto& property : block->blocks){
 			auto propAttr = property->attributes;
 			if (propAttr["type"] == "graphic"){ 
-				entity->graphic = std::make_unique<Graphic>(entity);
-				for (auto& graphicProperties: property->blocks){
-					auto graphAttr = graphicProperties->attributes;
-					if (graphAttr["type"] == "animation"){
-
-						auto animation = std::make_unique<Animation>(spriteSheets.at(graphAttr["spritesheet"]));
-						for (auto& rect : parseFramePosStr(graphAttr["frames"])){
-							animation->frames.push_back(std::make_unique<Frame>(rect.x, rect.y, rect.w, rect.h));
-						}
-
-						if (graphAttr.find("speed") != graphAttr.end()){
-							animation->animationSpeed = std::stoi(graphAttr["speed"]);
-						} 
-						if (graphAttr.find("loop") != graphAttr.end()){
-							animation->loop = (bool)std::stoi(graphAttr["loop"]);
-						} 
-
-						if (graphAttr["animation_type"]=="default"){
-							entity->graphic->animations[DEFAULT] = std::move(animation);
-						} else if (graphAttr["animation_type"]=="walk") {
-							entity->graphic->animations[WALK] =  std::move(animation);
-						} else if (graphAttr["animation_type"]=="jump") {
-							entity->graphic->animations[JUMP] =  std::move(animation);
-						} else if (graphAttr["animation_type"]=="fall") {
-							entity->graphic->animations[FALL] =  std::move(animation);
-						} else if (graphAttr["animation_type"]=="dead") {
-							entity->graphic->animations[DEAD] =  std::move(animation);
-						}
-					}
-				}
+				auto graphic = parseGraphic(property, entity);
+				entity->graphic = std::unique_ptr<Graphic>(graphic);
 			}
 		}
 
