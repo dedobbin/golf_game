@@ -170,46 +170,52 @@ Graphic* parseGraphic(std::shared_ptr<Block> graphicBlock, Entity* owner)
 	return graphic;
 }
 
+Entity* parseEntity(std::shared_ptr<Block> block)
+{
+	Entity* entity = NULL;
+	auto pos = explode(block->attributes["pos"], ',');
+	
+	if (block->attributes["entity_type"] == "living"){
+		entity = new LivingEntity(
+			block->attributes["name"],
+			LivingEntityType::ENEMY_A, //placeholder
+			std::stoi(pos[0]),
+			std::stoi(pos[1]),
+			std::stoi(pos[2]),
+			std::stoi(pos[3])
+		);
+		//TODO: set living entity type
+
+	} else {
+		//TODO: set entity type
+		entity = new Entity(
+			block->attributes["name"],
+			entityType::STATIC_SOLID, //placeholder
+			std::stoi(pos[0]),
+			std::stoi(pos[1]),
+			std::stoi(pos[2]),
+			std::stoi(pos[3])
+		);
+	}
+
+	/* Entitiy properties like gravity, behavior etc */
+	for (auto& property : block->blocks){
+		auto propAttr = property->attributes;
+		if (propAttr["type"] == "graphic"){ 
+			auto graphic = parseGraphic(property, entity);
+			entity->graphic = std::unique_ptr<Graphic>(graphic);
+		}
+	}
+
+	return entity;
+}
+
 void fillWorld(std::shared_ptr<Block> block)
 {
 	if (block->attributes["type"] == "metadata"){
 		parseMetaData(block);
 	} else if (block->attributes["type"]=="entity"){
-		Entity* entity = NULL;
-		auto pos = explode(block->attributes["pos"], ',');
-		
-		if (block->attributes["entity_type"] == "living"){
-			entity = new LivingEntity(
-				block->attributes["name"],
-				LivingEntityType::ENEMY_A, //placeholder
-				std::stoi(pos[0]),
-				std::stoi(pos[1]),
-				std::stoi(pos[2]),
-				std::stoi(pos[3])
-			);
-			//TODO: set living entity type
-
-		} else {
-			//TODO: set entity type
-			entity = new Entity(
-				block->attributes["name"],
-				entityType::STATIC_SOLID, //placeholder
-				std::stoi(pos[0]),
-				std::stoi(pos[1]),
-				std::stoi(pos[2]),
-				std::stoi(pos[3])
-			);
-		}
-
-		/* Entitiy properties like gravity, behavior etc */
-		for (auto& property : block->blocks){
-			auto propAttr = property->attributes;
-			if (propAttr["type"] == "graphic"){ 
-				auto graphic = parseGraphic(property, entity);
-				entity->graphic = std::unique_ptr<Graphic>(graphic);
-			}
-		}
-
+		auto entity = parseEntity(block);
 		World::entities.emplace_back(entity);
 	}
 
