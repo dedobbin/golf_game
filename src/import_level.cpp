@@ -171,6 +171,31 @@ Graphic* parseGraphic(std::shared_ptr<Block> graphicBlock, Entity* owner)
 	return graphic;
 }
 
+Behavior* parseBehavior(std::shared_ptr<Block> block, Entity* owner)
+{
+	bool pickupItems = false;
+	if (block->attributes.find("pickup_items") != block->attributes.end()){
+		pickupItems = (bool)std::stoi(block->attributes["pickup_items"]);
+	}
+	auto behavior = new Behavior(owner, pickupItems);
+
+	if (block->attributes.find("walk_acc") != block->attributes.end()){
+		behavior->walkAcc = std::stof(block->attributes["walk_acc"]);
+	} else if (block->attributes.find("max_x_speed") != block->attributes.end()){
+		behavior->maxXSpeed = std::stof(block->attributes["max_x_speed"]);
+	} else if (block->attributes.find("max_walk_speed") != block->attributes.end()){
+		behavior->maxWalkSpeed = std::stof(block->attributes["max_walk_speed"]);
+	} else if (block->attributes.find("max_y_speed") != block->attributes.end()){
+		behavior->maxYSpeed = std::stof(block->attributes["max_y_speed"]);
+	} else if (block->attributes.find("gravity") != block->attributes.end()){
+		behavior->gravity = (bool)std::stoi(block->attributes["gravity"]);
+	} else if (block->attributes.find("friction_ground") != block->attributes.end()){
+		behavior->frictionGround = std::stof(block->attributes["friction_ground"]);
+	}
+
+	return behavior;
+}
+
 Entity* parseEntity(std::shared_ptr<Block> block)
 {
 	Entity* entity = NULL;
@@ -226,6 +251,8 @@ Entity* parseEntity(std::shared_ptr<Block> block)
 		if (propAttr["type"] == "graphic"){ 
 			auto graphic = parseGraphic(property, entity);
 			entity->graphic = std::unique_ptr<Graphic>(graphic);
+		} else if (propAttr["type"] == "behavior"){
+			entity->behavior = std::unique_ptr<Behavior>(parseBehavior(property, entity));
 		}
 	}
 

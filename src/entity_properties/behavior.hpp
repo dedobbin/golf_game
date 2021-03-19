@@ -22,18 +22,22 @@ class Behavior
 		void addYSpeed(float n, bool clampZero = false);
 		int getState();
 		void destroy(bool animation = true);
+		
+		Entity* owner;
+
+		bool pickupItems = false;
 		float walkAcc = 0.2;
-		float xSpeed = 0; //should be set through addXSpeed(), would be better to properly private but eh
-		float ySpeed = 0; //should be set through addXSpeed(), would be better to properly private but eh 
 		float maxXSpeed = 20.0;
 		float maxWalkSpeed = 5.5;
 		float maxYSpeed = 20.0;
 		bool gravity = true;
-		Entity* owner;
-		bool grounded = false;
-		bool pickupItems = false;
 		float frictionGround = 0.35;
+
+		/* state */
+		float xSpeed = 0; //should be set through addXSpeed(), would be better to properly private but eh
+		float ySpeed = 0; //should be set through addXSpeed(), would be better to properly private but eh 
 		bool destroyed = false;
+		bool grounded = false;
 };
 
 #endif
