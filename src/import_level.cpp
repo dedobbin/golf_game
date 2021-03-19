@@ -10,6 +10,7 @@
 #include "world.hpp"
 #include "utils/utils.hpp"
 #include "entities/living_entity.hpp"
+#include "entities/item.hpp"
 
 std::unordered_map<std::string, SDL_Texture*> spriteSheets;
 
@@ -184,10 +185,25 @@ Entity* parseEntity(std::shared_ptr<Block> block)
 			std::stoi(pos[2]),
 			std::stoi(pos[3])
 		);
-		//TODO: set living entity type
+		if (block->attributes["living_entity_type"] == "player"){
+			((LivingEntity*)entity)->livingEntityType = LivingEntityType::PLAYER;
+		} else if (block->attributes["living_entity_type"] == "enemy_a"){
+			((LivingEntity*)entity)->livingEntityType = LivingEntityType::ENEMY_A;
+		}
+	} else if (block->attributes["entity_type"] == "item"){
+		entity = new Item(
+			block->attributes["name"],
+			std::stoi(pos[0]),
+			std::stoi(pos[1]),
+			ItemType::CLUB, //placeholder
+			std::stoi(pos[2]),
+			std::stoi(pos[3])
+		);
 
+		if (block->attributes["item_type"] == "club"){
+			((Item*)entity)->itemType = ItemType::CLUB;
+		}
 	} else {
-		//TODO: set entity type
 		entity = new Entity(
 			block->attributes["name"],
 			entityType::STATIC_SOLID, //placeholder
@@ -196,6 +212,12 @@ Entity* parseEntity(std::shared_ptr<Block> block)
 			std::stoi(pos[2]),
 			std::stoi(pos[3])
 		);
+		/* Set entity types of objects that not have it set by child like LivingEntity and Item */
+		if (block->attributes["living_entity_type"] == "static_solid"){
+			entity->type = entityType::STATIC_SOLID;
+		} else if (block->attributes["living_entity_type"] == "ball"){
+			entity->type = entityType::BALL;
+		}
 	}
 
 	/* Entitiy properties like gravity, behavior etc */
