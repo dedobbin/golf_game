@@ -207,6 +207,12 @@ Collision* parseCollision(std::shared_ptr<Block> block, Entity* owner)
 	return collision;
 }
 
+GolfMode* parseGolfMode(std::shared_ptr<Block> block, LivingEntity* owner)
+{
+	auto golfMode = new GolfMode(owner);
+	return golfMode;
+}
+
 Entity* parseEntity(std::shared_ptr<Block> block)
 {
 	Entity* entity = NULL;
@@ -266,6 +272,12 @@ Entity* parseEntity(std::shared_ptr<Block> block)
 			entity->behavior = std::unique_ptr<Behavior>(parseBehavior(property, entity));
 		} else if (propAttr["type"] == "collision"){
 			entity->collision = std::unique_ptr<Collision>(parseCollision(property, entity));
+		} else if (propAttr["type"] == "golf_mode"){
+			if (entity->type != entityType::LIVING){
+				std::cout << "importLevel: Trying to set golf mode on non-living entity, nope.." <<std::endl;
+			} else {
+				((LivingEntity*)entity)->golfMode = std::unique_ptr<GolfMode>(parseGolfMode(property, (LivingEntity*)entity));
+			}
 		}
 	}
 
