@@ -196,6 +196,17 @@ Behavior* parseBehavior(std::shared_ptr<Block> block, Entity* owner)
 	return behavior;
 }
 
+Collision* parseCollision(std::shared_ptr<Block> block, Entity* owner)
+{
+	auto collision = new Collision(owner);
+
+ 	if (block->attributes.find("solid") != block->attributes.end()){
+		collision->solid = (bool)std::stoi(block->attributes["solid"]);
+	}
+
+	return collision;
+}
+
 Entity* parseEntity(std::shared_ptr<Block> block)
 {
 	Entity* entity = NULL;
@@ -237,6 +248,7 @@ Entity* parseEntity(std::shared_ptr<Block> block)
 			std::stoi(pos[2]),
 			std::stoi(pos[3])
 		);
+		
 		/* Set entity types of objects that not have it set by child like LivingEntity and Item */
 		if (block->attributes["living_entity_type"] == "static_solid"){
 			entity->type = entityType::STATIC_SOLID;
@@ -249,10 +261,11 @@ Entity* parseEntity(std::shared_ptr<Block> block)
 	for (auto& property : block->blocks){
 		auto propAttr = property->attributes;
 		if (propAttr["type"] == "graphic"){ 
-			auto graphic = parseGraphic(property, entity);
-			entity->graphic = std::unique_ptr<Graphic>(graphic);
+			entity->graphic = std::unique_ptr<Graphic>(parseGraphic(property, entity));
 		} else if (propAttr["type"] == "behavior"){
 			entity->behavior = std::unique_ptr<Behavior>(parseBehavior(property, entity));
+		} else if (propAttr["type"] == "collision"){
+			entity->collision = std::unique_ptr<Collision>(parseCollision(property, entity));
 		}
 	}
 
