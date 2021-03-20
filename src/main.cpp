@@ -255,7 +255,7 @@ void startGameNative()
 #ifdef DEBUG_DRAW 
 		v.updateText(std::to_string(static_cast<int>(avgFps)), fpsTextIndex);
 #endif
-	std::cout << "DEBUG: " << player->pos.x << " " << player->pos.y << std::endl;
+	//std::cout << "DEBUG: " << player->pos.x << " " << player->pos.y << std::endl;
 	//TODO: framecap and early finish
 	}
 }

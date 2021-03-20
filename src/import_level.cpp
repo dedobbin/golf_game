@@ -139,6 +139,23 @@ void parseMetaData(std::shared_ptr<Block> block)
 
 Graphic* parseGraphic(std::shared_ptr<Block> graphicBlock, Entity* owner)
 {
+
+
+	/* If graphic has own spritesheet + frame, 'non-animation' constructor for graphic */
+	if (graphicBlock->attributes.find("spritesheet") != graphicBlock->attributes.end() 
+	&& graphicBlock->attributes.find("frame") != graphicBlock->attributes.end() ){
+		auto sheet = spriteSheets[graphicBlock->attributes["spritesheet"]];
+		auto srcPosData = explode(graphicBlock->attributes["frame"], ',');
+		SDL_Rect src ={
+			std::stoi(srcPosData[0]),
+			std::stoi(srcPosData[1]),
+			std::stoi(srcPosData[2]),
+			std::stoi(srcPosData[3])
+		};
+		return new Graphic(sheet, src, owner);
+	}
+
+	/* Graphic does not have own spritesheet + frame, so it's animated, get frames */
 	auto graphic = new Graphic(owner);
 	for (auto& graphicProperties: graphicBlock->blocks){
 		auto graphAttr = graphicProperties->attributes;
@@ -268,7 +285,6 @@ Entity* parseEntity(std::shared_ptr<Block> block)
 		auto propAttr = property->attributes;
 		if (propAttr["type"] == "graphic"){ 
 			entity->graphic = std::unique_ptr<Graphic>(parseGraphic(property, entity));
-			std::cout << "Level import: Created graphic for " << entity->name << std::endl;
 		} else if (propAttr["type"] == "behavior"){
 			entity->behavior = std::unique_ptr<Behavior>(parseBehavior(property, entity));
 		} else if (propAttr["type"] == "collision"){
