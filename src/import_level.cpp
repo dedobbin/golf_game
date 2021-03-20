@@ -268,13 +268,14 @@ Entity* parseEntity(std::shared_ptr<Block> block)
 		auto propAttr = property->attributes;
 		if (propAttr["type"] == "graphic"){ 
 			entity->graphic = std::unique_ptr<Graphic>(parseGraphic(property, entity));
+			std::cout << "Level import: Created graphic for " << entity->name << std::endl;
 		} else if (propAttr["type"] == "behavior"){
 			entity->behavior = std::unique_ptr<Behavior>(parseBehavior(property, entity));
 		} else if (propAttr["type"] == "collision"){
 			entity->collision = std::unique_ptr<Collision>(parseCollision(property, entity));
 		} else if (propAttr["type"] == "golf_mode"){
 			if (entity->type != entityType::LIVING){
-				std::cout << "importLevel: Trying to set golf mode on non-living entity, nope.." <<std::endl;
+				std::cout << "Level import: Trying to set golf mode on non-living entity, nope.." <<std::endl;
 			} else {
 				((LivingEntity*)entity)->golfMode = std::unique_ptr<GolfMode>(parseGolfMode(property, (LivingEntity*)entity));
 			}
@@ -288,8 +289,10 @@ void fillWorld(std::shared_ptr<Block> block)
 {
 	if (block->attributes["type"] == "metadata"){
 		parseMetaData(block);
+		std::cout << "Level import: metadata set, world size: " << World::w << "x" << World::h << ", gravity: " << World::gravity << std::endl; 
 	} else if (block->attributes["type"]=="entity"){
 		auto entity = parseEntity(block);
+		std::cout << "Level import: Created entity " << entity->name << " (" << entity->type << ")" << std::endl;
 		World::entities.emplace_back(entity);
 	}
 

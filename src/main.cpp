@@ -235,6 +235,14 @@ void startGameNative()
 		if (!keepGoing){
 			break;
 		}
+
+		//Move etc all entities, collision etc
+		for (auto& e : World::entities){
+			if (e->behavior){
+				e->behavior->behave();
+			}
+		}
+
 #ifndef DEBUG_CAMERA
 		v.camera->camRect.x = followWithCam->pos.x - v.camera->camRect.w / 2;
 		v.camera->camRect.y = followWithCam->pos.y - v.camera->camRect.h / 2;
@@ -247,6 +255,7 @@ void startGameNative()
 #ifdef DEBUG_DRAW 
 		v.updateText(std::to_string(static_cast<int>(avgFps)), fpsTextIndex);
 #endif
+	std::cout << "DEBUG: " << player->pos.x << " " << player->pos.y << std::endl;
 	//TODO: framecap and early finish
 	}
 }
