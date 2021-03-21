@@ -11,6 +11,7 @@
 #include "utils/utils.hpp"
 #include "entities/living_entity.hpp"
 #include "entities/item.hpp"
+#include "entity_properties/item_behavior.hpp"
 
 std::unordered_map<std::string, SDL_Texture*> spriteSheets;
 
@@ -139,8 +140,6 @@ void parseMetaData(std::shared_ptr<Block> block)
 
 Graphic* parseGraphic(std::shared_ptr<Block> graphicBlock, Entity* owner)
 {
-
-
 	/* If graphic has own spritesheet + frame, 'non-animation' constructor for graphic */
 	if (graphicBlock->attributes.find("spritesheet") != graphicBlock->attributes.end() 
 	&& graphicBlock->attributes.find("frame") != graphicBlock->attributes.end() ){
@@ -190,11 +189,16 @@ Graphic* parseGraphic(std::shared_ptr<Block> graphicBlock, Entity* owner)
 
 Behavior* parseBehavior(std::shared_ptr<Block> block, Entity* owner)
 {
-	bool pickupItems = false;
-	if (block->attributes.find("pickup_items") != block->attributes.end()){
-		pickupItems = (bool)std::stoi(block->attributes["pickup_items"]);
+	Behavior* behavior = NULL;
+	if (owner->type == entityType::ITEM){
+		behavior = new ItemBehavior((Item*)owner);
+	} else {
+		bool pickupItems = false;
+		if (block->attributes.find("pickup_items") != block->attributes.end()){
+			pickupItems = (bool)std::stoi(block->attributes["pickup_items"]);
+		}
+		behavior = new Behavior(owner, pickupItems);
 	}
-	auto behavior = new Behavior(owner, pickupItems);
 
 	if (block->attributes.find("walk_acc") != block->attributes.end()){
 		behavior->walkAcc = std::stof(block->attributes["walk_acc"]);
