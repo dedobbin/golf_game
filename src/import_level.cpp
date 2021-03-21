@@ -277,9 +277,9 @@ Entity* parseEntity(std::shared_ptr<Block> block)
 		);
 		
 		/* Set entity types of objects that not have it set by child like LivingEntity and Item */
-		if (block->attributes["living_entity_type"] == "static_solid"){
+		if (block->attributes["entity_type"] == "static_solid"){
 			entity->type = entityType::STATIC_SOLID;
-		} else if (block->attributes["living_entity_type"] == "ball"){
+		} else if (block->attributes["entity_type"] == "ball"){
 			entity->type = entityType::BALL;
 		}
 	}
