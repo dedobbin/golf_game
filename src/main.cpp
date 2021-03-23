@@ -16,7 +16,7 @@
 #include "entity_factory.hpp"
 #include "world.hpp"
 
-#define DELAY_BEFORE_GAMEOVER 30 //time between player dying and game over screen popping up
+#define DELAY_BEFORE_GAMEOVER 60 //time between player dying and game over screen popping up
 int ticksAfterPlayedDied = 0;
 
 #define DEBUG_DRAW
