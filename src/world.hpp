@@ -4,15 +4,7 @@
 #include <memory>
 #include "entities/entity.hpp"
 #include "import_level.hpp"
-
-struct LevelData
-{
-	std::vector<std::shared_ptr<Entity>> entities;
-	float gravity;
-	int w;
-	int h;
-	std::string name;
-};
+#include "level_data.hpp"
 class World
 {
 	public:

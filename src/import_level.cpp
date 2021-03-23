@@ -12,11 +12,8 @@
 #include "entities/item.hpp"
 #include "entity_properties/item_behavior.hpp"
 
-// circ dep
-#include "world.hpp"
-
 std::unordered_map<std::string, SDL_Texture*> spriteSheets;
-std::unique_ptr<LevelData> levelData;
+LevelData* levelData;
 
 
 struct Block
@@ -136,6 +133,7 @@ std::vector<rect> parseFramePosStr(std::string frameStr)
 void parseMetaData(std::shared_ptr<Block> block)
 {
 	auto attr = block->attributes;
+
 	levelData->name = attr["name"];
 	levelData->w = std::stoi(attr["world_w"]);
 	levelData->h = std::stoi(attr["world_h"]);
@@ -313,7 +311,7 @@ void fillWorld(std::shared_ptr<Block> block)
 {
 	if (block->attributes["type"] == "metadata"){
 		parseMetaData(block);
-		std::cout << "Level import: metadata set, world size: " << World::w << "x" << World::h << ", gravity: " << World::gravity << std::endl; 
+		std::cout << "Level import: metadata set, world size: " << levelData->w << "x" << levelData->h << ", gravity: " << levelData->gravity << std::endl; 
 	} else if (block->attributes["type"]=="entity"){
 		auto entity = parseEntity(block);
 		std::cout << "Level import: Created entity " << entity->name << " (" << entity->type << ")" << std::endl;
@@ -325,10 +323,14 @@ void fillWorld(std::shared_ptr<Block> block)
 	}
 }
 
-std::unique_ptr<LevelData> Import::importLevel(std::string filePath, std::unordered_map<std::string, SDL_Texture*> _spriteSheets)
+LevelData* Import::importLevel(std::string filePath, std::unordered_map<std::string, SDL_Texture*> _spriteSheets)
 {	
 	spriteSheets = _spriteSheets;
-	levelData = std::unique_ptr<LevelData>();
+	levelData = new LevelData();
+
+	if (!levelData){
+		std::cout << "DEBUG: huh" << std::endl;
+	}
 
 	assert(spriteSheets.size() > 0);
 
@@ -342,7 +344,7 @@ std::unique_ptr<LevelData> Import::importLevel(std::string filePath, std::unorde
 	//printBlock(topBlock);
 	//printBlock(topBlock->blocks[1]);
 	fillWorld(topBlock);
-	return std::move(levelData);
+	return levelData;
 }
 
 //for testing

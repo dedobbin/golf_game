@@ -12,7 +12,7 @@ std::unordered_map<std::string, std::unique_ptr<LevelData>> World::levels = {};
 void World::loadLevel(std::string filename, std::unordered_map<std::string, SDL_Texture*> spritesheets)
 {
 	if (levels.find(filename) == levels.end()){
-		levels[filename] = Import::importLevel(filename, spritesheets);	
+		levels[filename] = std::unique_ptr<LevelData>(Import::importLevel(filename, spritesheets));	
 	}
 	World::entities = levels[filename]->entities;
 	World::gravity = levels[filename]->gravity;
