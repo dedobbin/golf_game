@@ -40,7 +40,9 @@ void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 {
     World::loadLevel("1.wsp", spritesheets);
 
-	auto it = std::find_if(World::entities.begin(), World::entities.end(), [](const auto& x){
+	World::activeLevel = World::levels["1.wsp"];
+
+	auto it = std::find_if(World::activeLevel->entities.begin(), World::activeLevel->entities.end(), [](const auto& x){
 		return x->name == "player";
 	});
 
@@ -49,22 +51,22 @@ void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 	followWithCam = player;
 
 	//TODO: get everything from file
-	// World::w = 10000000;
-	// World::h = 1500;
+	// World::activeLevel->w = 10000000;
+	// World::activeLevel->h = 1500;
 
-	// World::entities = {};
+	// World::activeLevel->entities = {};
 	// ticksAfterPlayedDied = 0;
 
 	// EntityFactory factory(spritesheets);
 
-	// World::entities.emplace_back(factory.createGolfClub(700, 0));
+	// World::activeLevel->entities.emplace_back(factory.createGolfClub(700, 0));
 
-	// World::entities.emplace_back(factory.createEnemy(100, 0));
+	// World::activeLevel->entities.emplace_back(factory.createEnemy(100, 0));
 
-	// World::entities.emplace_back(factory.createPlayer(3000, 0));
-	// player = std::static_pointer_cast<LivingEntity>(World::entities.back());
+	// World::activeLevel->entities.emplace_back(factory.createPlayer(3000, 0));
+	// player = std::static_pointer_cast<LivingEntity>(World::activeLevel->entities.back());
 
-	// World::entities.emplace_back(factory.createBall(300, 0));
+	// World::activeLevel->entities.emplace_back(factory.createBall(300, 0));
 
 	// int x = 0; 
 	// int y = 300;
@@ -72,7 +74,7 @@ void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 	// int h = 100;
 	// for (int i = 0; i < 35; i++){
 	// 	x = i * w;
-	// 	World::entities.emplace_back(factory.createBlock(x, y, w, h));
+	// 	World::activeLevel->entities.emplace_back(factory.createBlock(x, y, w, h));
 	// }
 
 	// h = 10;
@@ -80,7 +82,7 @@ void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 	// x = player->pos.x - w * 2;
 	// y = y - h;
 	// for (int i =0; i < 5;i ++){
-	// 	World::entities.emplace_back(factory.createBlock(x, y, w, h));
+	// 	World::activeLevel->entities.emplace_back(factory.createBlock(x, y, w, h));
 	// 	x-= w;
 	// 	y-=10;
 	// }
@@ -89,7 +91,7 @@ void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 	// w = 100;
 	// x = player->pos.x + w * 2;
 	// y = 300 - h;
-	// World::entities.emplace_back(factory.createBlock(x, y, w, h));
+	// World::activeLevel->entities.emplace_back(factory.createBlock(x, y, w, h));
 
 	// followWithCam = player;
 }
@@ -97,7 +99,7 @@ void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 void renderEverything()
 {
 	v.renderStart();
-	for (auto& e : World::entities){
+	for (auto& e : World::activeLevel->entities){
 		if (e->graphic){
 			v.renderEntity(e.get());
 
@@ -236,7 +238,7 @@ void startGameNative()
 		}
 
 		//Move etc all entities, collision etc
-		for (auto& e : World::entities){
+		for (auto& e : World::activeLevel->entities){
 			if (e->behavior){
 				e->behavior->behave();
 			}
@@ -275,7 +277,7 @@ void emscriptenLoop(void *arg)
 	}
 
 	//Move etc all entities, collision etc
-	for (auto& e : World::entities){
+	for (auto& e : World::activeLevel->entities){
 		if (e->behavior){
 			e->behavior->behave();
 		}

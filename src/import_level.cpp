@@ -13,8 +13,7 @@
 #include "entity_properties/item_behavior.hpp"
 
 std::unordered_map<std::string, SDL_Texture*> spriteSheets;
-LevelData* levelData;
-
+static LevelData* levelData;
 
 struct Block
 {
@@ -327,10 +326,6 @@ LevelData* Import::importLevel(std::string filePath, std::unordered_map<std::str
 {	
 	spriteSheets = _spriteSheets;
 	levelData = new LevelData();
-
-	if (!levelData){
-		std::cout << "DEBUG: huh" << std::endl;
-	}
 
 	assert(spriteSheets.size() > 0);
 

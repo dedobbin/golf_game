@@ -65,8 +65,8 @@ void Behavior::behave()
 	// TODO: this check all entities for collision 2 times, should optimize by sorting list, static entities on same place
 	// OR only checking entities in view, but that could lead to other problems later
 	
-	if (owner->pos.y < 0 || owner->pos.y > World::h - owner->pos.h
-	|| owner->pos.x < 0 || owner->pos.x > World::w - owner->pos.w){
+	if (owner->pos.y < 0 || owner->pos.y > World::activeLevel->h - owner->pos.h
+	|| owner->pos.x < 0 || owner->pos.x > World::activeLevel->w - owner->pos.w){
 		if (owner->behavior){
 			owner->behavior->destroy(false);
 		}
@@ -82,7 +82,7 @@ void Behavior::behave()
 	}
 
 	if (gravity && !grounded){
-		addYSpeed(World::gravity);
+		addYSpeed(World::activeLevel->gravity);
 	}
 
 	direction hDir = NONE;
@@ -94,7 +94,7 @@ void Behavior::behave()
 
 	owner->pos.x += xSpeed;
 
-	for (auto& collidee : World::entities){// check x move
+	for (auto& collidee : World::activeLevel->entities){// check x move
 		if (owner == collidee.get()) continue;
 		if (!collidee->collision) continue;
 		
@@ -117,7 +117,7 @@ void Behavior::behave()
 	owner->pos.y += ySpeed;
 
 	bool hasGroundUnder = false;
-	for (auto& collidee : World::entities){// check y move + check if is grounded
+	for (auto& collidee : World::activeLevel->entities){// check y move + check if is grounded
 		if (owner == collidee.get()) continue;
 		if (!collidee->collision) continue;
 		

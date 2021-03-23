@@ -63,7 +63,7 @@ bool Collision::isValidPos(rect pos)
         return true;
     }
 
-    for (auto& e : World::entities){
+    for (auto& e : World::activeLevel->entities){
         if (e.get() == owner){
             continue;
         }
