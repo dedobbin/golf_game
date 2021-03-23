@@ -38,7 +38,7 @@ LazyFooTimer fpsTimer;
 
 void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 {
-    World::loadLevel(RESOURCES_PATH + std::string("/levels/1.wsp"), spritesheets);
+    World::loadLevel("1.wsp", spritesheets);
 
 	auto it = std::find_if(World::entities.begin(), World::entities.end(), [](const auto& x){
 		return x->name == "player";
