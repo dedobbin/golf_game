@@ -15,7 +15,6 @@
 #include "utils/sdl_utils.hpp"
 #include "entity_factory.hpp"
 #include "world.hpp"
-#include "import_level.hpp"
 
 #define DELAY_BEFORE_GAMEOVER 30 //time between player dying and game over screen popping up
 int ticksAfterPlayedDied = 0;
@@ -39,8 +38,8 @@ LazyFooTimer fpsTimer;
 
 void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 {
-	Import::importLevel(RESOURCES_PATH + std::string("/levels/1.wsp"), spritesheets);
-    
+    World::loadLevel(RESOURCES_PATH + std::string("/levels/1.wsp"), spritesheets);
+
 	auto it = std::find_if(World::entities.begin(), World::entities.end(), [](const auto& x){
 		return x->name == "player";
 	});

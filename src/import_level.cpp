@@ -7,13 +7,17 @@
 #include <regex>
 #include <dirent.h>
 
-#include "world.hpp"
 #include "utils/utils.hpp"
 #include "entities/living_entity.hpp"
 #include "entities/item.hpp"
 #include "entity_properties/item_behavior.hpp"
 
+// circ dep
+#include "world.hpp"
+
 std::unordered_map<std::string, SDL_Texture*> spriteSheets;
+std::unique_ptr<LevelData> levelData;
+
 
 struct Block
 {
@@ -132,10 +136,10 @@ std::vector<rect> parseFramePosStr(std::string frameStr)
 void parseMetaData(std::shared_ptr<Block> block)
 {
 	auto attr = block->attributes;
-	World::name = attr["name"];
-	World::w = std::stoi(attr["world_w"]);
-	World::h = std::stoi(attr["world_h"]);
-	World::gravity = std::stof(attr["world_gravity"]);
+	levelData->name = attr["name"];
+	levelData->w = std::stoi(attr["world_w"]);
+	levelData->h = std::stoi(attr["world_h"]);
+	levelData->gravity = std::stof(attr["world_gravity"]);
 }
 
 Graphic* parseGraphic(std::shared_ptr<Block> graphicBlock, Entity* owner)
@@ -313,7 +317,7 @@ void fillWorld(std::shared_ptr<Block> block)
 	} else if (block->attributes["type"]=="entity"){
 		auto entity = parseEntity(block);
 		std::cout << "Level import: Created entity " << entity->name << " (" << entity->type << ")" << std::endl;
-		World::entities.emplace_back(entity);
+		levelData->entities.emplace_back(entity);
 	}
 
 	for(auto &b : block->blocks){
@@ -321,9 +325,11 @@ void fillWorld(std::shared_ptr<Block> block)
 	}
 }
 
-void Import::importLevel(std::string filePath, std::unordered_map<std::string, SDL_Texture*> _spriteSheets)
+std::unique_ptr<LevelData> Import::importLevel(std::string filePath, std::unordered_map<std::string, SDL_Texture*> _spriteSheets)
 {	
 	spriteSheets = _spriteSheets;
+	levelData = std::unique_ptr<LevelData>();
+
 	assert(spriteSheets.size() > 0);
 
  	std::ifstream ifs(filePath);
@@ -336,6 +342,7 @@ void Import::importLevel(std::string filePath, std::unordered_map<std::string, S
 	//printBlock(topBlock);
 	//printBlock(topBlock->blocks[1]);
 	fillWorld(topBlock);
+	return std::move(levelData);
 }
 
 //for testing
