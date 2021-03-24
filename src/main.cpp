@@ -40,8 +40,6 @@ void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 {
     World::loadLevel("1.wsp", spritesheets);
 
-	World::activeLevel = World::levels["1.wsp"];
-
 	auto it = std::find_if(World::activeLevel->entities.begin(), World::activeLevel->entities.end(), [](const auto& x){
 		return x->name == "player";
 	});

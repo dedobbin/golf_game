@@ -8,5 +8,5 @@
 
 namespace Import
 {
-	LevelData* importLevel(std::string filePath, std::unordered_map<std::string, SDL_Texture*> spriteSheets);
+	LevelData* importLevel(std::string filename, std::unordered_map<std::string, SDL_Texture*> spriteSheets);
 };

@@ -322,14 +322,16 @@ void fillWorld(std::shared_ptr<Block> block)
 	}
 }
 
-LevelData* Import::importLevel(std::string filePath, std::unordered_map<std::string, SDL_Texture*> _spriteSheets)
+LevelData* Import::importLevel(std::string filename, std::unordered_map<std::string, SDL_Texture*> _spriteSheets)
 {	
 	spriteSheets = _spriteSheets;
 	levelData = new LevelData();
+	levelData->filename = filename;
 
 	assert(spriteSheets.size() > 0);
 
- 	std::ifstream ifs(filePath);
+	std::string path = RESOURCES_PATH + std::string("/levels/") + filename;
+ 	std::ifstream ifs(path);
   	std::string content((std::istreambuf_iterator<char>(ifs)),
                        (std::istreambuf_iterator<char>()));
 

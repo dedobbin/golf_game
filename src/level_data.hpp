@@ -6,9 +6,10 @@
 
 struct LevelData
 {
-	std::vector<std::shared_ptr<Entity>> entities;
-	float gravity;
+	std::string name;
+	std::string filename;
 	int w;
 	int h;
-	std::string name;
+	float gravity;
+	std::vector<std::shared_ptr<Entity>> entities;
 };
