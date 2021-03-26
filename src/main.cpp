@@ -16,6 +16,9 @@
 #include "entity_factory.hpp"
 #include "world.hpp"
 
+const int NATIVE_SCREEN_FPS = 60;
+const int NATIVE_SCREEN_TICK_PER_FRAME = 1000 / NATIVE_SCREEN_FPS;
+
 #define DELAY_BEFORE_GAMEOVER 60 //time between player dying and game over screen popping up
 int ticksAfterPlayedDied = 0;
 
@@ -35,6 +38,7 @@ bool keysPressed[322] = {false};
 
 int fpsTextIndex = -1;
 LazyFooTimer fpsTimer;
+LazyFooTimer capTimer;
 
 enum HandleInputReturnType{
 	CONTINUE,
@@ -230,45 +234,6 @@ HandleInputReturnType handleInput()
 	return CONTINUE;
 }
 
-void startGameNative()
-{
-	while(true){
-		float avgFps = v.ctx.iteration / (fpsTimer.getTicks() / 1000.f);
-		if (avgFps > 2000000){
-			avgFps = 0;
-		}
-
-		auto handleInputReturn = handleInput();
-		if (handleInputReturn == HandleInputReturnType::RESET){
-			setupWorld(v.spritesheets);
-		} else if (handleInputReturn == HandleInputReturnType::QUIT){
-			break;
-		}
-
-		//Move etc all entities, collision etc
-		for (auto& e : World::activeLevel->entities){
-			if (e->behavior){
-				e->behavior->behave();
-			}
-		}
-
-#ifndef DEBUG_CAMERA
-		v.camera->camRect.x = followWithCam->pos.x - v.camera->camRect.w / 2;
-		v.camera->camRect.y = followWithCam->pos.y - v.camera->camRect.h / 2;
-#endif
-
-		renderEverything();
-
-		v.ctx.iteration++;
-
-#ifdef DEBUG_DRAW 
-		v.updateText(std::to_string(static_cast<int>(avgFps)), fpsTextIndex);
-#endif
-	//std::cout << "DEBUG: " << player->pos.x << " " << player->pos.y << std::endl;
-	//TODO: framecap and early finish
-	}
-}
-
 void emscriptenLoop(void *arg)
 {	
 	context *ctx = static_cast<context*>(arg);
@@ -302,6 +267,52 @@ void emscriptenLoop(void *arg)
 #ifdef DEBUG_DRAW 
 	v.updateText(std::to_string(static_cast<int>(avgFps)), fpsTextIndex);
 #endif
+}
+
+void startGameNative()
+{
+	while(true){
+		capTimer.start();
+
+		auto handleInputReturn = handleInput();
+		if (handleInputReturn == HandleInputReturnType::RESET){
+			setupWorld(v.spritesheets);
+		} else if (handleInputReturn == HandleInputReturnType::QUIT){
+			break;
+		}
+
+		float avgFps = v.ctx.iteration / (fpsTimer.getTicks() / 1000.f);
+		if (avgFps > 2000000){
+			avgFps = 0;
+		}
+
+		//Move etc all entities, collision etc
+		for (auto& e : World::activeLevel->entities){
+			if (e->behavior){
+				e->behavior->behave();
+			}
+		}
+
+#ifndef DEBUG_CAMERA
+		v.camera->camRect.x = followWithCam->pos.x - v.camera->camRect.w / 2;
+		v.camera->camRect.y = followWithCam->pos.y - v.camera->camRect.h / 2;
+#endif
+
+		renderEverything();
+
+		v.ctx.iteration++;
+
+		int frameTicks = capTimer.getTicks();
+		if( frameTicks < NATIVE_SCREEN_TICK_PER_FRAME ){
+			SDL_Delay( NATIVE_SCREEN_TICK_PER_FRAME - frameTicks );
+		}
+
+#ifdef DEBUG_DRAW 
+		v.updateText(std::to_string(static_cast<int>(avgFps)), fpsTextIndex);
+#endif
+	//std::cout << "DEBUG: " << player->pos.x << " " << player->pos.y << std::endl;
+	//TODO: framecap and early finish
+	}
 }
 
 int main(int argc, char* argv[])
