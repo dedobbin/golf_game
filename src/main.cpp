@@ -36,6 +36,12 @@ bool keysPressed[322] = {false};
 int fpsTextIndex = -1;
 LazyFooTimer fpsTimer;
 
+enum HandleInputReturnType{
+	CONTINUE,
+	QUIT,
+	RESET
+};
+
 void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 {
     World::loadLevel("1.wsp", spritesheets);
@@ -47,6 +53,8 @@ void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 	std::shared_ptr<LivingEntity> p = std::static_pointer_cast<LivingEntity>(*it);
 	player = p;
 	followWithCam = player;
+
+	ticksAfterPlayedDied = 0;
 
 	//TODO: get everything from file
 	// World::activeLevel->w = 10000000;
@@ -129,19 +137,18 @@ void renderEverything()
 	v.renderEnd();
 }
 
-/* Returns false if quit */
-bool handleInput()
+HandleInputReturnType handleInput()
 {
 	SDL_Event e;
 	while( SDL_PollEvent( &e ) != 0 ){
 		if (e.type == SDL_QUIT){
-			return false;
+			return HandleInputReturnType::QUIT;
 		} else if (e.type == SDL_KEYDOWN){
 			
 			if (player->behavior && player->behavior->destroyed){
 				if (e.key.keysym.scancode == SDL_SCANCODE_SPACE){
-					v.destroyText(gameOverTextIndex);
-					return false;
+					v.texts[gameOverTextIndex].display = false;
+					return HandleInputReturnType::RESET;
 				}
 			}
 
@@ -220,7 +227,7 @@ bool handleInput()
 		} 
 #endif
 
-	return true;
+	return CONTINUE;
 }
 
 void startGameNative()
@@ -230,8 +237,11 @@ void startGameNative()
 		if (avgFps > 2000000){
 			avgFps = 0;
 		}
-		bool keepGoing = handleInput();
-		if (!keepGoing){
+
+		auto handleInputReturn = handleInput();
+		if (handleInputReturn == HandleInputReturnType::RESET){
+			setupWorld(v.spritesheets);
+		} else if (handleInputReturn == HandleInputReturnType::QUIT){
 			break;
 		}
 
@@ -268,11 +278,10 @@ void emscriptenLoop(void *arg)
 		avgFps = 0;
 	}
 
-	bool keepGoing = handleInput();
-	if(!keepGoing){
+	auto handleInputReturn = handleInput();
+	if (handleInputReturn == HandleInputReturnType::RESET){
 		setupWorld(v.spritesheets);
-		//emscripten_cancel_main_loop();
-	}
+	};
 
 	//Move etc all entities, collision etc
 	for (auto& e : World::activeLevel->entities){

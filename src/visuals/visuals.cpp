@@ -201,7 +201,7 @@ void Visuals::renderTexts()
 			SDL_Rect pos = {text.second.x, text.second.y, text.second.w, text.second.h};
 			//std::cout << "DEBUG: Render text at " << pos.x << "," << pos.y << "," << pos.w << "," << pos.h <<std::endl;
 			if (SDL_RenderCopy(ctx.renderer, text.second.texture, NULL, &pos) < 0){
-				std::cout << "Failed to render sprite text" << std::endl;
+				std::cout << "Failed to render sprite text:" << TTF_GetError() << std::endl;
 			}
 		}
 	}

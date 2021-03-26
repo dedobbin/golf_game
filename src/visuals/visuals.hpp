@@ -70,10 +70,10 @@ class Visuals
 		std::unordered_map<std::string, SDL_Texture*> spritesheets;
 		context ctx;
 		TTF_Font* gFont = NULL;
+		std::unordered_map<int, Text> texts;
 
 	private:
 		SDL_Texture* loadTexture( std::string path) const;
-		std::unordered_map<int, Text> texts;
 };
 
 #endif
