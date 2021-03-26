@@ -226,9 +226,11 @@ void Behavior::destroy(bool animation)
 			if (animation && owner->graphic->animations[AnimationState::DEAD]){
 				owner->graphic->changeState(AnimationState::DEAD);
 			} else {
-				owner->graphic = NULL;
+				owner->graphic->changeState(AnimationState::NO_SPRITE);
 			}
 		}
+	} else {
+		owner->graphic->changeState(AnimationState::NO_SPRITE);
 	}
 	destroyed = true;
 }

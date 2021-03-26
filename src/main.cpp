@@ -293,7 +293,6 @@ void emscriptenLoop(void *arg)
  	ctx->iteration++;
 }
 
-
 int main(int argc, char* argv[])
 {
 	fpsTextIndex = v.createText("0", 10, 10);
