@@ -156,7 +156,7 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
                 return false;
             case LIVING:
                 if (collider->behavior){
-                    if ( ((LivingEntity*)owner)->livingEntityType == ENEMY_A){
+                    if ( ((LivingEntity*)owner)->behavior->type == ENEMY_A){
                         collider->behavior->destroy();
                     }
                 }

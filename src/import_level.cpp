@@ -201,6 +201,12 @@ Behavior* parseBehavior(std::shared_ptr<Block> block, Entity* owner)
 		behavior = new Behavior(owner, pickupItems);
 	}
 
+	if (block->attributes["type"] == "player"){
+		behavior->type = BehaviorType::PLAYER;
+	} else if (block->attributes["type"] == "enemy_a"){
+		behavior->type = BehaviorType::ENEMY_A;
+	}
+
 	if (block->attributes.find("walk_acc") != block->attributes.end()){
 		behavior->walkAcc = std::stof(block->attributes["walk_acc"]);
 	} else if (block->attributes.find("max_x_speed") != block->attributes.end()){
@@ -243,17 +249,11 @@ Entity* parseEntity(std::shared_ptr<Block> block)
 	if (block->attributes["entity_type"] == "living"){
 		entity = new LivingEntity(
 			block->attributes["name"],
-			LivingEntityType::ENEMY_A, //placeholder
 			std::stoi(pos[0]),
 			std::stoi(pos[1]),
 			std::stoi(pos[2]),
 			std::stoi(pos[3])
 		);
-		if (block->attributes["living_entity_type"] == "player"){
-			((LivingEntity*)entity)->livingEntityType = LivingEntityType::PLAYER;
-		} else if (block->attributes["living_entity_type"] == "enemy_a"){
-			((LivingEntity*)entity)->livingEntityType = LivingEntityType::ENEMY_A;
-		}
 	} else if (block->attributes["entity_type"] == "item"){
 		entity = new Item(
 			block->attributes["name"],

@@ -8,6 +8,11 @@
 // circ dep
 class Entity;
 
+enum BehaviorType {
+	ENEMY_A,
+	PLAYER,
+};
+
 class Behavior
 {
 	public:
@@ -25,6 +30,8 @@ class Behavior
 		
 		Entity* owner;
 
+		BehaviorType type;
+		
 		bool pickupItems = false;
 		float walkAcc = 0.2;
 		float maxXSpeed = 20.0;

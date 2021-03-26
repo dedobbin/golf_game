@@ -13,7 +13,7 @@ LivingEntity* EntityFactory::createPlayer(int x, int y)
 {
 	auto sheet = spritesheets.at("spritesheet1");
 
-	auto e = new LivingEntity("player", PLAYER, x, y, 80, 100);
+	auto e = new LivingEntity("player", x, y, 80, 100);
 	e->graphic = std::unique_ptr<Graphic>(new Graphic(e));
 
 	auto animatedGraphic = e->graphic.get();
@@ -46,6 +46,7 @@ LivingEntity* EntityFactory::createPlayer(int x, int y)
 	animatedGraphic->animations.insert({AnimationState::DEAD, std::unique_ptr<Animation>(deadAnimation)});
 
 	e->behavior = std::unique_ptr<Behavior>(new Behavior(e, true));
+	e->behavior->type = PLAYER;
 	//e->behavior->gravity = false;
 	e->collision = std::unique_ptr<Collision>(new Collision(e, true));
 
@@ -93,7 +94,7 @@ LivingEntity* EntityFactory::createEnemy(int x, int y)
 {
 	auto sheet = spritesheets.at("spritesheet4");
 
-	LivingEntity* e = new LivingEntity("enemy", ENEMY_A, x, y, 80, 100);
+	LivingEntity* e = new LivingEntity("enemy", x, y, 80, 100);
 	e->graphic = std::unique_ptr<Graphic>(new Graphic(e));
 	auto animatedGraphic = (Graphic*)e->graphic.get();
 
@@ -126,6 +127,7 @@ LivingEntity* EntityFactory::createEnemy(int x, int y)
 
 	e->behavior = std::unique_ptr<EnemyBehavior>(new EnemyBehavior(e));
 	e->behavior->maxWalkSpeed = 3.0;
+	e->behavior->type = ENEMY_A;
 	//e->behavior->gravity = false;
 	e->collision = std::unique_ptr<Collision>(new Collision(e, true));
 	return e;
