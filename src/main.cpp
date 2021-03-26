@@ -233,20 +233,20 @@ HandleInputReturnType handleInput()
 
 	return CONTINUE;
 }
-
-void emscriptenLoop(void *arg)
-{	
-	context *ctx = static_cast<context*>(arg);
-	
-	float avgFps = ctx->iteration / (fpsTimer.getTicks() / 1000.f);
-	if (avgFps > 2000000){
-		avgFps = 0;
-	}
-
+// Returns false when game ends
+bool gameTick()
+{
 	auto handleInputReturn = handleInput();
 	if (handleInputReturn == HandleInputReturnType::RESET){
 		setupWorld(v.spritesheets);
-	};
+	} else if (handleInputReturn == HandleInputReturnType::QUIT){
+		return false;
+	}
+
+	float avgFps = v.ctx.iteration / (fpsTimer.getTicks() / 1000.f);
+	if (avgFps > 2000000){
+		avgFps = 0;
+	}
 
 	//Move etc all entities, collision etc
 	for (auto& e : World::activeLevel->entities){
@@ -262,58 +262,37 @@ void emscriptenLoop(void *arg)
 
 	renderEverything();
 
-	ctx->iteration++;
-
 #ifdef DEBUG_DRAW 
 	v.updateText(std::to_string(static_cast<int>(avgFps)), fpsTextIndex);
 #endif
+
+	return true;
 }
 
 void startGameNative()
 {
-	while(true){
+	bool keepGoing = true;
+	while(keepGoing){
 		capTimer.start();
-
-		auto handleInputReturn = handleInput();
-		if (handleInputReturn == HandleInputReturnType::RESET){
-			setupWorld(v.spritesheets);
-		} else if (handleInputReturn == HandleInputReturnType::QUIT){
-			break;
-		}
-
-		float avgFps = v.ctx.iteration / (fpsTimer.getTicks() / 1000.f);
-		if (avgFps > 2000000){
-			avgFps = 0;
-		}
-
-		//Move etc all entities, collision etc
-		for (auto& e : World::activeLevel->entities){
-			if (e->behavior){
-				e->behavior->behave();
-			}
-		}
-
-#ifndef DEBUG_CAMERA
-		v.camera->camRect.x = followWithCam->pos.x - v.camera->camRect.w / 2;
-		v.camera->camRect.y = followWithCam->pos.y - v.camera->camRect.h / 2;
-#endif
-
-		renderEverything();
-
+		
+		keepGoing = gameTick();
 		v.ctx.iteration++;
 
 		int frameTicks = capTimer.getTicks();
 		if( frameTicks < NATIVE_SCREEN_TICK_PER_FRAME ){
 			SDL_Delay( NATIVE_SCREEN_TICK_PER_FRAME - frameTicks );
 		}
-
-#ifdef DEBUG_DRAW 
-		v.updateText(std::to_string(static_cast<int>(avgFps)), fpsTextIndex);
-#endif
-	//std::cout << "DEBUG: " << player->pos.x << " " << player->pos.y << std::endl;
-	//TODO: framecap and early finish
 	}
 }
+
+
+void emscriptenLoop(void *arg)
+{	
+ 	context *ctx = static_cast<context*>(arg);//This is also accessible from v.ctx, so kinda pointless...
+	gameTick();
+ 	ctx->iteration++;
+}
+
 
 int main(int argc, char* argv[])
 {
