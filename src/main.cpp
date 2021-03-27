@@ -16,8 +16,10 @@
 #include "entity_factory.hpp"
 #include "world.hpp"
 
+#ifndef __EMSCRIPTEN__
 const int NATIVE_SCREEN_FPS = 60;
 const int NATIVE_SCREEN_TICK_PER_FRAME = 1000 / NATIVE_SCREEN_FPS;
+#endif
 
 #define DELAY_BEFORE_GAMEOVER 60 //time between player dying and game over screen popping up
 int ticksAfterPlayedDied = 0;
@@ -271,6 +273,15 @@ bool gameTick()
 	return true;
 }
 
+#ifdef __EMSCRIPTEN__ 
+void emscriptenLoop(void *arg)
+{	
+ 	context *ctx = static_cast<context*>(arg);//This is also accessible from v.ctx, so kinda pointless...
+	gameTick();
+ 	ctx->iteration++;
+}
+
+#else
 void startGameNative()
 {
 	bool keepGoing = true;
@@ -286,14 +297,7 @@ void startGameNative()
 		}
 	}
 }
-
-
-void emscriptenLoop(void *arg)
-{	
- 	context *ctx = static_cast<context*>(arg);//This is also accessible from v.ctx, so kinda pointless...
-	gameTick();
- 	ctx->iteration++;
-}
+#endif
 
 int main(int argc, char* argv[])
 {
