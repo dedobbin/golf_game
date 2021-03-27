@@ -11,6 +11,7 @@
 #include "entities/living_entity.hpp"
 #include "entities/item.hpp"
 #include "entity_properties/item_behavior.hpp"
+#include "entity_properties/enemy_behavior.hpp"
 
 std::unordered_map<std::string, SDL_Texture*> spriteSheets;
 static LevelData* levelData;
@@ -193,6 +194,8 @@ Behavior* parseBehavior(std::shared_ptr<Block> block, Entity* owner)
 	Behavior* behavior = NULL;
 	if (owner->type == entityType::ITEM){
 		behavior = new ItemBehavior((Item*)owner);
+	} else if (block->attributes["behavior_type"] == "enemy_a"){ //List all enemy behavior types..
+		behavior = new EnemyBehavior((LivingEntity*)owner);
 	} else {
 		bool pickupItems = false;
 		if (block->attributes.find("pickup_items") != block->attributes.end()){
