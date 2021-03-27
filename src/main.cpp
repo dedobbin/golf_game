@@ -51,7 +51,7 @@ void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
     World::loadLevel("1.wsp", spritesheets);
 
 	auto it = std::find_if(World::activeLevel->entities.begin(), World::activeLevel->entities.end(), [](const auto& x){
-		return x->name == "player";
+		return x->behavior && x->behavior->type == BehaviorType::PLAYER;
 	});
 
 	std::shared_ptr<LivingEntity> p = std::static_pointer_cast<LivingEntity>(*it);

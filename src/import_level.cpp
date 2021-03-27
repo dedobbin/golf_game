@@ -201,9 +201,9 @@ Behavior* parseBehavior(std::shared_ptr<Block> block, Entity* owner)
 		behavior = new Behavior(owner, pickupItems);
 	}
 
-	if (block->attributes["type"] == "player"){
+	if (block->attributes["behavior_type"] == "player"){
 		behavior->type = BehaviorType::PLAYER;
-	} else if (block->attributes["type"] == "enemy_a"){
+	} else if (block->attributes["behavior_type"] == "enemy_a"){
 		behavior->type = BehaviorType::ENEMY_A;
 	}
 
