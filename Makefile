@@ -1,5 +1,7 @@
 EMCC=emcc
 
+.PHONY: all native copy-wasm-to-build-folder copy-native-to-build-folder clean 
+
 all:
 	$(EMCC) src/utils/*.cpp src/entity_properties/*.cpp src/entities/*.cpp src/visuals/*.cpp src/*.cpp \
 	--debug -s USE_SDL=2 -s USE_SDL_IMAGE=2  -s USE_SDL_TTF=2 -s SDL2_IMAGE_FORMATS='["png"]' -s DISABLE_EXCEPTION_CATCHING=0 -s ALLOW_MEMORY_GROWTH=1 \
