@@ -16,11 +16,8 @@
 #define SCREEN_W 920
 #define SCREEN_H 640
 
-#ifdef __EMSCRIPTEN__
-	#define RESOURCES_PATH "resources"
-#else
-	#define RESOURCES_PATH "../resources"
-#endif
+#define RESOURCES_PATH "resources"
+
 
 extern int gameOverTextIndex;
 
