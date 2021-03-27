@@ -163,7 +163,7 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
                 return false;
             case BALL:
                 assert(owner->behavior);
-                if  (abs(owner->behavior->xSpeed >= 2) || abs(owner->behavior->ySpeed) >= 2){
+                if  (abs(owner->behavior->xSpeed) >= 2 || abs(owner->behavior->ySpeed) >= 2){
                     collider->behavior->destroy();
                 }
                 return false;

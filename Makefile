@@ -15,7 +15,7 @@ native:
 
 copy-wasm-to-build-folder:
 	mkdir -p build/web
-	cp index.html build/web
+	cp src/index.html build/web
 	cp index.js build/web
 	cp index.wasm build/web
 	cp index.data build/web
@@ -26,4 +26,4 @@ copy-native-to-build-folder:
 	cp -r resources build/native
 
 clean:
-	rm -f src/index.js src/index.wasm src/index.data src/*.out
+	rm -f index.js index.wasm index.data *.a *.so *.o *.out
