@@ -13,8 +13,8 @@
 #include "../entities/entity.hpp"
 #include "camera.hpp"
 
-#define SCREEN_W 920
-#define SCREEN_H 640
+#define SCREEN_W 960
+#define SCREEN_H 540
 
 #define RESOURCES_PATH "resources"
 

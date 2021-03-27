@@ -21,7 +21,6 @@ Visuals::Visuals()
 		std::cout << "Failed to load font: " <<  TTF_GetError() << std::endl;
 	}
 
-
 	SDL_Window* window;
 	SDL_Renderer* renderer;
  
