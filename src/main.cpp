@@ -40,7 +40,9 @@ bool keysPressed[322] = {false};
 
 int fpsTextIndex = -1;
 LazyFooTimer fpsTimer;
+#ifndef __EMSCRIPTEN__
 LazyFooTimer capTimer;
+#endif
 
 enum HandleInputReturnType{
 	CONTINUE,
