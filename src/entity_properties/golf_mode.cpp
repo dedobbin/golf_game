@@ -37,10 +37,12 @@ void GolfMode::setDirection(direction dir)
 	assert(dir == RIGHT || dir == LEFT);
 	_dir = dir;
 
-	if (_dir == RIGHT){
-		_ball->pos.x = owner->pos.x + owner->pos.w  - _ball->pos.w;
-	} else if(_dir == LEFT){
-		_ball->pos.x = owner->pos.x;
+	if (_ball){
+		if (_dir == RIGHT){
+			_ball->pos.x = owner->pos.x + owner->pos.w  - _ball->pos.w;
+		} else if(_dir == LEFT){
+			_ball->pos.x = owner->pos.x;
+		}
 	}
 }
 

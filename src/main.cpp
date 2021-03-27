@@ -200,12 +200,14 @@ HandleInputReturnType handleInput()
 	if (player->golfMode && !player->golfMode->active){
 		if (keysPressed[SDL_SCANCODE_RIGHT]){
 			player->xPush = RIGHT;
+			player->golfMode->setDirection(RIGHT);
 		} else if (player->behavior->xSpeed > 0){
 			player->xPush = NONE;
 		}
 
 		if (keysPressed[SDL_SCANCODE_LEFT]){
 			player->xPush = LEFT;
+			player->golfMode->setDirection(LEFT);
 		} else if (player->behavior->xSpeed < 0){
 			player->xPush = NONE;
 		}
