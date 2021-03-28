@@ -25,8 +25,7 @@ const int NATIVE_SCREEN_TICK_PER_FRAME = 1000 / NATIVE_SCREEN_FPS;
 int ticksAfterPlayedDied = 0;
 
 #define DEBUG_DRAW
-// #define DEBUG_CAMERA
-// #define DEBUG_CONTROLS
+#define DEBUG_CAMERA
 
 //TODO: get rid of globals so functions can go to own files etc
 Visuals v;
@@ -52,7 +51,7 @@ enum HandleInputReturnType{
 
 void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 {
-    World::loadLevel("1.wsp", spritesheets);
+    World::loadLevel("2.wsp", spritesheets);
 
 	auto it = std::find_if(World::activeLevel->entities.begin(), World::activeLevel->entities.end(), [](const auto& x){
 		return x->behavior && x->behavior->type == BehaviorType::PLAYER;
@@ -61,53 +60,22 @@ void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 	std::shared_ptr<LivingEntity> p = std::static_pointer_cast<LivingEntity>(*it);
 	player = p;
 	followWithCam = player;
+	v.camera->camRect.x = followWithCam->pos.x - v.camera->camRect.w / 2;
+	v.camera->camRect.y = followWithCam->pos.y - 300;
 
 	ticksAfterPlayedDied = 0;
+}
 
-	//TODO: get everything from file
-	// World::activeLevel->w = 10000000;
-	// World::activeLevel->h = 1500;
-
-	// World::activeLevel->entities = {};
-	// ticksAfterPlayedDied = 0;
-
-	// EntityFactory factory(spritesheets);
-
-	// World::activeLevel->entities.emplace_back(factory.createGolfClub(700, 0));
-
-	// World::activeLevel->entities.emplace_back(factory.createEnemy(100, 0));
-
-	// World::activeLevel->entities.emplace_back(factory.createPlayer(3000, 0));
-	// player = std::static_pointer_cast<LivingEntity>(World::activeLevel->entities.back());
-
-	// World::activeLevel->entities.emplace_back(factory.createBall(300, 0));
-
-	// int x = 0; 
-	// int y = 300;
-	// int w = 100;
-	// int h = 100;
-	// for (int i = 0; i < 35; i++){
-	// 	x = i * w;
-	// 	World::activeLevel->entities.emplace_back(factory.createBlock(x, y, w, h));
-	// }
-
-	// h = 10;
-	// w = 100;
-	// x = player->pos.x - w * 2;
-	// y = y - h;
-	// for (int i =0; i < 5;i ++){
-	// 	World::activeLevel->entities.emplace_back(factory.createBlock(x, y, w, h));
-	// 	x-= w;
-	// 	y-=10;
-	// }
-
-	// h = 30;
-	// w = 100;
-	// x = player->pos.x + w * 2;
-	// y = 300 - h;
-	// World::activeLevel->entities.emplace_back(factory.createBlock(x, y, w, h));
-
-	// followWithCam = player;
+void doFollowWithCam()
+{
+	const int camSpeed = 10;
+	auto& cam = v.camera->camRect;
+	auto pos = followWithCam->pos;
+	if (pos.y + pos.h > cam.y + cam.h){
+		cam.y += camSpeed;
+	}
+	// v.camera->camRect.x = followWithCam->pos.x - v.camera->camRect.w / 2;
+	// v.camera->camRect.y = followWithCam->pos.y - 300;
 }
 
 void renderEverything()
@@ -262,8 +230,7 @@ bool gameTick()
 	}
 
 #ifndef DEBUG_CAMERA
-	v.camera->camRect.x = followWithCam->pos.x - v.camera->camRect.w / 2;
-	v.camera->camRect.y = followWithCam->pos.y - v.camera->camRect.h / 2;
+	doFollowWithCam();
 #endif
 
 	renderEverything();
