@@ -29,7 +29,7 @@ Visuals::Visuals()
     ctx.renderer = renderer;
     ctx.iteration = 0;
 
-	camera = std::make_unique<Camera>(0, 0, SCREEN_W, SCREEN_W);
+	camera = std::make_unique<Camera>(0, 0, SCREEN_W, SCREEN_H);
 }
 
 Visuals::~Visuals()

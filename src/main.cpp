@@ -68,14 +68,24 @@ void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 
 void doFollowWithCam()
 {
-	const int camSpeed = 10;
+	const int camSpeed = 3;
 	auto& cam = v.camera->camRect;
 	auto pos = followWithCam->pos;
-	if (pos.y + pos.h > cam.y + cam.h){
+	std::cout << "DEBUG camera " << cam.x << " and " << pos.x << std::endl;
+	if (cam.y + cam.h < pos.y + pos.h){
+		std::cout << "DEBUG camera: move down" <<std::endl;
 		cam.y += camSpeed;
+	} else if (cam.y > pos.y){
+		std::cout << "DEBUG camera: move up" <<std::endl;
+		cam.y -= camSpeed;
 	}
-	// v.camera->camRect.x = followWithCam->pos.x - v.camera->camRect.w / 2;
-	// v.camera->camRect.y = followWithCam->pos.y - 300;
+	if (cam.x + cam.w < pos.x + pos.w){
+		std::cout << "DEBUG camera: move right" <<std::endl;
+		cam.x += camSpeed;
+	}else if (cam.x > pos.x){
+		std::cout << "DEBUG camera: move left" <<std::endl;
+		cam.x -= camSpeed;
+	}
 }
 
 void renderEverything()
@@ -229,9 +239,10 @@ bool gameTick()
 		}
 	}
 
-#ifndef DEBUG_CAMERA
+//DONT FORGET TO UNCOMMENT
+//#ifndef DEBUG_CAMERA
 	doFollowWithCam();
-#endif
+//#endif
 
 	renderEverything();
 
