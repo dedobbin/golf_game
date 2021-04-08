@@ -68,23 +68,35 @@ void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 
 void doFollowWithCam()
 {
-	const int camSpeed = 3;
+	//TODO: make work for entity without behavior
+	assert(followWithCam->behavior);
+
 	auto& cam = v.camera->camRect;
 	auto pos = followWithCam->pos;
-	std::cout << "DEBUG camera " << cam.x << " and " << pos.x << std::endl;
-	if (cam.y + cam.h < pos.y + pos.h){
-		std::cout << "DEBUG camera: move down" <<std::endl;
-		cam.y += camSpeed;
-	} else if (cam.y > pos.y){
-		std::cout << "DEBUG camera: move up" <<std::endl;
-		cam.y -= camSpeed;
+
+	//TODO: when follow with cam not in picture at all, snap to it
+	if (!v.camera->inView(pos.x, pos.y, pos.w, pos.h)){
+
 	}
-	if (cam.x + cam.w < pos.x + pos.w){
+	
+	int uSpace = cam.h / 2;
+	int dSpace = cam.h / 5;
+	if (cam.y + cam.h < pos.y + pos.h + uSpace){
+		std::cout << "DEBUG camera: move down" <<std::endl;
+		cam.y += followWithCam->behavior->ySpeed;
+	} else if (cam.y > pos.y - dSpace){
+		std::cout << "DEBUG camera: move up" <<std::endl;
+		cam.y += followWithCam->behavior->ySpeed;
+	}
+
+	int rSpace = cam.w / 2;
+	int lSpace = cam.w / 5;
+	if (cam.x + cam.w < pos.x + pos.w + rSpace && followWithCam->behavior->xSpeed > 0){
 		std::cout << "DEBUG camera: move right" <<std::endl;
-		cam.x += camSpeed;
-	}else if (cam.x > pos.x){
+		cam.x += followWithCam->behavior->xSpeed;
+	}else if (cam.x > pos.x -lSpace && followWithCam->behavior->xSpeed < 0){
 		std::cout << "DEBUG camera: move left" <<std::endl;
-		cam.x -= camSpeed;
+		cam.x += followWithCam->behavior->xSpeed;
 	}
 }
 
