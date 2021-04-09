@@ -25,7 +25,7 @@ const int NATIVE_SCREEN_TICK_PER_FRAME = 1000 / NATIVE_SCREEN_FPS;
 int ticksAfterPlayedDied = 0;
 
 #define DEBUG_DRAW
-#define DEBUG_CAMERA
+//#define DEBUG_CAMERA
 
 //TODO: get rid of globals so functions can go to own files etc
 Visuals v;
@@ -64,14 +64,16 @@ void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 	ticksAfterPlayedDied = 0;
 }
 
-void doFollowWithCam()
+void doFollowWithCam(bool snapToIfOutsideOfView)
 {
 	//TODO: don't move cam outside of world edges 
 	//TODO: check if entity doesn't fit in cam/work with cam logic because too big, always hits edges?
 	auto& cam = v.camera->camRect;
 	auto pos = followWithCam->pos;
 
-	if (!followWithCam->behavior || v.camera->partiallyInView(pos.x, pos.y, pos.w, pos.h) ||!v.camera->inView(pos.x, pos.y, pos.w, pos.h)){
+	if ( snapToIfOutsideOfView &&
+	(!followWithCam->behavior || v.camera->partiallyInView(pos.x, pos.y, pos.w, pos.h) ||!v.camera->inView(pos.x, pos.y, pos.w, pos.h))
+	){
 		//TODO: also snap to correct position if followWithCam is partially outside of view
 		cam.x = pos.x - 200; //TODO: get rid of magic numbers, make relative to cam size?
 		cam.y = pos.y - 350;
@@ -246,10 +248,9 @@ bool gameTick()
 		}
 	}
 
-//DONT FORGET TO UNCOMMENT
-//#ifndef DEBUG_CAMERA
-	doFollowWithCam();
-//#endif
+#ifndef DEBUG_CAMERA
+	doFollowWithCam(true);
+#endif
 
 	renderEverything();
 
