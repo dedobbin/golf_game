@@ -124,19 +124,19 @@ void Visuals::renderEntity(Entity* entity)
  	entity->graphic->render(ctx.renderer, camera.get());
 }
 
-void Visuals::renderRect(int x, int y, int w, int h)
+void Visuals::renderRect(int x, int y, int w, int h, SDL_Color color)
 {
 	if (!camera->inView(x, y, w, h))
 		return;
 	
-	SDL_SetRenderDrawColor(ctx.renderer, 255, 0, 255, 255);
+	SDL_SetRenderDrawColor(ctx.renderer, color.r, color.g, color.b, color.a);
 	SDL_Rect rect = {x - camera->camRect.x, y - camera->camRect.y, w, h};
 	SDL_RenderDrawRect(ctx.renderer, &rect);
 }
 
-void Visuals::renderRectOverlay(int x, int y, int w, int h)
+void Visuals::renderRectOverlay(int x, int y, int w, int h, SDL_Color color)
 {
-	SDL_SetRenderDrawColor(ctx.renderer, 255, 0, 255, 255);
+	SDL_SetRenderDrawColor(ctx.renderer, color.r, color.g, color.b, color.a);
 	SDL_Rect rect = {x, y, w, h};
 	SDL_RenderDrawRect(ctx.renderer, &rect);
 }

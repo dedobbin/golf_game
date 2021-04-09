@@ -47,9 +47,9 @@ class Visuals
 		void renderStart();
 		void renderEnd();
 		void renderEntity(Entity* entity);
-		void renderRect(int x, int y, int w, int h);
+		void renderRect(int x, int y, int w, int h, SDL_Color color = {255, 0, 255, 255});
 		// Overlay implies 'behind' the camera
-		void renderRectOverlay(int x, int y, int w, int h);
+		void renderRectOverlay(int x, int y, int w, int h, SDL_Color color = {255, 0, 255, 255});
 		void renderGolfMeter(GolfState state, int level, int nPoints);
 
 		/* returns ID */
