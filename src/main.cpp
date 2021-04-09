@@ -60,23 +60,22 @@ void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 	std::shared_ptr<LivingEntity> p = std::static_pointer_cast<LivingEntity>(*it);
 	player = p;
 	followWithCam = player;
-	v.camera->camRect.x = followWithCam->pos.x - v.camera->camRect.w / 2;
-	v.camera->camRect.y = followWithCam->pos.y - 300;
 
 	ticksAfterPlayedDied = 0;
 }
 
 void doFollowWithCam()
 {
-	//TODO: make work for entity without behavior
-	assert(followWithCam->behavior);
+	//TODO: check if entity doesn't fit in cam/work with cam logic because too big, always hits edges?
 
 	auto& cam = v.camera->camRect;
 	auto pos = followWithCam->pos;
 
-	//TODO: when follow with cam not in picture at all, snap to it
-	if (!v.camera->inView(pos.x, pos.y, pos.w, pos.h)){
-
+	if (!followWithCam->behavior || !v.camera->inView(pos.x, pos.y, pos.w, pos.h)){
+		//TODO: also snap to correct position if followWithCam is partially outside of view
+		cam.x = pos.x - 200;
+		cam.y = pos.y - 350;
+		return;
 	}
 	
 	int uSpace = cam.h / 2;
