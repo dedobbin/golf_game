@@ -1,4 +1,5 @@
 #include "camera.hpp"
+#include <iostream>
 
 Camera::Camera(int x, int y, int w, int h)
 :camRect({x, y, w, h})
@@ -47,5 +48,27 @@ bool Camera::inView(int x, int y, int w, int h)
     
     //If none of the sides from A are outside B
     return true;
+}
 
+bool Camera::partiallyInView(int x, int y, int w, int h)
+{
+    int leftA = camRect.x;
+    int rightA = camRect.x + camRect.w;
+    int topA = camRect.y;
+    int bottomA = camRect.y + camRect.h;
+        
+    int leftB = x;
+    int rightB = x + w;
+    int topB = y;
+    int bottomB = y + h;
+
+    if ((rightB > rightA && leftB < rightA)
+    || (leftB < leftA && rightB > leftA)
+    || (topB < topA && bottomB > topA) 
+    || (bottomB > bottomA && topB < bottomA)
+    ){
+        return true;
+    }
+
+    return false;
 }

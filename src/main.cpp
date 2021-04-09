@@ -66,12 +66,12 @@ void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 
 void doFollowWithCam()
 {
+	//TODO: don't move cam outside of world edges 
 	//TODO: check if entity doesn't fit in cam/work with cam logic because too big, always hits edges?
-
 	auto& cam = v.camera->camRect;
 	auto pos = followWithCam->pos;
 
-	if (!followWithCam->behavior || !v.camera->inView(pos.x, pos.y, pos.w, pos.h)){
+	if (!followWithCam->behavior || v.camera->partiallyInView(pos.x, pos.y, pos.w, pos.h) ||!v.camera->inView(pos.x, pos.y, pos.w, pos.h)){
 		//TODO: also snap to correct position if followWithCam is partially outside of view
 		cam.x = pos.x - 200; //TODO: get rid of magic numbers, make relative to cam size?
 		cam.y = pos.y - 350;
@@ -81,20 +81,16 @@ void doFollowWithCam()
 	int uSpace = cam.h / 2;
 	int dSpace = cam.h / 5;
 	if (cam.y + cam.h < pos.y + pos.h + uSpace){
-		std::cout << "DEBUG camera: move down" <<std::endl;
 		cam.y += followWithCam->behavior->ySpeed;
 	} else if (cam.y > pos.y - dSpace){
-		std::cout << "DEBUG camera: move up" <<std::endl;
 		cam.y += followWithCam->behavior->ySpeed;
 	}
 
 	int rSpace = cam.w / 2;
 	int lSpace = cam.w / 5;
 	if (cam.x + cam.w < pos.x + pos.w + rSpace && followWithCam->behavior->xSpeed > 0){
-		std::cout << "DEBUG camera: move right" <<std::endl;
 		cam.x += followWithCam->behavior->xSpeed;
 	}else if (cam.x > pos.x -lSpace && followWithCam->behavior->xSpeed < 0){
-		std::cout << "DEBUG camera: move left" <<std::endl;
 		cam.x += followWithCam->behavior->xSpeed;
 	}
 }

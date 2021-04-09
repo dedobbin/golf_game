@@ -8,6 +8,7 @@ class Camera
 	public:
 		Camera(int x, int y, int w, int h);
 		bool inView(int x, int y, int w, int h);
+		bool partiallyInView(int x, int y, int w, int h);
 		rect camRect;
 };
 
