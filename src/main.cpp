@@ -73,7 +73,7 @@ void doFollowWithCam()
 
 	if (!followWithCam->behavior || !v.camera->inView(pos.x, pos.y, pos.w, pos.h)){
 		//TODO: also snap to correct position if followWithCam is partially outside of view
-		cam.x = pos.x - 200;
+		cam.x = pos.x - 200; //TODO: get rid of magic numbers, make relative to cam size?
 		cam.y = pos.y - 350;
 		return;
 	}
