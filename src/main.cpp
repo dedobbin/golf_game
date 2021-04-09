@@ -80,8 +80,8 @@ void doFollowWithCam(bool snapToIfOutsideOfView)
 		return;
 	}
 	
-	int uSpace = cam.h / 2;
-	int dSpace = cam.h / 5;
+	int uSpace = cam.h / 10;
+	int dSpace = cam.h / 7;
 	if (cam.y + cam.h < pos.y + pos.h + uSpace){
 		cam.y += followWithCam->behavior->ySpeed;
 	} else if (cam.y > pos.y - dSpace){
