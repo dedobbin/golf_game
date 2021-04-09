@@ -60,41 +60,9 @@ void setupWorld(std::unordered_map<std::string, SDL_Texture*> spritesheets)
 	std::shared_ptr<LivingEntity> p = std::static_pointer_cast<LivingEntity>(*it);
 	player = p;
 	followWithCam = player;
+	v.camera->snapToSanePos(followWithCam);
 
 	ticksAfterPlayedDied = 0;
-}
-
-void doFollowWithCam(bool snapToIfOutsideOfView)
-{
-	//TODO: don't move cam outside of world edges 
-	//TODO: check if entity doesn't fit in cam/work with cam logic because too big, always hits edges?
-	auto& cam = v.camera->camRect;
-	auto pos = followWithCam->pos;
-
-	if ( snapToIfOutsideOfView &&
-	(!followWithCam->behavior || v.camera->partiallyInView(pos.x, pos.y, pos.w, pos.h) ||!v.camera->inView(pos.x, pos.y, pos.w, pos.h))
-	){
-		//TODO: also snap to correct position if followWithCam is partially outside of view
-		cam.x = pos.x - 200; //TODO: get rid of magic numbers, make relative to cam size?
-		cam.y = pos.y - 350;
-		return;
-	}
-	
-	int uSpace = cam.h / 10;
-	int dSpace = cam.h / 7;
-	if (cam.y + cam.h < pos.y + pos.h + uSpace){
-		cam.y += followWithCam->behavior->ySpeed;
-	} else if (cam.y > pos.y - dSpace){
-		cam.y += followWithCam->behavior->ySpeed;
-	}
-
-	int rSpace = cam.w / 2;
-	int lSpace = cam.w / 5;
-	if (cam.x + cam.w < pos.x + pos.w + rSpace && followWithCam->behavior->xSpeed > 0){
-		cam.x += followWithCam->behavior->xSpeed;
-	}else if (cam.x > pos.x -lSpace && followWithCam->behavior->xSpeed < 0){
-		cam.x += followWithCam->behavior->xSpeed;
-	}
 }
 
 void renderEverything()
@@ -250,7 +218,7 @@ bool gameTick()
 	}
 
 #ifndef DEBUG_CAMERA
-	doFollowWithCam(true);
+	v.camera->followWithCam(followWithCam);
 #endif
 
 	renderEverything();
