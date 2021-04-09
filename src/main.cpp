@@ -113,6 +113,7 @@ void renderEverything()
 	}
 #ifdef DEBUG_DRAW 
 	v.renderRectOverlay(0, 0, v.camera->camRect.w, v.camera->camRect.w);
+	v.renderRect(0, 0, World::activeLevel->w, World::activeLevel->h);
 #endif	
 	
 	if (player->behavior && player->behavior->destroyed){
