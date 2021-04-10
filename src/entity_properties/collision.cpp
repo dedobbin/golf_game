@@ -168,7 +168,7 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
                 auto ball = collider;
                 std::cout << "DEBUG: " << ball->name << " collides with " << owner->name << ": " << colliderDir << std::endl;
                 
-                const int xKillSpeed = 2;
+                const int xKillSpeed = 5;
                 const int yKillSpeed = 2;
 
                 if (ball->behavior->xSpeed > xKillSpeed && colliderDir == RIGHT){
