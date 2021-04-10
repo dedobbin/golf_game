@@ -166,7 +166,6 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
             }
             case BALL: {
                 auto ball = collider;
-                std::cout << "DEBUG: " << ball->name << " collides with " << owner->name << ": " << colliderDir << std::endl;
                 
                 const int xKillSpeed = 5;
                 const int yKillSpeed = 2;
@@ -188,55 +187,6 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
         }
         return false;
     }
-
-
-    // if (owner->behavior && owner->behavior->destroyed){
-    //     return false;
-    // }
-    // if (collider->type == LIVING){
-    //     auto livingCollider = (LivingEntity*) collider;
-    //     if (livingCollider->ignoreEffectsMap.find(owner) != livingCollider->ignoreEffectsMap.end()){
-    //         std::cout << "DEBUG:" << livingCollider->name <<  " ignored effects of " << owner->name << std::endl;
-    //         return false;
-    //     }
-    //     switch(owner->type){
-    //         case ITEM:{
-    //                 //if not owned by an entity, its on the field
-    //                 auto item = (Item*)owner;
-    //                 if (!item->owner && collider->behavior->pickupItems){
-    //                     auto living = (LivingEntity*) collider;
-    //                     living->give(item);
-    //                 }
-    //             }
-    //             return false;
-    //         case LIVING:
-    //             if (collider->behavior){
-    //                 if ( ((LivingEntity*)owner)->behavior->type == ENEMY_A){
-    //                     collider->behavior->destroy();
-    //                 }
-    //             }
-    //             return false;
-    //         case BALL:{
-    //             auto ball = owner;
-    //             int killXSpeed = 1;
-    //             int killYSpeed = 1;
-                
-    //             // debug stuff
-    //             std::cout << "DEBUG: " << ball->name << " collides with " << collider->name << ": " << colliderDir << std::endl;
-    //             // if (collider->name == "enemy"){
-    //             //   std::cout << "DEBUG: "  << colliderDir << std::endl; 
-    //             // }
-                
-    //             // if  (abs(owner->behavior->xSpeed) >= 2 || abs(owner->behavior->ySpeed) >= 2){
-    //             //     collider->behavior->destroy();
-    //             // }
-    //             return false;
-    //         }
-    //         default:
-    //             return false;
-    //     }
-    // }
-    // return false;
 }
 
 bool Collision::isNotOrSemiSolid()
