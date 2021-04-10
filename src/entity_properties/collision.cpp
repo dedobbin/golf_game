@@ -167,10 +167,22 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
             case BALL: {
                 auto ball = collider;
                 std::cout << "DEBUG: " << ball->name << " collides with " << owner->name << ": " << colliderDir << std::endl;
-                // const int xKillSpeed = 2;
-                // if (ball->behavior->xSpeed > xKillSpeed && colliderDir == RIGHT){
-                //     owner->behavior->destroy();
-                // }
+                
+                const int xKillSpeed = 2;
+                const int yKillSpeed = 2;
+
+                if (ball->behavior->xSpeed > xKillSpeed && colliderDir == RIGHT){
+                    owner->behavior->destroy();
+                } else if (ball->behavior->xSpeed < xKillSpeed && colliderDir == LEFT){
+                    owner->behavior->destroy();
+                }
+
+                if (ball->behavior->ySpeed > yKillSpeed && colliderDir == DOWN){
+                    owner->behavior->destroy();
+                } else if (ball->behavior->ySpeed < yKillSpeed && colliderDir == UP){
+                    owner->behavior->destroy();
+                }
+
                 break;
             }
         }
