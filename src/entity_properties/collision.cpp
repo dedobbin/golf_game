@@ -135,43 +135,96 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
 
 bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
 {
-    if (owner->behavior && owner->behavior->destroyed){
+    if (collider->behavior && collider->behavior->destroyed){
         return false;
     }
-    if (collider->type == LIVING){
-        auto livingCollider = (LivingEntity*) collider;
-        if (livingCollider->ignoreEffectsMap.find(owner) != livingCollider->ignoreEffectsMap.end()){
-            std::cout << "DEBUG:" << livingCollider->name <<  " ignored effects of " << owner->name << std::endl;
+
+    if (owner->type == LIVING){
+        auto livingOwner = (LivingEntity*) owner;
+        if (livingOwner->ignoreEffectsMap.find(collider) != livingOwner->ignoreEffectsMap.end()){
+            std::cout << "DEBUG:" << livingOwner->name <<  " ignored effects of " << owner->name << std::endl;
             return false;
         }
-        switch(owner->type){
-            case ITEM:{
-                    //if not owned by an entity, its on the field
-                    auto item = (Item*)owner;
-                    if (!item->owner && collider->behavior->pickupItems){
-                        auto living = (LivingEntity*) collider;
-                        living->give(item);
+
+        switch(collider->type){
+            case ITEM: {
+                //if not owned by an entity, its on the field
+                auto item = (Item*)collider;
+                if (!item->owner && owner->behavior->pickupItems){
+                    auto living = (LivingEntity*) owner;
+                    living->give(item);
+                }
+                break;
+            }
+            case LIVING: {
+                if (owner->behavior){
+                    if ( ((LivingEntity*)collider)->behavior->type == ENEMY_A){
+                        owner->behavior->destroy();
                     }
                 }
-                return false;
-            case LIVING:
-                if (collider->behavior){
-                    if ( ((LivingEntity*)owner)->behavior->type == ENEMY_A){
-                        collider->behavior->destroy();
-                    }
-                }
-                return false;
-            case BALL:
-                assert(owner->behavior);
-                if  (abs(owner->behavior->xSpeed) >= 2 || abs(owner->behavior->ySpeed) >= 2){
-                    collider->behavior->destroy();
-                }
-                return false;
-            default:
-                return false;
+                break;
+            }
+            case BALL: {
+                auto ball = collider;
+                std::cout << "DEBUG: " << ball->name << " collides with " << owner->name << ": " << colliderDir << std::endl;
+                // const int xKillSpeed = 2;
+                // if (ball->behavior->xSpeed > xKillSpeed && colliderDir == RIGHT){
+                //     owner->behavior->destroy();
+                // }
+                break;
+            }
         }
+        return false;
     }
-    return false;
+
+
+    // if (owner->behavior && owner->behavior->destroyed){
+    //     return false;
+    // }
+    // if (collider->type == LIVING){
+    //     auto livingCollider = (LivingEntity*) collider;
+    //     if (livingCollider->ignoreEffectsMap.find(owner) != livingCollider->ignoreEffectsMap.end()){
+    //         std::cout << "DEBUG:" << livingCollider->name <<  " ignored effects of " << owner->name << std::endl;
+    //         return false;
+    //     }
+    //     switch(owner->type){
+    //         case ITEM:{
+    //                 //if not owned by an entity, its on the field
+    //                 auto item = (Item*)owner;
+    //                 if (!item->owner && collider->behavior->pickupItems){
+    //                     auto living = (LivingEntity*) collider;
+    //                     living->give(item);
+    //                 }
+    //             }
+    //             return false;
+    //         case LIVING:
+    //             if (collider->behavior){
+    //                 if ( ((LivingEntity*)owner)->behavior->type == ENEMY_A){
+    //                     collider->behavior->destroy();
+    //                 }
+    //             }
+    //             return false;
+    //         case BALL:{
+    //             auto ball = owner;
+    //             int killXSpeed = 1;
+    //             int killYSpeed = 1;
+                
+    //             // debug stuff
+    //             std::cout << "DEBUG: " << ball->name << " collides with " << collider->name << ": " << colliderDir << std::endl;
+    //             // if (collider->name == "enemy"){
+    //             //   std::cout << "DEBUG: "  << colliderDir << std::endl; 
+    //             // }
+                
+    //             // if  (abs(owner->behavior->xSpeed) >= 2 || abs(owner->behavior->ySpeed) >= 2){
+    //             //     collider->behavior->destroy();
+    //             // }
+    //             return false;
+    //         }
+    //         default:
+    //             return false;
+    //     }
+    // }
+    // return false;
 }
 
 bool Collision::isNotOrSemiSolid()
