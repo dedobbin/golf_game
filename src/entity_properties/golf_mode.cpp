@@ -101,7 +101,7 @@ void GolfMode::shoot()
 
 	_ball->behavior->addYSpeed(-heightCursor);
 
-	((LivingEntity*)owner)->ignoreEffectsMap[_ball] = 10;//ignore for n ticks so wont 'touch' owner right after shooting
+	((LivingEntity*)owner)->ignoreEffectsList.push_back(_ball); // so don't kill myself
 
 	reset();
 	active = false;

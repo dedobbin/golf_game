@@ -20,18 +20,3 @@ void LivingEntity::give(Item* item)
 	item->owner = this;
 	this->heldItem = item;
 }
-
-void LivingEntity::ignoreEffectsTick()
-{
-	for(auto iter = ignoreEffectsMap.begin(); iter != ignoreEffectsMap.end();)
-	{
-		// auto entity = iter->first;
-		// auto n = iter->second;
-		iter->second--;
-		if (iter->second <= 0){
-			iter = ignoreEffectsMap.erase(iter);
-		} else {
-			++iter;
-		}
-	}
-}

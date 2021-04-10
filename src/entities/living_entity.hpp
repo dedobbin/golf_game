@@ -16,7 +16,6 @@ class LivingEntity : public Entity
 		/* Should be set using give, so owner of item is also set correctly, would be better to properly private but eh */
 		Item* heldItem = NULL;
 		std::unique_ptr<GolfMode> golfMode;
-		/* stores entities should be ignored and for amount of ticks */
-		std::unordered_map<Entity*, int> ignoreEffectsMap;
-		void ignoreEffectsTick();
+		/* stores entities should be ignored */
+		std::vector<Entity*> ignoreEffectsList;
 };

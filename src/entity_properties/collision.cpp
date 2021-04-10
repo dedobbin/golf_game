@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include <cmath>
 #include <assert.h>
+#include <algorithm>
 #include "../entities/item.hpp"
 #include "../entities/living_entity.hpp"
 #include "../world.hpp"
@@ -141,8 +142,11 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
 
     if (owner->type == LIVING){
         auto livingOwner = (LivingEntity*) owner;
-        if (livingOwner->ignoreEffectsMap.find(collider) != livingOwner->ignoreEffectsMap.end()){
-            std::cout << "DEBUG:" << livingOwner->name <<  " ignored effects of " << owner->name << std::endl;
+        auto ignored = livingOwner->ignoreEffectsList;
+        if (std::find_if(ignored.begin(), ignored.end(), [collider](auto entity){
+            return entity == collider;
+        }) != ignored.end()){
+            std::cout << "DEBUG: ignored effects" << std::endl;
             return false;
         }
 
