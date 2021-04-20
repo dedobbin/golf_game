@@ -188,9 +188,11 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
 
                 break;
             }
+            default:
+                break;//Get rid of clang warning because not all cases are handled, but that is fine..
         }
-        return false;
     }
+    return false;
 }
 
 bool Collision::isNotOrSemiSolid()
