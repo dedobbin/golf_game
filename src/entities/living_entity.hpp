@@ -16,6 +16,6 @@ class LivingEntity : public Entity
 		/* Should be set using give, so owner of item is also set correctly, would be better to properly private but eh */
 		Item* heldItem = NULL;
 		std::unique_ptr<GolfMode> golfMode;
-		/* stores entities should be ignored */
+		/* stores entities should be ignored on collision. Behavior::behave() will remove any entries that don't touch entity (anymore) every tick*/
 		std::vector<Entity*> ignoreEffectsList;
 };

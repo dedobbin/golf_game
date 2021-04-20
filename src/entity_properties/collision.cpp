@@ -146,7 +146,7 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
         if (std::find_if(ignored.begin(), ignored.end(), [collider](auto entity){
             return entity == collider;
         }) != ignored.end()){
-            std::cout << "DEBUG: ignored effects" << std::endl;
+            std::cout << "DEBUG: "<< owner->name << " ignored effects of " << collider->name << std::endl;
             return false;
         }
 

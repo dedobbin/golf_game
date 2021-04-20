@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "iostream"
 #include "assert.h"
 #include "../entity_properties/behavior.hpp"
@@ -163,6 +164,16 @@ void Behavior::behave()
 				break;
 			default:
 				break;
+		}
+		/* if an entity is in the ignore map but doesn't touch owner anymore, it should be removed from ignore map */
+		for (auto iter = living->ignoreEffectsList.begin(); iter != living->ignoreEffectsList.end();){
+			if (std::find_if(owner->collision->currentColliders.begin(), owner->collision->currentColliders.end(), [iter](auto entity){
+				return  *iter == entity;
+			}) == owner->collision->currentColliders.end()){
+				iter = living->ignoreEffectsList.erase(iter);
+			} else {
+				++iter;
+			}
 		}
 
 		// update some animations
