@@ -1,0 +1,250 @@
+#include "game.hpp"
+#include "world.hpp"
+#include "entities/living_entity.hpp"
+#include "entity_properties/item_behavior.hpp"
+#include <algorithm>
+#include <iostream>
+
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
+#define DEBUG_DRAW
+//#define DEBUG_CAMERA
+
+#define DELAY_BEFORE_GAMEOVER 60 //time between player dying and game over screen popping up
+
+#ifndef __EMSCRIPTEN__
+const int NATIVE_SCREEN_FPS = 60;
+const int NATIVE_SCREEN_TICK_PER_FRAME = 1000 / NATIVE_SCREEN_FPS;
+#endif
+
+Game::Game()
+{
+	visuals = std::make_unique<Visuals>();
+	fpsTextIndex = visuals->createText("0", 10, 10);
+
+	//v.loadSpritesheet("spritesheet1");
+}
+
+void Game::setupWorld()
+{
+	//For now, just load all spritesheets
+	visuals->loadSpritesheets(visuals->defaultSpritesheetPath);
+
+    World::loadLevel("2.wsp", visuals->spritesheets);
+
+	auto it = std::find_if(World::activeLevel->entities.begin(), World::activeLevel->entities.end(), [](const auto& x){
+		return x->behavior && x->behavior->type == BehaviorType::PLAYER;
+	});
+
+	std::shared_ptr<LivingEntity> p = std::static_pointer_cast<LivingEntity>(*it);
+	player = p;
+	followWithCam = p;
+	visuals->camera->snapToSanePos(followWithCam);
+
+	ticksAfterPlayedDied = 0;
+}
+
+void Game::renderEverything()
+{
+	visuals->renderStart();
+	for (auto& e : World::activeLevel->entities){
+		if (e->graphic){
+			visuals->renderEntity(e.get());
+
+#ifdef DEBUG_DRAW 
+			if (e->collision){
+				visuals->renderRect(e->pos.x, e->pos.y, e->pos.w, e->pos.h);
+			}
+#endif	
+		}
+	}
+#ifdef DEBUG_DRAW 
+	visuals->renderRectOverlay(0, 0, visuals->camera->camRect.w, visuals->camera->camRect.w);
+	visuals->renderRect(0, 0, World::activeLevel->w, World::activeLevel->h, {0, 255, 255, 255});
+#endif	
+	
+	if (player->behavior && player->behavior->destroyed){
+		ticksAfterPlayedDied ++;
+		if (ticksAfterPlayedDied >= DELAY_BEFORE_GAMEOVER){
+			visuals->renderGameOver();
+		}
+	} else if (player->golfMode && player->golfMode->active){
+		if (player->golfMode->state == AIMING_POWER){
+			visuals->renderGolfMeter(AIMING_POWER, player->golfMode->powerCursor, player->golfMode->nPoints);
+		} else if (player->golfMode->state == AIMING_HEIGHT){
+			visuals->renderGolfMeter(AIMING_HEIGHT, player->golfMode->heightCursor, player->golfMode->nPoints);
+		}
+	}
+
+	visuals->renderTexts();
+	visuals->renderEnd();
+}
+
+HandleInputReturnType Game::handleInput()
+{
+	SDL_Event e;
+	while( SDL_PollEvent( &e ) != 0 ){
+		if (e.type == SDL_QUIT){
+			return HandleInputReturnType::QUIT;
+		} else if (e.type == SDL_KEYDOWN){
+			
+			if (player->behavior && player->behavior->destroyed){
+				if (e.key.keysym.scancode == SDL_SCANCODE_SPACE){
+					visuals->texts[gameOverTextIndex].display = false;
+					return HandleInputReturnType::RESET;
+				}
+			}
+
+			if (player->golfMode && player->golfMode->active){
+				if (player->golfMode->state == AIMING_POWER){
+					if (e.key.keysym.scancode == SDL_SCANCODE_RIGHT){
+						player->golfMode->setDirection(RIGHT);
+					}
+					if (e.key.keysym.scancode == SDL_SCANCODE_LEFT){
+						player->golfMode->setDirection(LEFT);
+					}
+					
+					if (e.key.keysym.scancode == SDL_SCANCODE_C){
+						player->golfMode->state = AIMING_HEIGHT;
+					}
+				} else if (player->golfMode->state == AIMING_HEIGHT){
+					if (e.key.keysym.scancode == SDL_SCANCODE_C){
+						player->golfMode->state = SWINGING;
+					}
+				} 
+			} else {
+				if (e.key.keysym.scancode == SDL_SCANCODE_C){
+					if (player->collision){
+						auto i = std::find_if( player->collision->currentColliders.begin(),
+							player->collision->currentColliders.end(), 
+							[&](const auto val){ return val->type == BALL && val->behavior && val->behavior->grounded; } 
+						);
+
+						if (i != player->collision->currentColliders.end()){
+							if (player->heldItem){
+								auto itemBehavior = (ItemBehavior*)player->heldItem->behavior.get();
+								itemBehavior->interact(*i);
+							}
+						}
+					}
+				}
+			}
+
+			keysPressed[e.key.keysym.scancode] = true;
+		} else if (e.type == SDL_KEYUP){
+			keysPressed[e.key.keysym.scancode] = false;
+		}
+	}
+
+	if (player->golfMode && !player->golfMode->active){
+		if (keysPressed[SDL_SCANCODE_RIGHT]){
+			player->xPush = RIGHT;
+			player->golfMode->setDirection(RIGHT);
+		} else if (player->behavior->xSpeed > 0){
+			player->xPush = NONE;
+		}
+
+		if (keysPressed[SDL_SCANCODE_LEFT]){
+			player->xPush = LEFT;
+			player->golfMode->setDirection(LEFT);
+		} else if (player->behavior->xSpeed < 0){
+			player->xPush = NONE;
+		}
+
+		if (keysPressed[SDL_SCANCODE_Z]){
+			player->behavior->jump();
+		}
+	}
+
+#ifdef DEBUG_CAMERA
+		int camSpeed = 5;
+		if (keysPressed[SDL_SCANCODE_D]){
+			visuals->camera->camRect.x += camSpeed;
+		} 
+		if (keysPressed[SDL_SCANCODE_A]){
+			visuals->camera->camRect.x -= camSpeed;
+		} 
+		if (keysPressed[SDL_SCANCODE_W]){
+			visuals->camera->camRect.y -= camSpeed;
+		} 
+		if (keysPressed[SDL_SCANCODE_S]){
+			visuals->camera->camRect.y += camSpeed;
+		} 
+#endif
+
+	return CONTINUE;
+}
+
+bool Game::tick()
+{
+	auto handleInputReturn = handleInput();
+	if (handleInputReturn == HandleInputReturnType::RESET){
+		setupWorld();
+	} else if (handleInputReturn == HandleInputReturnType::QUIT){
+		return false;
+	}
+
+	float avgFps = visuals->ctx.iteration / (fpsTimer.getTicks() / 1000.f);
+	if (avgFps > 2000000){
+		avgFps = 0;
+	}
+
+	//Move etc all entities, collision etc
+	for (auto& e : World::activeLevel->entities){
+		if (e->behavior){
+			e->behavior->behave();
+		}
+	}
+
+#ifndef DEBUG_CAMERA
+	visuals->camera->followWithCam(followWithCam);
+#endif
+
+	renderEverything();
+
+#ifdef DEBUG_DRAW 
+	visuals->updateText(std::to_string(static_cast<int>(avgFps)), fpsTextIndex);
+#endif
+
+	return true;
+}
+
+#ifdef __EMSCRIPTEN__ 
+void Game::emscriptenLoop(void *arg)
+{	
+ 	context *ctx = static_cast<context*>(arg);//This is also accessible from v.ctx, so kinda pointless...
+	tick();
+ 	ctx->iteration++;
+}
+
+#else
+void Game::startGameNative()
+{
+	bool keepGoing = true;
+	while(keepGoing){
+		capTimer.start();
+		
+		keepGoing = tick();
+		visuals->ctx.iteration++;
+
+		int frameTicks = capTimer.getTicks();
+		if( frameTicks < NATIVE_SCREEN_TICK_PER_FRAME ){
+			SDL_Delay( NATIVE_SCREEN_TICK_PER_FRAME - frameTicks );
+		}
+	}
+}
+#endif
+
+void Game::start()
+{	
+	fpsTimer.start();
+#ifdef __EMSCRIPTEN__
+	const int simulate_infinite_loop = 1;
+	const int fps = -1; //defaults to 60, but setting it to 60 seems to trigger EM_TIMING_SETTIMEOUT, causing frames to drop from 60 when theres actual load?
+	emscripten_set_main_loop_arg(emscriptenLoop, &v.ctx, fps, simulate_infinite_loop);
+#else
+	startGameNative();
+#endif
+}
