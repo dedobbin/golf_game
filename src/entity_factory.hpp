@@ -4,6 +4,8 @@
 #include "entities/entity.hpp"
 //#include <SDL2/SDL.h>
 
+
+/* Creates entities for testing. For actual game entities should be read from external source like a .wsp file */
 class EntityFactory 
 {
 	public:
