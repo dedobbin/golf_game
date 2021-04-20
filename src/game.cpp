@@ -212,16 +212,25 @@ bool Game::tick()
 }
 
 #ifdef __EMSCRIPTEN__ 
-void Game::emscriptenLoop(void *arg)
+void emscriptenLoop(void *arg)
 {	
- 	context *ctx = static_cast<context*>(arg);//This is also accessible from v.ctx, so kinda pointless...
-	tick();
- 	ctx->iteration++;
+ 	//context *ctx = static_cast<context*>(arg);//This is also accessible from v.ctx, so kinda pointless...
+	Game* game = static_cast<Game*>(arg);
+	game->tick();
+ 	game->visuals->ctx.iteration++;
 }
+#endif
 
+void Game::start()
+{	
+	fpsTimer.start();
+#ifdef __EMSCRIPTEN__
+	const int simulate_infinite_loop = 1;
+	const int fps = -1; //defaults to 60, but setting it to 60 seems to trigger EM_TIMING_SETTIMEOUT, causing frames to drop from 60 when theres actual load?
+	
+	
+	emscripten_set_main_loop_arg(emscriptenLoop, this, fps, simulate_infinite_loop);
 #else
-void Game::startGameNative()
-{
 	bool keepGoing = true;
 	while(keepGoing){
 		capTimer.start();
@@ -234,17 +243,5 @@ void Game::startGameNative()
 			SDL_Delay( NATIVE_SCREEN_TICK_PER_FRAME - frameTicks );
 		}
 	}
-}
-#endif
-
-void Game::start()
-{	
-	fpsTimer.start();
-#ifdef __EMSCRIPTEN__
-	const int simulate_infinite_loop = 1;
-	const int fps = -1; //defaults to 60, but setting it to 60 seems to trigger EM_TIMING_SETTIMEOUT, causing frames to drop from 60 when theres actual load?
-	emscripten_set_main_loop_arg(emscriptenLoop, &v.ctx, fps, simulate_infinite_loop);
-#else
-	startGameNative();
 #endif
 }

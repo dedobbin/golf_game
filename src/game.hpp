@@ -13,21 +13,14 @@ class Game
 {
 	public:
 		Game();
-		//TODO: use dynamic input source
-		void setupWorld();
+		void setupWorld(); 		//TODO: use dynamic input source
 		void start();
+		std::unique_ptr<Visuals> visuals; //public because emscriptenLoop needs access to it.. 
+		// Returns false when game ends, also public because emscriptenLoop needs access to it..
+		bool tick();
 	private:
 		void renderEverything();
 		HandleInputReturnType handleInput();
-		// Returns false when game ends
-		bool tick();
-#ifdef __EMSCRIPTEN__
-		void emscriptenLoop(void *arg)
-#else 
-		void startGameNative();
-		LazyFooTimer capTimer;
-#endif
-		std::unique_ptr<Visuals> visuals;
 		int ticksAfterPlayedDied = 0;
 
 		std::shared_ptr<LivingEntity> player;
@@ -38,4 +31,7 @@ class Game
 
 		int fpsTextIndex = -1;
 		LazyFooTimer fpsTimer;
+#ifndef __EMSCRIPTEN__
+		LazyFooTimer capTimer;
+#endif
 };
