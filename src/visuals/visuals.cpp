@@ -230,10 +230,13 @@ void Visuals::updateText(std::string text, int textId)
 		std::cout << "DEBUG: Tried updating non-existing text " << textId << " with '" << text << "'" << std::endl;
 		return;
 	}
+	std::cout << "DEBUG: stuff" << std::endl;
 	SDL_Color color = texts[textId].color;
 	SDL_Surface* surface = TTF_RenderText_Solid(gFont, text.c_str(), color);
+	std::cout << "DEBUG: "<<  text.c_str() << std::endl;
 	if (surface != NULL){
 		auto texture = SDL_CreateTextureFromSurface(ctx.renderer, surface);
+		SDL_free(surface);
 		if (texture != NULL){
 			SDL_DestroyTexture(texts[textId].texture);
 			texts[textId].texture = texture;

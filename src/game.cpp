@@ -214,7 +214,6 @@ bool Game::tick()
 #ifdef __EMSCRIPTEN__ 
 void emscriptenLoop(void *arg)
 {	
- 	//context *ctx = static_cast<context*>(arg);//This is also accessible from v.ctx, so kinda pointless...
 	Game* game = static_cast<Game*>(arg);
 	game->tick();
  	game->visuals->ctx.iteration++;
@@ -227,8 +226,6 @@ void Game::start()
 #ifdef __EMSCRIPTEN__
 	const int simulate_infinite_loop = 1;
 	const int fps = -1; //defaults to 60, but setting it to 60 seems to trigger EM_TIMING_SETTIMEOUT, causing frames to drop from 60 when theres actual load?
-	
-	
 	emscripten_set_main_loop_arg(emscriptenLoop, this, fps, simulate_infinite_loop);
 #else
 	bool keepGoing = true;
