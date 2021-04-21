@@ -205,9 +205,11 @@ bool Game::tick()
 	renderEverything();
 
 #ifdef DEBUG_DRAW 
+	//std::cout << "DEBUG: " << avgFps << "," << fpsTextIndex << std::endl;
 	visuals->updateText(std::to_string(static_cast<int>(avgFps)), fpsTextIndex);
 #endif
 
+ 	visuals->ctx.iteration++;
 	return true;
 }
 
@@ -216,7 +218,6 @@ void emscriptenLoop(void *arg)
 {	
 	Game* game = static_cast<Game*>(arg);
 	game->tick();
- 	game->visuals->ctx.iteration++;
 }
 #endif
 
@@ -233,7 +234,6 @@ void Game::start()
 		capTimer.start();
 		
 		keepGoing = tick();
-		visuals->ctx.iteration++;
 
 		int frameTicks = capTimer.getTicks();
 		if( frameTicks < NATIVE_SCREEN_TICK_PER_FRAME ){

@@ -4,7 +4,7 @@ EMCC=emcc
 
 all:
 	$(EMCC) src/utils/*.cpp src/entity_properties/*.cpp src/entities/*.cpp src/visuals/*.cpp src/*.cpp \
-	--debug -s USE_SDL=2 -s USE_SDL_IMAGE=2  -s USE_SDL_TTF=2 -s SDL2_IMAGE_FORMATS='["png"]' -s DISABLE_EXCEPTION_CATCHING=0 -s ALLOW_MEMORY_GROWTH=1 \
+	--debug -s USE_SDL=2 -s USE_SDL_IMAGE=2  -s USE_SDL_TTF=2 -s SDL2_IMAGE_FORMATS='["png"]' -s DISABLE_EXCEPTION_CATCHING=0 -s ALLOW_MEMORY_GROWTH=1 -s \
 	--preload-file resources -o index.js; \
 	 $(MAKE) copy-wasm-to-build-folder
 

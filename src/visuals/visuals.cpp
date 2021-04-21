@@ -226,14 +226,14 @@ void Visuals::destroyAllText()
 
 void Visuals::updateText(std::string text, int textId)
 {
+	std::cout << "DEBUG updateText:" << text << "(" << textId << ") " << texts.size() << std::endl;
+	
 	if (texts.find(textId) == texts.end()){
 		std::cout << "DEBUG: Tried updating non-existing text " << textId << " with '" << text << "'" << std::endl;
 		return;
 	}
-	std::cout << "DEBUG: stuff" << std::endl;
 	SDL_Color color = texts[textId].color;
 	SDL_Surface* surface = TTF_RenderText_Solid(gFont, text.c_str(), color);
-	std::cout << "DEBUG: "<<  text.c_str() << std::endl;
 	if (surface != NULL){
 		auto texture = SDL_CreateTextureFromSurface(ctx.renderer, surface);
 		SDL_free(surface);
@@ -248,6 +248,7 @@ void Visuals::updateText(std::string text, int textId)
 	} else {
 		std::cout << "DEBUG: Unable to create text surface: " << SDL_GetError() << std::endl;
 	}
+	std::cout << "DEBUG updateText: done" << std::endl;
 }
 
 void Visuals::renderGameOver()
