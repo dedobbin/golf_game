@@ -26,7 +26,7 @@ class GolfMode
 		direction meterCursorDirection = LEFT;
 		int ticksAfterStartSwinging = 0;
 		void tick();
-		Entity* _ball = 0;
+		Entity* _ball = 0;//TODO: make smart ptr
 
 		/** graphic stuff  **/
 		int powerCursor = 0;

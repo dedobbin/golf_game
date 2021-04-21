@@ -32,7 +32,7 @@ void Game::setupWorld()
 	//For now, just load all spritesheets
 	visuals->loadSpritesheets(visuals->defaultSpritesheetPath);
 
-    World::loadLevel("2.wsp", visuals->spritesheets);
+    World::loadLevel("3.wsp", visuals->spritesheets);
 
 	auto it = std::find_if(World::activeLevel->entities.begin(), World::activeLevel->entities.end(), [](const auto& x){
 		return x->behavior && x->behavior->type == BehaviorType::PLAYER;
