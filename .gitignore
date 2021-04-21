@@ -10,3 +10,4 @@ index.wasm
 build
 *.gch
 level_editor
+*.tmp
