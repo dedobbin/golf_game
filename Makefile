@@ -8,6 +8,7 @@ build: entity_factory.o game.o import_level.o world.o
 	$(MAKE) COMPILER=$(COMPILER) -C src/entity_properties
 	$(MAKE) COMPILER=$(COMPILER) -C src/utils
 	$(MAKE) COMPILER=$(COMPILER) -C src/visuals
+	# This will now create build artifacts in root folder, while other put it in their src folder... oh well
 	$(COMPILER) src/main.cpp *.o src/entities/*.o src/entity_properties/*.o src/utils/*o src/visuals/*.o \
 	-g -w -lSDL2 -lSDL2_ttf  -lSDL2_image -lSDL2_mixer -ldump_lib;
 	
