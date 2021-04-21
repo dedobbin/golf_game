@@ -137,7 +137,6 @@ HandleInputReturnType Game::handleInput()
 			keysPressed[e.key.keysym.scancode] = false;
 		}
 	}
-
 	if (player->golfMode && !player->golfMode->active){
 		if (keysPressed[SDL_SCANCODE_RIGHT]){
 			player->xPush = RIGHT;

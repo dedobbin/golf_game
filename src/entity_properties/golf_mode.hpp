@@ -26,7 +26,7 @@ class GolfMode
 		direction meterCursorDirection = LEFT;
 		int ticksAfterStartSwinging = 0;
 		void tick();
-		Entity* _ball;
+		Entity* _ball = 0;
 
 		/** graphic stuff  **/
 		int powerCursor = 0;

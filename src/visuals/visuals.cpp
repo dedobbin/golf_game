@@ -226,8 +226,6 @@ void Visuals::destroyAllText()
 
 void Visuals::updateText(std::string text, int textId)
 {
-	std::cout << "DEBUG updateText:" << text << "(" << textId << ") " << texts.size() << std::endl;
-	
 	if (texts.find(textId) == texts.end()){
 		std::cout << "DEBUG: Tried updating non-existing text " << textId << " with '" << text << "'" << std::endl;
 		return;
@@ -248,7 +246,6 @@ void Visuals::updateText(std::string text, int textId)
 	} else {
 		std::cout << "DEBUG: Unable to create text surface: " << SDL_GetError() << std::endl;
 	}
-	std::cout << "DEBUG updateText: done" << std::endl;
 }
 
 void Visuals::renderGameOver()
