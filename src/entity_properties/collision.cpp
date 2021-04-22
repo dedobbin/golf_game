@@ -189,7 +189,7 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
                 break;
             }
             case SPIKES :{
-                std::cout << "DEBUG: spikes" << std::endl;
+                std::cout << "DEBUG: TODO: spikes effect" << std::endl;
                 break;
             }
             default:

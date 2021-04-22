@@ -104,6 +104,7 @@ void Behavior::behave()
 		if (Collision::intersectCollides(intersect)){
 			collidee->collision->pushout(owner, hDir, intersect);
 			collidee->collision->effect(owner, hDir, intersect);
+			owner->collision->effect(collidee.get(), hDir, intersect);
 			owner->collision->currentColliders.push_back(collidee.get());
 		}
 	}
@@ -119,6 +120,7 @@ void Behavior::behave()
 
 	bool hasGroundUnder = false;
 	for (auto& collidee : World::activeLevel->entities){// check y move + check if is grounded
+		
 		if (owner == collidee.get()) continue;
 		if (!collidee->collision) continue;
 		
@@ -127,6 +129,7 @@ void Behavior::behave()
 		if (Collision::intersectCollides(intersect)){
 			collidee->collision->pushout(owner, vDir, intersect);
 			collidee->collision->effect(owner, vDir, intersect);
+			owner->collision->effect(collidee.get(), vDir, intersect);
 		}
 
 		// check what is down
