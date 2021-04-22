@@ -189,7 +189,9 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
                 break;
             }
             case SPIKES :{
-                std::cout << "DEBUG: TODO: spikes effect" << std::endl;
+                if (colliderDir == DOWN){
+                    owner->behavior->destroy();
+                }
                 break;
             }
             default:
