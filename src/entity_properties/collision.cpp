@@ -176,13 +176,13 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
 
                 if (ball->behavior->xSpeed > xKillSpeed && colliderDir == RIGHT){
                     owner->behavior->destroy();
-                } else if (ball->behavior->xSpeed < xKillSpeed && colliderDir == LEFT){
+                } else if (ball->behavior->xSpeed < -xKillSpeed && colliderDir == LEFT){
                     owner->behavior->destroy();
                 }
 
                 if (ball->behavior->ySpeed > yKillSpeed && colliderDir == DOWN){
                     owner->behavior->destroy();
-                } else if (ball->behavior->ySpeed < yKillSpeed && colliderDir == UP){
+                } else if (ball->behavior->ySpeed < -yKillSpeed && colliderDir == UP){
                     owner->behavior->destroy();
                 }
 
