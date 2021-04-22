@@ -27,16 +27,16 @@ ifeq ($(COMPILER),emcc)
 endif
 	
 entity_factory.o: src/entity_factory.cpp src/entity_factory.hpp
-	$(COMPILER) -c src/entity_factory.cpp
+	$(COMPILER) -g -c src/entity_factory.cpp
 
 game.o: src/game.cpp src/game.hpp
-	$(COMPILER) -c src/game.cpp
+	$(COMPILER) -g -c src/game.cpp
 
 import_level.o: src/import_level.cpp src/import_level.hpp
-	$(COMPILER) -c src/import_level.cpp
+	$(COMPILER) -g -c src/import_level.cpp
 
 entity_factory.o: src/world.cpp src/world.hpp
-	$(COMPILER) -c src/world.cpp
+	$(COMPILER) -g -c src/world.cpp
 
 copy-native-to-build-folder:
 	mkdir -p build/native

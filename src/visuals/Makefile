@@ -3,10 +3,10 @@
 all: camera.o visuals.o
 
 camera.o: camera.cpp camera.hpp
-	$(COMPILER) -c camera.cpp
+	$(COMPILER) -g -c camera.cpp
 
 visuals.o: visuals.cpp visuals.hpp
-	$(COMPILER) -c visuals.cpp
+	$(COMPILER) -g -c visuals.cpp
 
 clean: 
 	rm -f *.o

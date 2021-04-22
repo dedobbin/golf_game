@@ -285,6 +285,8 @@ Entity* parseEntity(std::shared_ptr<Block> block)
 			entity->type = entityType::STATIC_SOLID;
 		} else if (block->attributes["entity_type"] == "ball"){
 			entity->type = entityType::BALL;
+		} else if (block->attributes["entity_type"] == "spikes"){
+			entity->type = entityType::SPIKES;
 		}
 	}
 

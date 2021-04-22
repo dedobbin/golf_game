@@ -12,6 +12,7 @@ enum entityType {
 	LIVING,
 	ITEM,
 	BALL,
+	SPIKES
 };
 
 class Entity 
