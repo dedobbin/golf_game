@@ -342,6 +342,11 @@ LevelData* Import::importLevel(std::string filename, std::unordered_map<std::str
 
 	// std::string content = "{type=metadata;}{type=entity;{type=graphic;sprite=3;}}";
 	
+	std::regex rgx ("^#(.)*\n");
+	std::string noComments;
+  	std::regex_replace (std::back_inserter(noComments), content.begin(), content.end(), rgx, "");
+	content = noComments;
+
 	auto topBlock = blockify(content);
 	//printBlock(topBlock);
 	//printBlock(topBlock->blocks[1]);

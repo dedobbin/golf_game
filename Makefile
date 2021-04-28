@@ -35,9 +35,6 @@ game.o: src/game.cpp src/game.hpp
 import_level.o: src/import_level.cpp src/import_level.hpp
 	$(COMPILER) -g -c src/import_level.cpp
 
-entity_factory.o: src/world.cpp src/world.hpp
-	$(COMPILER) -g -c src/world.cpp
-
 copy-native-to-build-folder:
 	mkdir -p build/native
 	cp a.out build/native
