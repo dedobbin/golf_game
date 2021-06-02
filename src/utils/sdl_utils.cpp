@@ -1,5 +1,9 @@
 #include "sdl_utils.hpp"
 
+/**
+ * The code for this timer was originally from Lazy Foo 
+ * http://lazyfoo.net/
+ */
 LazyFooTimer::LazyFooTimer()
 {
     //Initialize the variables

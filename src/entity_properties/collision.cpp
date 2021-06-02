@@ -24,7 +24,6 @@ rect Collision::getIntersect(rect a, rect b)
 	rect intersect = {0,0,0,0};
 	
 	//Based on SDL_IntersectRect
-
     int Amin, Amax, Bmin, Bmax;	
 	/* Horizontal intersection */
     Amin = a.x;

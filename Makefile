@@ -32,6 +32,9 @@ entity_factory.o: src/entity_factory.cpp src/entity_factory.hpp
 game.o: src/game.cpp src/game.hpp
 	$(COMPILER) -g -c src/game.cpp
 
+world.o: src/world.cpp src/world.hpp
+	$(COMPILER) -g -c src/world.cpp
+
 import_level.o: src/import_level.cpp src/import_level.hpp
 	$(COMPILER) -g -c src/import_level.cpp
 
