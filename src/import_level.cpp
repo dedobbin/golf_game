@@ -1,4 +1,5 @@
 #include "import_level.hpp"
+#include "utils/json.hpp"
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -7,6 +8,7 @@
 #include <regex>
 #include <dirent.h>
 
+
 #include "utils/utils.hpp"
 #include "entities/living_entity.hpp"
 #include "entities/item.hpp"
@@ -14,351 +16,93 @@
 #include "entity_properties/enemy_behavior.hpp"
 
 std::unordered_map<std::string, SDL_Texture*> spriteSheets;
-static LevelData* levelData;
 
-struct Block
+Entity* parseEntity(nlohmann::json jEntity)
 {
-	std::string rawContent = "";
-	std::unordered_map<std::string, std::string> attributes;
-	std::vector<std::shared_ptr<Block>> blocks;
-};
+	Entity* entity= NULL;
 
-std::shared_ptr<Block> blockify(std::string raw)
-{
-	std::string curString = "";
-	std::string curAttribute = "";
-	std::vector<std::shared_ptr<Block>> blocks;
-	
-	auto topBlock = std::make_shared<Block>();
-	topBlock->attributes["type"] = "top";
-
-	raw.erase(std::remove_if(raw.begin(), raw.end(), 
-		[](unsigned char x){
-			//return std::isspace(x);
-			return x == '\n' || x == '\t';
-		}), raw.end()
-	);
-
-	blocks.push_back(topBlock); 
-	while(raw != "")
-	{
-		curString += raw[0];
-
-		if (raw[0] == '{'){
-			blocks.push_back(std::make_shared<Block>());
-			curString = "";
-		} else if (raw[0] == '}'){
-			auto b = blocks.back();
-			blocks.pop_back();
-			blocks.back()->blocks.push_back(b);
-			curString = "";
-		} else {
-			blocks.back()->rawContent += raw[0];
-
-			if (raw[0] == '='){
-				curAttribute = curString.substr(0, curString.size() - 1);//dont take =
-				curString = "";
-				//blocks.back()->attributes[curAttribute] = "";
-			}else if (raw[0] == ';'){
-				blocks.back()->attributes[curAttribute] = curString.substr(0, curString.size() - 1); //dont take ;
-				curAttribute = "";
-				curString = "";
-			}
-		}
-
-		raw = raw.substr(1, raw.size() - 1);
-	}
-
-	return blocks.back();
-}
-
-void printBlock(std::shared_ptr<Block> block)
-{
-	//std::cout << block->rawContent << std::endl;
-	std::cout << "block type: " << block->attributes["type"] << std::endl;
-	for(auto iter = block->attributes.begin(); iter != block->attributes.end(); ++iter){
-		std::string k =  iter->first;
-		if (k == "type") continue;
-		std::string v =  iter->second;
-		std::cout << "\t" << k << ":" << v << std::endl;
-	}
-
-	for(auto &b : block->blocks){
-		printBlock(b);
-	}
-}
-
-std::vector<rect> parseFramePosStr(std::string frameStr)
-{
-	//frameStr = "[32,0,32,32],[64,0,32,32],[12,34,56,78]"; 
-
-	std::vector<rect> output; 
-
-	frameStr.erase(std::remove_if(frameStr.begin(), frameStr.end(), 
-		[](unsigned char x){
-			return std::isspace(x);
-		}), frameStr.end()
-	);
-
-	const std::regex r("(\\[[0-9]+,[0-9]+,[0-9]+,[0-9]+\\],*)");  
-	
-	while(frameStr != ""){
-		std::smatch sm;
-		if (regex_search(frameStr, sm, r)) {
-			if (sm.size() > 0){
-				//std::cout <<  sm.str(1) << std::endl;
-				std::string str = sm.str(1);
-				
-				int rStrip = 1;
-				if (str[str.size()-1] == ','){
-					//std::cout << "sdf" << std::endl;
-					rStrip = 2;
-				}
-
-				auto posData = explode(  str.substr(1, str.size()-rStrip-1) ,',');
-				rect r = {std::stoi(posData[0]),std::stoi(posData[1]),std::stoi(posData[2]),std::stoi(posData[3])};
-				output.push_back(r);
-
-
-				frameStr = frameStr.substr(sm.str(1).size(), frameStr.size() - sm.str(1).size());
-			}
-		} else {
-			std::cout << "DEBUG: invalid graphic pos data, remaining unparsed data: " << frameStr << std::endl;
-			break;
-		}
-	}
-	return output;
-}
-
-void parseMetaData(std::shared_ptr<Block> block)
-{
-	auto attr = block->attributes;
-
-	levelData->name = attr["name"];
-	levelData->w = std::stoi(attr["world_w"]);
-	levelData->h = std::stoi(attr["world_h"]);
-	levelData->gravity = std::stof(attr["world_gravity"]);
-}
-
-Graphic* parseGraphic(std::shared_ptr<Block> graphicBlock, Entity* owner)
-{
-	/* If graphic has own spritesheet + frame, 'non-animation' constructor for graphic */
-	if (graphicBlock->attributes.find("spritesheet") != graphicBlock->attributes.end() 
-	&& graphicBlock->attributes.find("frame") != graphicBlock->attributes.end() ){
-		auto sheet = spriteSheets[graphicBlock->attributes["spritesheet"]];
-		auto srcPosData = explode(graphicBlock->attributes["frame"], ',');
-		SDL_Rect src ={
-			std::stoi(srcPosData[0]),
-			std::stoi(srcPosData[1]),
-			std::stoi(srcPosData[2]),
-			std::stoi(srcPosData[3])
-		};
-		return new Graphic(sheet, src, owner);
-	}
-
-	/* Graphic does not have own spritesheet + frame, so it's animated, get frames */
-	auto graphic = new Graphic(owner);
-	for (auto& graphicProperties: graphicBlock->blocks){
-		auto graphAttr = graphicProperties->attributes;
-		if (graphAttr["type"] == "animation"){
-			auto animation = std::make_unique<Animation>(spriteSheets.at(graphAttr["spritesheet"]));
-			for (auto& rect : parseFramePosStr(graphAttr["frames"])){
-				animation->frames.push_back(std::make_unique<Frame>(rect.x, rect.y, rect.w, rect.h));
-			}
-
-			if (graphAttr.find("speed") != graphAttr.end()){
-				animation->animationSpeed = std::stoi(graphAttr["speed"]);
-			} 
-			if (graphAttr.find("loop") != graphAttr.end()){
-				animation->loop = (bool)std::stoi(graphAttr["loop"]);
-			} 
-
-			if (graphAttr["animation_type"]=="default"){
-				graphic->animations[DEFAULT] = std::move(animation);
-			} else if (graphAttr["animation_type"]=="walk") {
-				graphic->animations[WALK] =  std::move(animation);
-			} else if (graphAttr["animation_type"]=="jump") {
-				graphic->animations[JUMP] =  std::move(animation);
-			} else if (graphAttr["animation_type"]=="fall") {
-				graphic->animations[FALL] =  std::move(animation);
-			} else if (graphAttr["animation_type"]=="dead") {
-				graphic->animations[DEAD] =  std::move(animation);
-			}
-		}
-	} 
-	return graphic;
-}
-
-Behavior* parseBehavior(std::shared_ptr<Block> block, Entity* owner)
-{
-	Behavior* behavior = NULL;
-	if (owner->type == entityType::ITEM){
-		behavior = new ItemBehavior((Item*)owner);
-	} else if (block->attributes["behavior_type"] == "enemy_a"){ //List all enemy behavior types..
-		behavior = new EnemyBehavior((LivingEntity*)owner);
-	} else {
-		bool pickupItems = false;
-		if (block->attributes.find("pickup_items") != block->attributes.end()){
-			pickupItems = (bool)std::stoi(block->attributes["pickup_items"]);
-		}
-		behavior = new Behavior(owner, pickupItems);
-	}
-
-	if (block->attributes["behavior_type"] == "player"){
-		behavior->type = BehaviorType::PLAYER;
-	} else if (block->attributes["behavior_type"] == "enemy_a"){
-		behavior->type = BehaviorType::ENEMY_A;
-	}
-
-	if (block->attributes.find("walk_acc") != block->attributes.end()){
-		behavior->walkAcc = std::stof(block->attributes["walk_acc"]);
-	} else if (block->attributes.find("max_x_speed") != block->attributes.end()){
-		behavior->maxXSpeed = std::stof(block->attributes["max_x_speed"]);
-	} else if (block->attributes.find("max_walk_speed") != block->attributes.end()){
-		behavior->maxWalkSpeed = std::stof(block->attributes["max_walk_speed"]);
-	} else if (block->attributes.find("max_y_speed") != block->attributes.end()){
-		behavior->maxYSpeed = std::stof(block->attributes["max_y_speed"]);
-	} else if (block->attributes.find("gravity") != block->attributes.end()){
-		behavior->gravity = (bool)std::stoi(block->attributes["gravity"]);
-	} else if (block->attributes.find("friction_ground") != block->attributes.end()){
-		behavior->frictionGround = std::stof(block->attributes["friction_ground"]);
-	}
-
-	return behavior;
-}
-
-Collision* parseCollision(std::shared_ptr<Block> block, Entity* owner)
-{
-	auto collision = new Collision(owner);
-
- 	if (block->attributes.find("solid") != block->attributes.end()){
-		collision->solid = (bool)std::stoi(block->attributes["solid"]);
-	}
-
-	return collision;
-}
-
-GolfMode* parseGolfMode(std::shared_ptr<Block> block, LivingEntity* owner)
-{
-	auto golfMode = new GolfMode(owner);
-	return golfMode;
-}
-
-Entity* parseEntity(std::shared_ptr<Block> block)
-{
-	Entity* entity = NULL;
-	auto pos = explode(block->attributes["pos"], ',');
-	
-	if (block->attributes["entity_type"] == "living"){
-		entity = new LivingEntity(
-			block->attributes["name"],
-			std::stoi(pos[0]),
-			std::stoi(pos[1]),
-			std::stoi(pos[2]),
-			std::stoi(pos[3])
+	if (jEntity["type"] == "living"){
+		entity = new LivingEntity (
+			jEntity["name"],
+			jEntity["pos"][0],
+			jEntity["pos"][1],
+			jEntity["pos"][2],
+			jEntity["pos"][3]
 		);
-	} else if (block->attributes["entity_type"] == "item"){
+	} else if (jEntity["type"] == "item"){
 		entity = new Item(
-			block->attributes["name"],
-			std::stoi(pos[0]),
-			std::stoi(pos[1]),
+			jEntity["name"],
+			jEntity["pos"][0],
+			jEntity["pos"][1],
 			ItemType::CLUB, //placeholder
-			std::stoi(pos[2]),
-			std::stoi(pos[3])
+			jEntity["pos"][2],
+			jEntity["pos"][3]
 		);
 
-		if (block->attributes["item_type"] == "club"){
+		if (jEntity["item_type"] == "club"){
 			((Item*)entity)->itemType = ItemType::CLUB;
 		}
 	} else {
 		entity = new Entity(
-			block->attributes["name"],
+			jEntity["name"],
 			entityType::STATIC_SOLID, //placeholder
-			std::stoi(pos[0]),
-			std::stoi(pos[1]),
-			std::stoi(pos[2]),
-			std::stoi(pos[3])
+			jEntity["pos"][0],
+			jEntity["pos"][1],
+			jEntity["pos"][2],
+			jEntity["pos"][3]
 		);
 		
 		/* Set entity types of objects that not have it set by child like LivingEntity and Item */
-		if (block->attributes["entity_type"] == "static_solid"){
+		if (jEntity["type"] == "static_solid"){
 			entity->type = entityType::STATIC_SOLID;
-		} else if (block->attributes["entity_type"] == "ball"){
+		} else if (jEntity["type"]  == "ball"){
 			entity->type = entityType::BALL;
-		} else if (block->attributes["entity_type"] == "spikes"){
+		} else if (jEntity["type"]  == "spikes"){
 			entity->type = entityType::SPIKES;
 		}
 	}
 
-	/* Entitiy properties like gravity, behavior etc */
-	for (auto& property : block->blocks){
-		auto propAttr = property->attributes;
-		if (propAttr["type"] == "graphic"){ 
-			entity->graphic = std::unique_ptr<Graphic>(parseGraphic(property, entity));
-		} else if (propAttr["type"] == "behavior"){
-			entity->behavior = std::unique_ptr<Behavior>(parseBehavior(property, entity));
-		} else if (propAttr["type"] == "collision"){
-			entity->collision = std::unique_ptr<Collision>(parseCollision(property, entity));
-		} else if (propAttr["type"] == "golf_mode"){
-			if (entity->type != entityType::LIVING){
-				std::cout << "Level import: Trying to set golf mode on non-living entity, nope.." <<std::endl;
-			} else {
-				((LivingEntity*)entity)->golfMode = std::unique_ptr<GolfMode>(parseGolfMode(property, (LivingEntity*)entity));
-			}
-		}
-	}
+	//TODO: parse entity attributes
 
 	return entity;
 }
 
-void fillWorld(std::shared_ptr<Block> block)
+void fillWorld(nlohmann::json j, std::shared_ptr<LevelData> level)
 {
-	if (block->attributes["type"] == "metadata"){
-		parseMetaData(block);
-		std::cout << "Level import: metadata set, world size: " << levelData->w << "x" << levelData->h << ", gravity: " << levelData->gravity << std::endl; 
-	} else if (block->attributes["type"]=="entity"){
-		auto entity = parseEntity(block);
-		std::cout << "Level import: Created entity " << entity->name << " (" << entity->type << ")" << std::endl;
-		levelData->entities.emplace_back(entity);
+	level->w = j["world_w"];
+	level->h = j["world_h"];
+	level->gravity = j["world_gravity"];
+
+	for (auto jEntity : j["entities"]){
+		auto entity = parseEntity(jEntity);
+		std::cout << "DEBUG: Imported " << entity->name << std::endl;
+		level->entities.emplace_back(entity);
 	}
 
-	for(auto &b : block->blocks){
-		fillWorld(b);
-	}
+	return;
 }
 
-LevelData* Import::importLevel(std::string filename, std::unordered_map<std::string, SDL_Texture*> _spriteSheets)
+std::shared_ptr<LevelData> Import::importLevel(std::string filename, std::unordered_map<std::string, SDL_Texture*> _spriteSheets)
 {	
+	// std::cout << "Testing JSON" << std::endl;
+	// nlohmann::json j = "{ \"happy\": true, \"pi\": 3.141 }"_json;
+	// std::cout << j["happy"];
+	// exit(1);
+
+
 	spriteSheets = _spriteSheets;
-	levelData = new LevelData();
+	auto levelData = std::make_shared<LevelData>();
 	levelData->filename = filename;
 
 	assert(spriteSheets.size() > 0);
 
 	std::string path = RESOURCES_PATH + std::string("/levels/") + filename;
  	std::ifstream ifs(path);
-  	std::string content((std::istreambuf_iterator<char>(ifs)),
-                       (std::istreambuf_iterator<char>()));
+  	// std::string content((std::istreambuf_iterator<char>(ifs)),
+    //                    (std::istreambuf_iterator<char>()));
 
-	// std::string content = "{type=metadata;}{type=entity;{type=graphic;sprite=3;}}";
-	
-	std::regex rgx ("^#(.)*\n");
-	std::string noComments;
-  	std::regex_replace (std::back_inserter(noComments), content.begin(), content.end(), rgx, "");
-	content = noComments;
-
-	auto topBlock = blockify(content);
-	//printBlock(topBlock);
-	//printBlock(topBlock->blocks[1]);
-	fillWorld(topBlock);
-	return levelData;
+	std::cout << "DEBUG, loading " << path << std::endl;
+	nlohmann::json j;
+	ifs >> j;
+	fillWorld(j, levelData);
 }
-
-//for testing
-// int main(int argc, char* argv[])
-// {
-// 	auto visuals = std::make_shared<Visuals>();
-// 	visuals->loadSpritesheets(visuals->defaultSpritesheetPath);
-// 	Import::importLevel(RESOURCES_PATH + std::string("/levels/1.wsp"), visuals->spritesheets);
-// 	return 0;
-// }
