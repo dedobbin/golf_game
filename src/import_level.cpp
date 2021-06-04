@@ -119,6 +119,11 @@ void parseCollision(nlohmann::json jCollision, Entity* owner)
 	owner->collision = std::unique_ptr<Collision>(collision);
 }
 
+void parseGolfMode(nlohmann::json jCollision, LivingEntity* owner)
+{
+	owner->golfMode = std::make_unique<GolfMode>(owner);
+}
+
 Entity* parseEntity(nlohmann::json jEntity)
 {
 	Entity* entity= NULL;
@@ -167,6 +172,10 @@ Entity* parseEntity(nlohmann::json jEntity)
 	parseGraphic(jEntity["graphic"], entity);
 	parseBehavior(jEntity["behavior"], entity);
 	parseCollision(jEntity["collision"], entity);
+
+	if (entity->type == entityType::LIVING){
+		parseGolfMode(jEntity["golf_mode"], (LivingEntity*)entity);
+	}
 
 	return entity;
 }
