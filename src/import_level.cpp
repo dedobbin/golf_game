@@ -109,6 +109,16 @@ void parseBehavior(nlohmann::json jBehavior, Entity* owner)
 	owner->behavior = std::unique_ptr<Behavior>(behavior);
 }
 
+void parseCollision(nlohmann::json jCollision, Entity* owner)
+{
+	if (jCollision.is_null()){
+		return;
+	}
+	auto collision = new Collision(owner);
+	collision->solid = !jCollision["solid"].is_null() && jCollision["solid"];
+	owner->collision = std::unique_ptr<Collision>(collision);
+}
+
 Entity* parseEntity(nlohmann::json jEntity)
 {
 	Entity* entity= NULL;
@@ -154,11 +164,9 @@ Entity* parseEntity(nlohmann::json jEntity)
 		}
 	}
 
-	auto jGraphic = jEntity["graphic"];
-	parseGraphic(jGraphic, entity);
-	parseBehavior(jGraphic, entity);
-
-
+	parseGraphic(jEntity["graphic"], entity);
+	parseBehavior(jEntity["behavior"], entity);
+	parseCollision(jEntity["collision"], entity);
 
 	return entity;
 }
