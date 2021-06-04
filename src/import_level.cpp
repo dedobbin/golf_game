@@ -17,6 +17,59 @@
 
 std::unordered_map<std::string, SDL_Texture*> spriteSheets;
 
+void parseGraphic(nlohmann::json jGraphic, Entity* owner)
+{
+	if (jGraphic.is_null()){
+		return;
+	}
+	/* If graphic has own spritesheet + frame, 'non-animation' constructor for graphic */
+	if (!jGraphic["spritesheet"].is_null() && jGraphic["frame"].is_null()){
+		auto sheet = spriteSheets[jGraphic["spritesheet"]];
+		SDL_Rect srcPos = {jGraphic["frame"][0], jGraphic["frame"][1], jGraphic["frame"][2], jGraphic["frame"][3]};
+		
+		owner->graphic = std::make_unique<Graphic>(sheet, srcPos, owner);
+		return;
+	}
+	
+	/* Graphic does not have own spritesheet + frame, so it's animated, get frames */
+	auto graphic = new Graphic(owner);
+	for(auto jAnimation : jGraphic["animations"]){
+		auto sheetName = jAnimation["spritesheet"].get<std::string>();
+		//TODO: check if exists
+		auto animation = new Animation(spriteSheets[sheetName]);
+
+		for (auto jFrame : jAnimation["frames"]){
+			int x = jFrame[0];
+			int y = jFrame[1];
+			int w = jFrame[2];
+			int h = jFrame[3];
+			animation->frames.push_back(std::make_unique<Frame>(x,y,w,h));
+		}
+
+		if (!jAnimation["loop"].is_null()){
+			animation->loop = jAnimation["loop"];
+		}
+
+		if (!jAnimation["speed"].is_null()){
+			animation->animationSpeed = jAnimation["speed"];
+		}
+
+		if (jAnimation["type"] == "default"){
+			graphic->animations[DEFAULT] = std::unique_ptr<Animation>(animation);
+		} else if (jAnimation["type"] == "walk"){
+			graphic->animations[WALK] = std::unique_ptr<Animation>(animation);
+		} else if (jAnimation["type"] == "jump"){
+			graphic->animations[JUMP] = std::unique_ptr<Animation>(animation);
+		} else if (jAnimation["type"] == "fall"){
+			graphic->animations[FALL] = std::unique_ptr<Animation>(animation);
+		} else if (jAnimation["type"] == "dead"){
+			graphic->animations[DEAD] = std::unique_ptr<Animation>(animation);
+		}
+	}
+
+	owner->graphic = std::unique_ptr<Graphic>(graphic);
+}
+
 Entity* parseEntity(nlohmann::json jEntity)
 {
 	Entity* entity= NULL;
@@ -62,7 +115,10 @@ Entity* parseEntity(nlohmann::json jEntity)
 		}
 	}
 
-	//TODO: parse entity attributes
+	auto jGraphic = jEntity["graphic"];
+	parseGraphic(jGraphic, entity);
+
+
 
 	return entity;
 }
