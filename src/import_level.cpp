@@ -34,8 +34,11 @@ void parseGraphic(nlohmann::json jGraphic, Entity* owner)
 	/* Graphic does not have own spritesheet + frame, so it's animated, get frames */
 	auto graphic = new Graphic(owner);
 	for(auto jAnimation : jGraphic["animations"]){
-		auto sheetName = jAnimation["spritesheet"].get<std::string>();
-		//TODO: check if exists
+		std::string sheetName = jAnimation["spritesheet"];
+		if (spriteSheets.find(sheetName) == spriteSheets.end()){
+			throw std::runtime_error("import_level: Can't find spritesheet, " + sheetName);
+		}
+
 		auto animation = new Animation(spriteSheets[sheetName]);
 
 		for (auto jFrame : jAnimation["frames"]){
