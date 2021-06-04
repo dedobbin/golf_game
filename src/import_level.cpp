@@ -211,4 +211,5 @@ std::shared_ptr<LevelData> Import::importLevel(std::string filename, std::unorde
 	nlohmann::json j;
 	ifs >> j;
 	fillWorld(j, levelData);
+	return levelData;
 }
