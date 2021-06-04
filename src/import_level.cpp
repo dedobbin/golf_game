@@ -197,12 +197,6 @@ void fillWorld(nlohmann::json j, std::shared_ptr<LevelData> level)
 
 std::shared_ptr<LevelData> Import::importLevel(std::string filename, std::unordered_map<std::string, SDL_Texture*> _spriteSheets)
 {	
-	// std::cout << "Testing JSON" << std::endl;
-	// nlohmann::json j = "{ \"happy\": true, \"pi\": 3.141 }"_json;
-	// std::cout << j["happy"];
-	// exit(1);
-
-
 	spriteSheets = _spriteSheets;
 	auto levelData = std::make_shared<LevelData>();
 	levelData->filename = filename;
@@ -214,7 +208,6 @@ std::shared_ptr<LevelData> Import::importLevel(std::string filename, std::unorde
   	// std::string content((std::istreambuf_iterator<char>(ifs)),
     //                    (std::istreambuf_iterator<char>()));
 
-	std::cout << "DEBUG, loading " << path << std::endl;
 	nlohmann::json j;
 	ifs >> j;
 	fillWorld(j, levelData);
