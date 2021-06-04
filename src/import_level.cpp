@@ -70,6 +70,45 @@ void parseGraphic(nlohmann::json jGraphic, Entity* owner)
 	owner->graphic = std::unique_ptr<Graphic>(graphic);
 }
 
+void parseBehavior(nlohmann::json jBehavior, Entity* owner)
+{
+	if (jBehavior.is_null()){
+		return;
+	}
+
+	Behavior* behavior = NULL;
+	if (owner->type == entityType::ITEM){
+		behavior = new ItemBehavior((Item*)owner);
+	} else if (jBehavior["type"] == "enemy_a"){//TODO: check for other enemy types..
+		behavior = new EnemyBehavior((LivingEntity*) owner);
+	} else {
+		bool pickupItems = jBehavior["pickup_items"].is_boolean() && jBehavior["pickup_items"];
+		behavior = new Behavior(owner, pickupItems);
+	}
+
+	if (jBehavior["type"] == "player"){
+		behavior->type = BehaviorType::PLAYER;
+	} else if (jBehavior["type"] == "enemy_a"){
+		behavior->type = BehaviorType::ENEMY_A;
+	}
+
+	if (!jBehavior["walk_acc"].is_null()){
+		behavior->walkAcc = jBehavior["walk_acc"];
+	} else if (!jBehavior["max_x_speed"].is_null()){
+		behavior->maxXSpeed = jBehavior["max_x_speed"];
+	} else if (!jBehavior["max_y_speed"].is_null()){
+		behavior->maxYSpeed = jBehavior["max_y_speed"];
+	} else if (!jBehavior["max_walk_speed"].is_null()){
+		behavior->maxWalkSpeed = jBehavior["max_walk_speed"];
+	} else if (!jBehavior["gravity"].is_null()){
+		behavior->gravity = jBehavior["gravity"];
+	} else if (!jBehavior["friction_ground"].is_null()){
+		behavior->frictionGround = jBehavior["friction_ground"];
+	}
+
+	owner->behavior = std::unique_ptr<Behavior>(behavior);
+}
+
 Entity* parseEntity(nlohmann::json jEntity)
 {
 	Entity* entity= NULL;
@@ -117,6 +156,7 @@ Entity* parseEntity(nlohmann::json jEntity)
 
 	auto jGraphic = jEntity["graphic"];
 	parseGraphic(jGraphic, entity);
+	parseBehavior(jGraphic, entity);
 
 
 
