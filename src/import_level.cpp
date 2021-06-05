@@ -23,7 +23,7 @@ void parseGraphic(nlohmann::json jGraphic, Entity* owner)
 		return;
 	}
 	/* If graphic has own spritesheet + frame, 'non-animation' constructor for graphic */
-	if (!jGraphic["spritesheet"].is_null() && jGraphic["frame"].is_null()){
+	if (!jGraphic["spritesheet"].is_null() && !jGraphic["frame"].is_null()){
 		auto sheet = spriteSheets[jGraphic["spritesheet"]];
 		SDL_Rect srcPos = {jGraphic["frame"][0], jGraphic["frame"][1], jGraphic["frame"][2], jGraphic["frame"][3]};
 		
