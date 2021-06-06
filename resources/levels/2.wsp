@@ -1,0 +1,311 @@
+{
+	type=metadata;
+	name=level 7;
+	world_w=5000;
+	world_h=1000;
+	world_gravity=0.65;
+}
+
+{
+	type=entity;
+	entity_type=living;
+	name=player;
+	pos=300,0,80,100;
+	{
+		type=collision;
+	}
+	{
+		type=behavior;
+		behavior_type=player;
+		pickup_items=1;
+	}
+	{
+		type=golf_mode;
+	}
+	{
+		type=graphic;
+		{
+			type=animation;
+			animation_type=default;
+			spritesheet=spritesheet1;
+			frames=[0,0,32,32];
+		}
+		{
+			type=animation;
+			animation_type=walk;
+			spritesheet=spritesheet1;
+			frames=[32,0,32,32],[64,0,32,32];
+		}
+		{
+			type=animation;
+			animation_type=jump;
+			spritesheet=spritesheet1;
+			frames=[32,0,32,32];
+		}
+		{
+			type=animation;
+			animation_type=dead;
+			spritesheet=spritesheet5;
+			frames=[0,0, 32 ,32],[32,0,32,32],[64,0,32,32],[96,0,32,32],[128,0,32,32],[0,32,32,32],[32,32,32,32],[64,32,32,32];
+			loop=0;
+			speed=15;
+		}
+	}
+}
+{
+	type=entity;
+	entity_type=static_solid;
+	name=block;
+	pos=300,300,100,100;
+	{
+		type=graphic;
+		{
+			type=animation;
+			animation_type=default;
+			spritesheet=spritesheet2;
+			frames=[0,0,32,32];
+			loop=0;
+		}
+	}
+	{
+		type=collision;
+	}
+}
+{
+	type=entity;
+	entity_type=static_solid;
+	name=block;
+	pos=400,300,100,100;
+	{
+		type=graphic;
+		spritesheet=spritesheet2;
+		frame=0,0,32,32;
+	}
+	{
+		type=collision;
+	}
+}
+{
+	type=entity;
+	entity_type=static_solid;
+	name=block;
+	pos=500,300,100,100;
+	{
+		type=graphic;
+		spritesheet=spritesheet2;
+		frame=0,0,32,32;
+	}
+	{
+		type=collision;
+	}
+}
+{
+	type=entity;
+	entity_type=static_solid;
+	name=block;
+	pos=600,300,100,100;
+	{
+		type=graphic;
+		spritesheet=spritesheet2;
+		frame=0,0,32,32;
+	}
+	{
+		type=collision;
+	}
+}
+{
+	type=entity;
+	entity_type=static_solid;
+	name=block;
+	pos=700,300,100,100;
+	{
+		type=graphic;
+		spritesheet=spritesheet2;
+		frame=0,0,32,32;
+	}
+	{
+		type=collision;
+	}
+}
+{
+	type=entity;
+	entity_type=static_solid;
+	name=block;
+	pos=800,300,100,100;
+	{
+		type=graphic;
+		spritesheet=spritesheet2;
+		frame=0,0,32,32;
+	}
+	{
+		type=collision;
+	}
+}
+{
+	type=entity;
+	entity_type=static_solid;
+	name=block;
+	pos=900,300,100,100;
+	{
+		type=graphic;
+		spritesheet=spritesheet2;
+		frame=0,0,32,32;
+	}
+	{
+		type=collision;
+	}
+}
+{
+	type=entity;
+	entity_type=static_solid;
+	name=block;
+	pos=1000,300,100,100;
+	{
+		type=graphic;
+		spritesheet=spritesheet2;
+		frame=0,0,32,32;
+	}
+	{
+		type=collision;
+	}
+}
+{
+	type=entity;
+	entity_type=static_solid;
+	name=block;
+	pos=1100,300,100,100;
+	{
+		type=graphic;
+		spritesheet=spritesheet2;
+		frame=0,0,32,32;
+	}
+	{
+		type=collision;
+	}
+}
+{
+	type=entity;
+	entity_type=static_solid;
+	name=block;
+	pos=1200,300,100,100;
+	{
+		type=graphic;
+		spritesheet=spritesheet2;
+		frame=0,0,32,32;
+	}
+	{
+		type=collision;
+	}
+}
+{
+	type=entity;
+	entity_type=static_solid;
+	name=block;
+	pos=1300,300,100,100;
+	{
+		type=graphic;
+		spritesheet=spritesheet2;
+		frame=0,0,32,32;
+	}
+	{
+		type=collision;
+	}
+}
+{
+	type=entity;
+	entity_type=static_solid;
+	name=block;
+	pos=1400,300,100,100;
+	{
+		type=graphic;
+		spritesheet=spritesheet2;
+		frame=0,0,32,32;
+	}
+	{
+		type=collision;
+	}
+}
+{
+	type=entity;
+	entity_type=static_solid;
+	name=block;
+	pos=1500,300,100,100;
+	{
+		type=graphic;
+		spritesheet=spritesheet2;
+		frame=0,0,32,32;
+	}
+	{
+		type=collision;
+	}
+}
+{
+	type=entity;
+	entity_type=static_solid;
+	name=block;
+	pos=1600,300,100,100;
+	{
+		type=graphic;
+		spritesheet=spritesheet2;
+		frame=0,0,32,32;
+	}
+	{
+		type=collision;
+	}
+}
+{
+	type=entity;
+	entity_type=static_solid;
+	name=block;
+	pos=1700,300,100,100;
+	{
+		type=graphic;
+		spritesheet=spritesheet2;
+		frame=0,0,32,32;
+	}
+	{
+		type=collision;
+	}
+}
+{
+	type=entity;
+	entity_type=static_solid;
+	name=block;
+	pos=1900,300,100,100;
+	{
+		type=graphic;
+		spritesheet=spritesheet2;
+		frame=0,0,32,32;
+	}
+	{
+		type=collision;
+	}
+}
+{
+	type=entity;
+	entity_type=static_solid;
+	name=block;
+	pos=2000,300,100,100;
+	{
+		type=graphic;
+		spritesheet=spritesheet2;
+		frame=0,0,32,32;
+	}
+	{
+		type=collision;
+	}
+}
+{
+	type=entity;
+	entity_type=static_solid;
+	name=block;
+	pos=2100,300,100,100;
+	{
+		type=graphic;
+		spritesheet=spritesheet2;
+		frame=0,0,32,32;
+	}
+	{
+		type=collision;
+	}
+}
