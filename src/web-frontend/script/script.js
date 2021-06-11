@@ -30,7 +30,7 @@ function switchView(view)
 function startGame()
 {
 	switchView(ViewEnum.GAME);
-	//Game.load();
+	Game.load();
 }
 
 window.onload = function(e){ 	

@@ -1,8 +1,0 @@
-<!-- Canvas needs to have this ID for SDL to work.. -->
-<canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
-<script type='text/javascript'>
-    var Module = {
-        canvas: (function() { return document.getElementById('canvas'); })(),
-        _round: Math.round,
-    };
-</script>
