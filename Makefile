@@ -39,16 +39,19 @@ import_level.o: src/import_level.cpp src/import_level.hpp
 	$(COMPILER) -g -c src/import_level.cpp
 
 copy-native-to-build-folder:
-	mkdir -p build/native
+	rm -fr build/native
+	mkdir build/native
 	cp a.out build/native
 	cp -r resources build/native
 
 copy-wasm-to-build-folder:
-	mkdir -p build/web
-	cp src/index.html build/web
-	cp index.js build/web
-	cp index.wasm build/web
+	rm -fr build/web
+	mkdir build/web
+	cp -r src/web-frontend/* build/web
+	cp index.js build/web/script/game
+	cp index.wasm build/web/script/game
 	cp index.data build/web
+	cp -r resources build/web/resources
 
 clean:
 	$(MAKE) clean -C src/entities

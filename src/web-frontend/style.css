@@ -1,0 +1,47 @@
+.grid {
+	display: grid;
+	grid-template-columns: 500px 500px auto;
+	grid-template-rows: 50px auto;
+	grid-gap: 2px;
+  }
+  
+.header {
+	grid-column: 1 / span 3;
+	text-align: center;
+}
+
+.grid > div {
+	border-style: solid;
+}
+
+.grid > .content {
+    /* max-height: 500px; */
+	overflow-y: scroll;
+	height:500px;
+	border-style: solid;
+}
+
+.grid > #entity-properties {
+    height: 800px;
+}
+
+.automatic .left {
+	height: 100%;
+}
+
+body {
+	height: 100vh;
+}
+
+#palette-entries > [data-entity-id] {
+    border-style: solid;
+	display: inline-block;
+}
+
+#palette-entries > .selected-entity {
+	border-color: #ff00ff;
+}
+
+.hide-graphic-data .row.graphic-frame-data {
+    display: none;
+}
