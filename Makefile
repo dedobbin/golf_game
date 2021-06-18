@@ -22,7 +22,7 @@ endif
 ifeq ($(COMPILER),emcc)
 	$(COMPILER) src/main.cpp *.o src/entities/*.o src/entity_properties/*.o src/utils/*o src/visuals/*.o \
  	-s USE_SDL=2 -s USE_SDL_IMAGE=2  -s USE_SDL_TTF=2 -s SDL2_IMAGE_FORMATS='["png"]' -s DISABLE_EXCEPTION_CATCHING=0 -s ALLOW_MEMORY_GROWTH=1 -s \
-	--preload-file resources -o index.js;
+	--preload-file resources -o wasm.js;
 	$(MAKE) export-wasm-with-editor
 endif
 	
@@ -48,9 +48,9 @@ export-wasm-with-editor:
 	rm -fr build/web
 	mkdir build/web
 	cp -r src/web-frontend/level_editor/* build/web
-	cp index.js build/web/script #(WASM-glue)
-	cp index.wasm build/web/script
-	cp index.data build/web
+	cp wasm.js build/web/script #(WASM-glue)
+	cp wasm.wasm build/web/script
+	cp wasm.data build/web
 	@# Spritesheets are also embedded in the WASM module, but needs to be duplicated here so level editor JS can also use them
 	mkdir -p build/web/resources/spritesheets
 	cp resources/spritesheets/* build/web/resources/spritesheets
