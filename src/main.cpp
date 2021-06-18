@@ -4,18 +4,24 @@
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
+#include <string>
+#include "utils/json.hpp"
+
 extern "C" {
 	EMSCRIPTEN_KEEPALIVE
-	void start_level(int input, int len)
+	bool start_level(char* input)
 	{
-		std::cout << "DEBUG: yay" << std::endl;
+		std::string s(input);
+		std::cout << "DEBUG input: " << input <<std::endl;  
 		auto g = std::make_unique<Game>();
 		g->setupWorld();
+		std::cout << "DEBUG: game starts" << std::endl;
 		g->start();
+		return true;
 	}
 }
 
-#elif
+#else
 
 int main(int argc, char* argv[])
 {

@@ -22,8 +22,8 @@ endif
 ifeq ($(COMPILER),emcc)
 	$(COMPILER) src/main.cpp *.o src/entities/*.o src/entity_properties/*.o src/utils/*o src/visuals/*.o \
  	-s USE_SDL=2 -s USE_SDL_IMAGE=2  -s USE_SDL_TTF=2 -s SDL2_IMAGE_FORMATS='["png"]' \
-	-s DISABLE_EXCEPTION_CATCHING=0 -s ALLOW_MEMORY_GROWTH=1 \
-	-s EXPORTED_RUNTIME_METHODS=["cwrap","setValue"] \
+	-s DISABLE_EXCEPTION_CATCHING=0 -s ALLOW_MEMORY_GROWTH=1 -s ASSERTIONS=1 \
+	-s EXPORTED_RUNTIME_METHODS=["cwrap","allocate","intArrayFromString"] \
 	--preload-file resources -o wasm.js;
 	$(MAKE) export-wasm-with-editor
 endif
