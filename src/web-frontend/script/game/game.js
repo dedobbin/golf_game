@@ -1,10 +1,12 @@
 class Game 
 {
-    static load()
+    static load(_parent)
     {
+        parent = _parent ?? document.getElementById("view-game");
+        //const parent = document.getElementById("view-game");
         const script = document.createElement("script");
         script.src = "script/game/index.js";
-        document.getElementById("view-game").append(script);
+        parent.append(script);
     }
 }
 
