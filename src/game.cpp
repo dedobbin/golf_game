@@ -199,8 +199,7 @@ bool Game::tick()
 {
 	auto handleInputReturn = handleInput();
 	if (handleInputReturn == HandleInputReturnType::RESET){
-		std::cout << "TODO: reset" << std::endl;
-		//setupWorld();
+		setupWorld(World::activeLevel->initialState);
 	} else if (handleInputReturn == HandleInputReturnType::QUIT){
 		return false;
 	}
