@@ -1,6 +1,6 @@
 .vscode
 resources/old
-a.out
+*.out
 *.a
 *.o
 *.so

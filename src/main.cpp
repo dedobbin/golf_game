@@ -11,8 +11,8 @@ extern "C" {
 	EMSCRIPTEN_KEEPALIVE
 	bool start_level(char* input)
 	{
-		std::string s(input);
-		std::cout << "DEBUG input: " << input <<std::endl;  
+		//std::string s(input);
+		//std::cout << "DEBUG input: " << input <<std::endl;  
 		auto g = std::make_unique<Game>();
 		g->setupWorld();
 		std::cout << "DEBUG: game starts" << std::endl;

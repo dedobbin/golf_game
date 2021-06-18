@@ -148,12 +148,7 @@ class LevelField
 
     static export()
     {
-        if (!currentLevel){
-			alert("No level loaded");
-			return;
-		}
-
-		const json = currentLevel.toJSON();
+        const json = LevelData.currentLevelToJSON();
 
 		const element = document.createElement('a');
 		element.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(json));
@@ -162,6 +157,16 @@ class LevelField
 		document.body.appendChild(element);
 		element.click();
 		document.body.removeChild(element);
+    }
+
+    static currentLevelToJSON()
+    {
+        if (!currentLevel){
+			alert("No level loaded");
+			return;
+		}
+
+		return currentLevel.toJSON();
     }
 
     static flipGrid(forceState = null)

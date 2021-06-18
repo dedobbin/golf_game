@@ -4,7 +4,9 @@ import {Palette} from './modules/palette.js';
 import {Game} from './game.js'
 
 const ViewEnum = Object.freeze({"NONE":0, "EDITOR":1, "GAME":2});
- 
+
+let game = null;
+
 function switchView(view)
 {
 	const elems = Array.from(document.getElementsByClassName("view"));
@@ -30,7 +32,8 @@ function switchView(view)
 function startGame()
 {
 	switchView(ViewEnum.GAME);
-	Game.load();
+	game = new Game();
+	game.load(LevelField.currentLevelToJSON());
 }
 
 window.onload = function(e){ 	
