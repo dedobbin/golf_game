@@ -1,4 +1,4 @@
-.PHONY: all native build copy-wasm-to-build-folder copy-native-to-build-folder clean 
+.PHONY: all native build export-native export-wasm export-wasm-with-editor clean 
 
 native:
 	$(MAKE) build COMPILER=g++
@@ -47,14 +47,13 @@ export-native:
 export-wasm-with-editor:
 	rm -fr build/web
 	mkdir build/web
-	cp -r src/web-frontend/* build/web
-	cp index.js build/web/script/game
-	cp index.wasm build/web/script/game
+	cp -r src/web-frontend/level_editor/* build/web
+	cp index.js build/web/script #(WASM-glue)
+	cp index.wasm build/web/script
 	cp index.data build/web
 	@# Spritesheets are also embedded in the WASM module, but needs to be duplicated here so level editor JS can also use them
 	mkdir -p build/web/resources/spritesheets
 	cp resources/spritesheets/* build/web/resources/spritesheets
-	mv build/web/level_editor.html build/web/index.html 
 
 clean:
 	$(MAKE) clean -C src/entities
