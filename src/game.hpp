@@ -18,6 +18,7 @@ class Game
 		std::unique_ptr<Visuals> visuals; //public because emscriptenLoop needs access to it.. 
 		// Returns false when game ends, also public because emscriptenLoop needs access to it..
 		bool tick();
+
 	private:
 		void renderEverything();
 		HandleInputReturnType handleInput();
