@@ -1,6 +1,7 @@
 #include "game.hpp"
 #include <memory>
 #include <iostream>
+#include <sstream>
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -13,8 +14,12 @@ extern "C" {
 	{
 		//std::string s(input);
 		//std::cout << "DEBUG input: " << input <<std::endl;  
+		
+		std::string s(input);
+		nlohmann::json j;
+		std::stringstream (s)>>j;
 		auto g = std::make_unique<Game>();
-		g->setupWorld();
+		g->setupWorld(j);
 		std::cout << "DEBUG: game starts" << std::endl;
 		g->start();
 		return true;

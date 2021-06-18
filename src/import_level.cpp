@@ -198,21 +198,22 @@ void fillWorld(nlohmann::json j, std::shared_ptr<LevelData> level)
 	return;
 }
 
-std::shared_ptr<LevelData> Import::importLevel(std::string filename, std::unordered_map<std::string, SDL_Texture*> _spriteSheets)
+std::shared_ptr<LevelData> Import::importLevel(nlohmann::json data, std::unordered_map<std::string, SDL_Texture*> _spriteSheets)
 {	
 	spriteSheets = _spriteSheets;
 	auto levelData = std::make_shared<LevelData>();
-	levelData->filename = filename;
+	//levelData->filename = filename;
 
 	assert(spriteSheets.size() > 0);
 
-	std::string path = RESOURCES_PATH + std::string("/levels/") + filename;
- 	std::ifstream ifs(path);
-  	// std::string content((std::istreambuf_iterator<char>(ifs)),
-    //                    (std::istreambuf_iterator<char>()));
+	// std::string path = RESOURCES_PATH + std::string("/levels/") + filename;
+ 	// std::ifstream ifs(path);
+  	// // std::string content((std::istreambuf_iterator<char>(ifs)),
+    // //                    (std::istreambuf_iterator<char>()));
 
-	nlohmann::json j;
-	ifs >> j;
-	fillWorld(j, levelData);
+	// nlohmann::json j;
+	// ifs >> j;
+
+	fillWorld(data, levelData);
 	return levelData;
 }

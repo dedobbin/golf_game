@@ -27,12 +27,12 @@ Game::Game()
 	//v.loadSpritesheet("spritesheet1");
 }
 
-void Game::setupWorld()
+void Game::setupWorld(nlohmann::json data)
 {
 	//For now, just load all spritesheets
 	visuals->loadSpritesheets(visuals->defaultSpritesheetPath);
 
-    World::loadLevel("2.json", visuals->spritesheets);
+    World::loadLevel(data, visuals->spritesheets);
 
 	auto it = std::find_if(World::activeLevel->entities.begin(), World::activeLevel->entities.end(), [](const auto& x){
 		return x->behavior && x->behavior->type == BehaviorType::PLAYER;
@@ -45,6 +45,25 @@ void Game::setupWorld()
 
 	ticksAfterPlayedDied = 0;
 }
+
+// void Game::setupWorld()
+// {
+// 	//For now, just load all spritesheets
+// 	visuals->loadSpritesheets(visuals->defaultSpritesheetPath);
+
+//     World::loadLevel("2.json", visuals->spritesheets);
+
+// 	auto it = std::find_if(World::activeLevel->entities.begin(), World::activeLevel->entities.end(), [](const auto& x){
+// 		return x->behavior && x->behavior->type == BehaviorType::PLAYER;
+// 	});
+
+// 	std::shared_ptr<LivingEntity> p = std::static_pointer_cast<LivingEntity>(*it);
+// 	player = p;
+// 	followWithCam = p;
+// 	visuals->camera->snapToSanePos(followWithCam);
+
+// 	ticksAfterPlayedDied = 0;
+// }
 
 void Game::renderEverything()
 {
@@ -180,7 +199,8 @@ bool Game::tick()
 {
 	auto handleInputReturn = handleInput();
 	if (handleInputReturn == HandleInputReturnType::RESET){
-		setupWorld();
+		std::cout << "TODO: reset" << std::endl;
+		//setupWorld();
 	} else if (handleInputReturn == HandleInputReturnType::QUIT){
 		return false;
 	}

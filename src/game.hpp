@@ -1,6 +1,7 @@
 #pragma once
 #include <memory.h>
 #include "utils/sdl_utils.hpp"
+#include "utils/json.hpp"
 #include "visuals/visuals.hpp"
 
 enum HandleInputReturnType{
@@ -13,7 +14,7 @@ class Game
 {
 	public:
 		Game();
-		void setupWorld(); 		//TODO: use dynamic input source
+		void setupWorld(nlohmann::json data);
 		void start();
 		std::unique_ptr<Visuals> visuals; //public because emscriptenLoop needs access to it.. 
 		// Returns false when game ends, also public because emscriptenLoop needs access to it..
