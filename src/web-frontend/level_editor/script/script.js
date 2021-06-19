@@ -31,9 +31,11 @@ function switchView(view)
 
 function startGame()
 {
-	switchView(ViewEnum.GAME);
 	game = new Game();
-	game.load(LevelField.currentLevelToJSON());
+	if (!game.load(LevelField.currentLevelToJSON())){
+		return;
+	}
+	switchView(ViewEnum.GAME);
 }
 
 window.onload = function(e){ 	

@@ -10,3 +10,4 @@ wasm.wasm
 build
 *.gch
 *.tmp
+build
