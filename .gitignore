@@ -4,9 +4,9 @@ resources/old
 *.a
 *.o
 *.so
-index.data
-index.js
-index.wasm
+*.data
+wasm.js
+wasm.wasm
 build
 *.gch
 *.tmp

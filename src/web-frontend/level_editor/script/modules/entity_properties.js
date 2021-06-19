@@ -183,13 +183,14 @@ class EntityProperties
                 } else {
                     const first = key.substring(0, split);
                     const last = key.substring(split + 1, key.length);//overshoots with second param but doesn't matter, it needs entire til end anyway
-                    if (owner[first] == undefined){
+                    if (owner[first] == undefined || owner[first] == ""){ //empty string check because empty objects are 'displayed' as ""
                         owner[first] = {};
                     }
 
                     if (last.includes(".")){
                         setAttr(owner[first], last)
                     } else {
+                        console.log("DEBUG setting ", last ," to ", value);
                         owner[first][last] = value;
                     }
                 }
