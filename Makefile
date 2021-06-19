@@ -49,7 +49,7 @@ export-native:
 export-wasm-with-editor:
 	rm -fr build/web
 	mkdir build/web
-	cp -r src/web-frontend/level_editor/* build/web
+	cp -r src/web-frontend/* build/web
 	cp wasm.js build/web/script #WASM-glue
 	cp wasm.wasm build/web/script
 	cp wasm.data build/web #WASM-glue will look for this file in root..

@@ -1,6 +1,6 @@
-import {LevelField} from './modules/level_field.js'; 
-import {EntityProperties} from './modules/entity_properties.js'; 
-import {Palette} from './modules/palette.js'; 
+import {LevelField} from './components/level_field.js'; 
+import {EntityProperties} from './components/entity_properties.js'; 
+import {Palette} from './components/palette.js'; 
 import {Game} from './game.js'
 
 const ViewEnum = Object.freeze({"NONE":0, "EDITOR":1, "GAME":2});
@@ -12,7 +12,7 @@ function switchView(view)
 	const elems = Array.from(document.getElementsByClassName("view"));
 	elems.forEach(e=>{
 		e.style.display = "none";
-	})
+	});
 
 	switch(view)
 	{
