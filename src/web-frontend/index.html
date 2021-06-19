@@ -5,7 +5,7 @@
 	<link rel="stylesheet" type="text/css" href="style.css"/>
 </head>
 <body>
-	<div class="view" id="view-editor">
+	<div class="view" id="view-editor" style="display:none">
 		<div class="grid" id="editor-grid">
 			<div class="header"> 
 				<div class="level-editor">golf_game level_editor</div>
@@ -47,7 +47,7 @@
 		</div>
 	</div>
 
-	<div class="view" id="view-game">
+	<div class="view" id="view-game" style="display:none">
 		<!-- Canvas needs to have this ID for SDL to work.. -->
 		<canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
 		<script type='text/javascript'>

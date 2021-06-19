@@ -39,7 +39,7 @@ function startGame()
 }
 
 window.onload = function(e){ 	
-	switchView(ViewEnum.EDITOR);
+	//switchView(ViewEnum.NONE);
 	document.getElementById("play").addEventListener("click", startGame)
 	
 	document.getElementById("grid-control").addEventListener("click", LevelField.flipGrid);
@@ -71,4 +71,21 @@ window.onload = function(e){
 	//Palette.refresh();
 	EntityProperties.disable();
 	//setCursorMode(CursorModeEnum.SELECT);
+
+	const url = new URL(window.location.href);
+	if (url.searchParams.get("editor")){
+		switchView(ViewEnum.EDITOR);
+	} else {
+		fetch('resources/level_data.json')
+		.then(response => {
+			if (response.status != 404){
+				response.json().then(json=>{
+					LevelField.loadLevel(json);
+					startGame();
+				});
+			} else {
+				console.log("Default level file not found");
+			}
+		});
+	}
 }
