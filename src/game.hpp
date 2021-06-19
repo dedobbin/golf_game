@@ -15,6 +15,7 @@ class Game
 	public:
 		Game();
 		void setupWorld(nlohmann::json data);
+		void setupWorld(std::string path);
 		void start();
 		std::unique_ptr<Visuals> visuals; //public because emscriptenLoop needs access to it.. 
 		// Returns false when game ends, also public because emscriptenLoop needs access to it..

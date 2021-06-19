@@ -30,7 +30,12 @@ extern "C" {
 
 int main(int argc, char* argv[])
 {
-	//TODO: load level from arguments
+	std::string levelPath;
+
+	if (argc == 1){
+		levelPath = "resources/levels/2.json"
+	}
+
 	auto g = std::make_unique<Game>();
 	g->setupWorld();
 	std::cout << "DEBUG: game starts" << std::endl;

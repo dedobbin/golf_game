@@ -27,6 +27,11 @@ Game::Game()
 	//v.loadSpritesheet("spritesheet1");
 }
 
+void Game::setupWorld(std::string path)
+{
+
+}
+
 void Game::setupWorld(nlohmann::json data)
 {
 	//For now, just load all spritesheets
@@ -45,25 +50,6 @@ void Game::setupWorld(nlohmann::json data)
 
 	ticksAfterPlayedDied = 0;
 }
-
-// void Game::setupWorld()
-// {
-// 	//For now, just load all spritesheets
-// 	visuals->loadSpritesheets(visuals->defaultSpritesheetPath);
-
-//     World::loadLevel("2.json", visuals->spritesheets);
-
-// 	auto it = std::find_if(World::activeLevel->entities.begin(), World::activeLevel->entities.end(), [](const auto& x){
-// 		return x->behavior && x->behavior->type == BehaviorType::PLAYER;
-// 	});
-
-// 	std::shared_ptr<LivingEntity> p = std::static_pointer_cast<LivingEntity>(*it);
-// 	player = p;
-// 	followWithCam = p;
-// 	visuals->camera->snapToSanePos(followWithCam);
-
-// 	ticksAfterPlayedDied = 0;
-// }
 
 void Game::renderEverything()
 {
