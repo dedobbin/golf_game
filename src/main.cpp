@@ -33,11 +33,16 @@ int main(int argc, char* argv[])
 	std::string levelPath;
 
 	if (argc == 1){
-		levelPath = "resources/levels/2.json"
+		levelPath = "resources/levels/2.json";
+	} else {
+		levelPath = argv[1];
 	}
 
 	auto g = std::make_unique<Game>();
-	g->setupWorld();
+	if (!g->setupWorld(levelPath)){
+		std::cout << "Couldn't open (level) file: " << levelPath << std::endl;
+		return 1;
+	}
 	std::cout << "DEBUG: game starts" << std::endl;
 	g->start();
 	std::cout << "DEBUG: game ends" << std::endl;

@@ -3,6 +3,7 @@
 #include "entities/living_entity.hpp"
 #include "entity_properties/item_behavior.hpp"
 #include <algorithm>
+#include <fstream>
 #include <iostream>
 
 #ifdef __EMSCRIPTEN__
@@ -27,9 +28,18 @@ Game::Game()
 	//v.loadSpritesheet("spritesheet1");
 }
 
-void Game::setupWorld(std::string path)
+bool Game::setupWorld(std::string path)
 {
+ 	std::ifstream ifs(path);
+	nlohmann::json data;
 
+	if (!ifs){
+		return false;
+	}
+	
+	ifs >> data;
+	setupWorld(data);
+	return true;
 }
 
 void Game::setupWorld(nlohmann::json data)

@@ -206,14 +206,6 @@ std::shared_ptr<LevelData> Import::importLevel(nlohmann::json data, std::unorder
 
 	assert(spriteSheets.size() > 0);
 
-	// std::string path = RESOURCES_PATH + std::string("/levels/") + filename;
- 	// std::ifstream ifs(path);
-  	// // std::string content((std::istreambuf_iterator<char>(ifs)),
-    // //                    (std::istreambuf_iterator<char>()));
-
-	// nlohmann::json j;
-	// ifs >> j;
-
 	levelData->initialState = data;
 	fillWorld(data, levelData);
 	return levelData;
