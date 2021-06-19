@@ -50,12 +50,13 @@ export-wasm-with-editor:
 	rm -fr build/web
 	mkdir build/web
 	cp -r src/web-frontend/level_editor/* build/web
-	cp wasm.js build/web/script #(WASM-glue)
+	cp wasm.js build/web/script #WASM-glue
 	cp wasm.wasm build/web/script
-	cp wasm.data build/web
+	cp wasm.data build/web #WASM-glue will look for this file in root..
 	@# Spritesheets are also embedded in the WASM module, but needs to be duplicated here so level editor JS can also use them
 	mkdir -p build/web/resources/spritesheets
 	cp resources/spritesheets/* build/web/resources/spritesheets
+	cp resources/levels/2.json build/web/resources/level_data.json
 
 clean:
 	$(MAKE) clean -C src/entities

@@ -54,7 +54,7 @@ class LevelField
     static loadLevel(data) 
     {
         if (!data){
-            fetch('level_data.json')
+            fetch('resources/level_data.json')
             .then(response => {
                 if (response.status != 404){
                     response.json().then(json=>{
