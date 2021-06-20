@@ -148,7 +148,7 @@ class LevelField
 
     static export()
     {
-        const json = LevelData.currentLevelToJSON();
+        const json = LevelField.currentLevelToJSON();
 
 		const element = document.createElement('a');
 		element.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(json));

@@ -190,7 +190,6 @@ class EntityProperties
                     if (last.includes(".")){
                         setAttr(owner[first], last)
                     } else {
-                        console.log("DEBUG setting ", last ," to ", value);
                         owner[first][last] = value;
                     }
                 }

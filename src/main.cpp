@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
 	std::string levelPath;
 
 	if (argc == 1){
-		levelPath = "resources/levels/2.json";
+		levelPath = "resources/level_data.json";
 	} else {
 		levelPath = argv[1];
 	}
