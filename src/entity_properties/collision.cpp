@@ -57,9 +57,9 @@ bool Collision::intersectCollides(rect intersect)
     return intersect.w > 0 && intersect.h > 0;
 }
 
-bool Collision::isValidPos(rect pos)
+bool Collision::isValidPos(rect pos, bool forceSolid)
 {
-    if (!solid){
+    if (!forceSolid && !solid){
         return true;
     }
 

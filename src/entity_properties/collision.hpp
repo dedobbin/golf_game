@@ -14,7 +14,8 @@ class Collision
 		~Collision();		
 		static rect getIntersect(rect a, rect b);
 		static bool intersectCollides(rect intersect);
-		bool isValidPos(rect pos);
+		//when entity is not solid, and still wanne check if overlaps, use forceSolid
+		bool isValidPos(rect pos, bool forceSolid = false);
 		void pushout(Entity* collider, direction colliderDir, rect intersect);
 		/* Return true if entity needs to be removed from entity list */
 		bool effect(Entity* collider, direction colliderDir, rect intersect);
