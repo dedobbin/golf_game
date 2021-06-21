@@ -11,12 +11,7 @@
 
 Behavior::Behavior(Entity* owner, bool pickupItems)
 : owner(owner), pickupItems(pickupItems)
-{
-	//debug
-	if (owner->name == "player test"){
-		std::cout << "DEBUG: init player behavior with x push " << xPush <<std::endl;
-	}
-}
+{}
 
 void Behavior::addXSpeed(float n, bool clampZero)
 {
@@ -71,10 +66,6 @@ void Behavior::behave()
 	// TODO: this check all entities for collision 2 times, should optimize by sorting list, static entities on same place
 	// OR only checking entities in view, but that could lead to other problems later
 	
-	//debug
-	if (owner->name == "player test"){
-		std::cout << "DEBUG: behave with x push " << xPush <<std::endl;
-	}
 	if (owner->pos.y < 0 || owner->pos.y > World::activeLevel->h - owner->pos.h
 	|| owner->pos.x < 0 || owner->pos.x > World::activeLevel->w - owner->pos.w){
 		if (owner->behavior){
