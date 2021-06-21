@@ -85,7 +85,8 @@ void parseBehavior(nlohmann::json jBehavior, Entity* owner)
 		behavior = new ItemBehavior((Item*)owner);
 	} else if (jBehavior["type"] == "enemy_a"){//TODO: check for other enemy types..
 		behavior = new EnemyBehavior((LivingEntity*) owner);
-	} else if (jBehavior["type"] == "moving_platform"){
+	} else if (owner->type == entityType::MOVING_PLATFORM){
+		std::cout << "DEBUG: import_level: moving_platform" <<std::endl;
 		int speed = jBehavior["speed"];
 		rect endPos = {
 			 jBehavior["end_pos"][0],
@@ -171,11 +172,12 @@ Entity* parseEntity(nlohmann::json jEntity)
 			jEntity["pos"][2],
 			jEntity["pos"][3]
 		);
-		
+
 		/* Set entity types of objects that not have it set by child like LivingEntity and Item */
 		if (jEntity["type"] == "static_solid"){
 			entity->type = entityType::STATIC_SOLID;
 		} else if (jEntity["type"]  == "ball"){
+			std::cout << "DEBUG import level: set entity type ball" << std::endl;
 			entity->type = entityType::BALL;
 		} else if (jEntity["type"]  == "spikes"){
 			entity->type = entityType::SPIKES;
@@ -203,7 +205,7 @@ void fillWorld(nlohmann::json j, std::shared_ptr<LevelData> level)
 
 	for (auto jEntity : j["entities"]){
 		auto entity = parseEntity(jEntity);
-		std::cout << "DEBUG: Imported " << entity->name << std::endl;
+		//std::cout << "DEBUG: Imported " << entity->name << std::endl;
 		level->entities.emplace_back(entity);
 	}
 

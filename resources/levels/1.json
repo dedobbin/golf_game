@@ -3802,14 +3802,14 @@
 
        {
         "name":"elevator",
-        "type":"moving_patform",
+        "type":"moving_platform",
         "collision":{
             "solid":true
         },
         "pos":[550, 950, 100, 20],
         "behavior":{
-            "end_pos":[550, 1250, 100, 20],
-            "speed":5
+            "end_pos":[550, 750, 100, 20],
+            "speed":1
         },
         "graphic":{
             "spritesheet":"spritesheet2",
