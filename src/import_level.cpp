@@ -14,6 +14,7 @@
 #include "entities/item.hpp"
 #include "entity_properties/item_behavior.hpp"
 #include "entity_properties/enemy_behavior.hpp"
+#include "entity_properties/moving_platform_behavior.hpp"
 
 std::unordered_map<std::string, SDL_Texture*> spriteSheets;
 
@@ -84,6 +85,15 @@ void parseBehavior(nlohmann::json jBehavior, Entity* owner)
 		behavior = new ItemBehavior((Item*)owner);
 	} else if (jBehavior["type"] == "enemy_a"){//TODO: check for other enemy types..
 		behavior = new EnemyBehavior((LivingEntity*) owner);
+	} else if (jBehavior["type"] == "moving_platform"){
+		int speed = jBehavior["speed"];
+		rect endPos = {
+			 jBehavior["end_pos"][0],
+			 jBehavior["end_pos"][1],
+			 jBehavior["end_pos"][2],
+			 jBehavior["end_pos"][3]
+		};
+		behavior = new MovingPlatformBehavior(owner, endPos, speed);
 	} else {
 		bool pickupItems = jBehavior["pickup_items"].is_boolean() && jBehavior["pickup_items"];
 		behavior = new Behavior(owner, pickupItems);
@@ -169,6 +179,8 @@ Entity* parseEntity(nlohmann::json jEntity)
 			entity->type = entityType::BALL;
 		} else if (jEntity["type"]  == "spikes"){
 			entity->type = entityType::SPIKES;
+		} else if (jEntity["type"] == "moving_platform"){
+			entity->type = entityType::MOVING_PLATFORM;
 		}
 	}
 

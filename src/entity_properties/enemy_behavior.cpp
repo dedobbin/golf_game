@@ -45,34 +45,4 @@ void EnemyBehavior::behave()
 		default:
 		break;
 	}
-
-	// if ( ((LivingEntity*)owner)->behavior->type == ENEMY_A){
-	// 	switch (((LivingEntity*)owner)->xPush ){
-	// 		case LEFT:
-	// 			if (!owner->collision->isValidPos({
-	// 				owner->pos.x -1,
-	// 				owner->pos.y,
-	// 				owner->pos.w,
-	// 				owner->pos.h,
-	// 			})){
-	// 				((LivingEntity*)owner)->xPush = RIGHT;
-	// 			}
-	// 			break;
-	// 		case RIGHT:
-	// 			if (!owner->collision->isValidPos({
-	// 				owner->pos.x + 1,
-	// 				owner->pos.y,
-	// 				owner->pos.w,
-	// 				owner->pos.h,
-	// 			})){
-	// 				((LivingEntity*)owner)->xPush = LEFT;
-	// 			}
-
-	// 			break;
-
-	// 		case NONE:
-	// 			((LivingEntity*)owner)->xPush = RIGHT;
-	// 			break;
-	// 	}
-	// }
 }

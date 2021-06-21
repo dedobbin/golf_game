@@ -1,6 +1,6 @@
 .PHONY: all native clean 
 
-all: behavior.o collision.o enemy_behavior.o golf_mode.o graphic.o item_behavior.o
+all: behavior.o collision.o enemy_behavior.o golf_mode.o graphic.o item_behavior.o moving_platform_behavior.o
 
 behavior.o: behavior.cpp behavior.hpp
 	$(COMPILER) -g -c behavior.cpp
@@ -19,6 +19,9 @@ graphic.o: graphic.cpp graphic.hpp
 
 item_behavior.o: item_behavior.cpp item_behavior.hpp
 	$(COMPILER) -g -c item_behavior.cpp
+
+moving_platform_behavior.o: moving_platform_behavior.cpp moving_platform_behavior.hpp
+	$(COMPILER) -g -c moving_platform_behavior.cpp
 
 clean: 
 	rm -f *.o
