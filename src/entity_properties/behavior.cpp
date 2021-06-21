@@ -147,6 +147,25 @@ void Behavior::behave()
 		grounded = false;
 	}
 
+	switch(xPush){
+		case RIGHT:
+			if (owner->type == entityType::LIVING){
+				addXSpeed(grounded ? walkAcc : walkAcc / 4);
+			} else {
+				addXSpeed(xSpeed);
+			}
+			break;
+		case LEFT:
+			if (owner->type == entityType::LIVING){
+				addXSpeed(-(grounded ? walkAcc : walkAcc / 4));
+			} else {
+				addXSpeed(xSpeed);
+			}
+			break;
+		default:
+			break;
+	}
+
 	if (owner->type == LIVING){
 		auto living = (LivingEntity*)owner;
 		//held item is moved with player
@@ -160,16 +179,6 @@ void Behavior::behave()
 			living->golfMode->tick();
 		}
 
-		switch(xPush){
-			case RIGHT:
-				addXSpeed(grounded ? owner->behavior->walkAcc : owner->behavior->walkAcc / 4);
-				break;
-			case LEFT:
-				addXSpeed(-(grounded ? owner->behavior->walkAcc : owner->behavior->walkAcc / 4));
-				break;
-			default:
-				break;
-		}
 		/* if an entity is in the ignore map but doesn't touch owner anymore, it should be removed from ignore map */
 		for (auto iter = living->ignoreEffectsList.begin(); iter != living->ignoreEffectsList.end();){
 			if (std::find_if(owner->collision->currentColliders.begin(), owner->collision->currentColliders.end(), [iter](auto entity){
