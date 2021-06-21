@@ -73,17 +73,12 @@ void Behavior::behave()
 		}
 	}
 
-
 	if (destroyed){
 		return;
 	}
 	
 	if (owner->collision){
 		owner->collision->currentColliders = {};
-	}
-
-	if (gravity && !grounded){
-		addYSpeed(World::activeLevel->gravity);
 	}
 
 	direction hDir = NONE;
@@ -145,6 +140,12 @@ void Behavior::behave()
 
 	if (!hasGroundUnder){
 		grounded = false;
+	}
+
+	if (gravity && !grounded){
+		yAcc = World::activeLevel->gravity;
+	} else {
+		yAcc = 0;
 	}
 
 	addXSpeed(xAcc);
