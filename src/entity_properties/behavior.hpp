@@ -25,6 +25,11 @@ class Behavior
 		void addXSpeed(float n, bool clampZero = false);
 		/* When slowing down, clampZero should be true so rounds to 0 eventually */
 		void addYSpeed(float n, bool clampZero = false);
+		/* the x direction entity wants to go, used to add x speed */
+		direction xPush = NONE;
+		/* the y direction entity wants to go, used to add y speed */
+		direction yPush = NONE;
+
 		int getState();
 		void destroy(bool animation = true);
 		
