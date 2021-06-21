@@ -15,7 +15,7 @@ void EnemyBehavior::behave()
 
 	switch(((LivingEntity*)owner)->behavior->type){
 		case ENEMY_A:
-			if (xPush == RIGHT){
+			if (xAcc > 0){
 				rect rectNextPos = {
 					owner->pos.x + 1,
 					owner->pos.y,
@@ -24,9 +24,9 @@ void EnemyBehavior::behave()
 				};
 
 				if (!owner->collision->isValidPos(rectNextPos, true)){
-					xPush = LEFT;
+					xAcc = -walkAcc;
 				}
-			} else if (xPush == LEFT){
+			} else if (xAcc < LEFT){
 					rect rectNextPos = {
 					owner->pos.x - 1,
 					owner->pos.y,
@@ -35,10 +35,10 @@ void EnemyBehavior::behave()
 				};
 
 				if (!owner->collision->isValidPos(rectNextPos, true)){
-					xPush = RIGHT;
+					xAcc = walkAcc;
 				}
-			} else if (xPush == NONE) {
-				xPush = RIGHT;
+			} else if (xAcc == 0) {
+				xAcc = walkAcc;
 			}
 		break;
 

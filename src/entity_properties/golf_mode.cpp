@@ -21,7 +21,7 @@ void GolfMode::activate(Entity* ball)
 	
 	owner->behavior->xSpeed = 0;
 	owner->behavior->ySpeed = 0;
-	owner->behavior->xPush = NONE;
+	owner->behavior->xAcc = 0;
 
 	active = true;
 	//Unsafe for multithreading..

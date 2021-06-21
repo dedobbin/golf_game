@@ -154,17 +154,17 @@ HandleInputReturnType Game::handleInput()
 	}
 	if (player->golfMode && !player->golfMode->active){
 		if (keysPressed[SDL_SCANCODE_RIGHT]){
-			player->behavior->xPush = direction::RIGHT;
+			player->behavior->xAcc = player->behavior->walkAcc;
 			player->golfMode->setDirection(direction::RIGHT);
 		} else if (player->behavior->xSpeed > 0){
-			player->behavior->xPush = direction::NONE;
+			player->behavior->xAcc = 0;
 		}
 
 		if (keysPressed[SDL_SCANCODE_LEFT]){
-			player->behavior->xPush = direction::LEFT;
+			player->behavior->xAcc = -player->behavior->walkAcc;
 			player->golfMode->setDirection(direction::LEFT);
 		} else if (player->behavior->xSpeed < 0){
-			player->behavior->xPush = direction::NONE;
+			player->behavior->xAcc = 0;
 		}
 
 		if (keysPressed[SDL_SCANCODE_Z]){

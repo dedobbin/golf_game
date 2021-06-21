@@ -147,24 +147,8 @@ void Behavior::behave()
 		grounded = false;
 	}
 
-	switch(xPush){
-		case RIGHT:
-			if (owner->type == entityType::LIVING){
-				addXSpeed(grounded ? walkAcc : walkAcc / 4);
-			} else {
-				addXSpeed(xSpeed);
-			}
-			break;
-		case LEFT:
-			if (owner->type == entityType::LIVING){
-				addXSpeed(-(grounded ? walkAcc : walkAcc / 4));
-			} else {
-				addXSpeed(xSpeed);
-			}
-			break;
-		default:
-			break;
-	}
+	addXSpeed(xAcc);
+	addYSpeed(yAcc);
 
 	if (owner->type == LIVING){
 		auto living = (LivingEntity*)owner;
@@ -202,11 +186,11 @@ void Behavior::behave()
 		}
 	}
 
-	if (xSpeed > 0 && xPush != direction::RIGHT){
+	if (xSpeed > 0 && xAcc <= 0){
 		if (grounded){
 			addXSpeed(-frictionGround, true);
 		}
-	} else if (xSpeed < 0 && xPush != direction::LEFT){
+	} else if (xSpeed < 0 && xAcc >= 0){
 		if (grounded){
 			addXSpeed(frictionGround, true);
 		}
