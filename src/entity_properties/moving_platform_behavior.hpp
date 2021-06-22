@@ -13,5 +13,7 @@ class MovingPlatformBehavior : public Behavior
         int speed;
         rect endPos;
     private:
-        direction curDir = direction::NONE;
+        rect curDestination;
+        direction curYDir = NONE;
+        direction curXDir = NONE;
 };

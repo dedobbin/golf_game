@@ -86,7 +86,7 @@ void parseBehavior(nlohmann::json jBehavior, Entity* owner)
 	} else if (jBehavior["type"] == "enemy_a"){//TODO: check for other enemy types..
 		behavior = new EnemyBehavior((LivingEntity*) owner);
 	} else if (owner->type == entityType::MOVING_PLATFORM){
-		std::cout << "DEBUG: import_level: moving_platform" <<std::endl;
+		//std::cout << "DEBUG: import_level: moving_platform" <<std::endl;
 		int speed = jBehavior["speed"];
 		rect endPos = {
 			 jBehavior["end_pos"][0],

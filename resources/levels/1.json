@@ -3809,7 +3809,8 @@
         "pos":[550, 950, 100, 20],
         "behavior":{
             "end_pos":[550, 750, 100, 20],
-            "speed":1
+            "speed":5,
+            "gravity":false
         },
         "graphic":{
             "spritesheet":"spritesheet2",
