@@ -23,8 +23,9 @@ const int NATIVE_SCREEN_TICK_PER_FRAME = 1000 / NATIVE_SCREEN_FPS;
 Game::Game()
 {
 	visuals = std::make_unique<Visuals>();
+#ifdef DEBUG_DRAW
 	fpsTextIndex = visuals->createText("0", 10, 10);
-
+#endif
 	//v.loadSpritesheet("spritesheet1");
 }
 
