@@ -4,7 +4,11 @@
 MovingPlatformBehavior::MovingPlatformBehavior(Entity* owner, rect endPos, int speed)
 : Behavior(owner), endPos(endPos), speed(speed), curDestination(endPos), startPos(owner->pos)
 {
-    std::cout << "new" << std::endl;
+    // TODO: move left and right etc
+    if (endPos.x != startPos.x){
+        std::cout << "MovingPlatformBehavior currently supports going up and down, correcting endPos.x to " << startPos.x << std::endl;
+        endPos.x = startPos.x;
+    }
 }
 
 void MovingPlatformBehavior::behave()
@@ -34,7 +38,6 @@ void MovingPlatformBehavior::behave()
         }
     } else if (curYDir == DOWN){
         if (owner->pos.y >= curDestination.y){
-            std::cout << "DEBUG reached" << owner->pos.y << std::endl;
             ySpeed = 0;
             curYDir = NONE;
         }
