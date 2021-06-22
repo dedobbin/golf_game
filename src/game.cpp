@@ -201,6 +201,7 @@ bool Game::tick()
 	}
 
 	float avgFps = visuals->ctx.iteration / (fpsTimer.getTicks() / 1000.f);
+	//std::cout << "DEBUG fps" << avgFps << std::endl;
 	if (avgFps > 2000000){
 		avgFps = 0;
 	}

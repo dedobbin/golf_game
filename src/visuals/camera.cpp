@@ -82,8 +82,8 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity, bool snapIfOutsideOfV
 		snapToSanePos(entity);
 		return;
 	}
-	
-	int uSpace = camRect.h / 10;
+
+    int uSpace = camRect.h / 5;
 	int dSpace = camRect.h / 7;
 	if (camRect.y + camRect.h < pos.y + pos.h + uSpace){
         camRect.y += entity->behavior->ySpeed;
@@ -102,6 +102,7 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity, bool snapIfOutsideOfV
 
 void Camera::snapToSanePos(std::shared_ptr <Entity> entity)
 {
+    std::cout << "DEBUG: camera snap to sane pos" << std::endl;
     camRect.x = entity->pos.x - camRect.w/3; 
-	camRect.y = entity->pos.y - camRect.h/5;
+	camRect.y = entity->pos.y - camRect.h/2;
 }
