@@ -18,11 +18,17 @@ void MovingPlatformBehavior::behave()
     
     if (curYDir == NONE){
         if (owner->pos.y > curDestination.y){
+            std::cout << "DEBUG should go up" << std::endl;
             addYSpeed(-speed);
             curYDir = UP;
-        } 
+        } else if (owner->pos.y <= curDestination.y){
+            std::cout << "DEBUG should go down" << std::endl;
+            addYSpeed(speed);
+            curYDir = DOWN;
+        }
     } else if (curYDir == UP){
         if (owner->pos.y <= curDestination.y){
+            std::cout << "DEBUG reached" << std::endl;
             ySpeed = 0;
             curYDir = NONE;
 
