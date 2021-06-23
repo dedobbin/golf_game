@@ -113,12 +113,19 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
             case DOWN: case NONE:
                 collider->pos.y -= intersect.h;
                 collider->behavior->yAcc = 0;
+
                 if (collider->behavior->gravity){
                     collider->behavior->grounded = true;
                     collider->behavior->ySpeed = 0;
                 }
                 break;
             case UP:
+                if (collider->behavior->ySpeed < 0 ){
+                    std::cout << "DEBUG: should keep going up " << std::endl;
+                    //goes up, should keep pushing up
+                    break;
+                }
+
                 collider->pos.y += intersect.h;
                 collider->behavior->yAcc = 0;
                 break;

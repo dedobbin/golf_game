@@ -3806,9 +3806,9 @@
         "collision":{
             "solid":true
         },
-        "pos":[550, 950, 100, 20],
+        "pos":[550, 1000, 100, 20],
         "behavior":{
-            "end_pos":[550, 750, 100, 20],
+            "end_pos":[550, 900, 100, 20],
             "speed":5,
             "gravity":false
         },
