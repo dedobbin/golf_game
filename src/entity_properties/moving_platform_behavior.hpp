@@ -8,9 +8,9 @@
 class MovingPlatformBehavior : public Behavior
 {
 	public: 
-		MovingPlatformBehavior(Entity* owner, rect endPos, int speed);
+		MovingPlatformBehavior(Entity* owner, rect endPos, float speed);
 		void behave();
-        int speed;
+        float speed;
         rect endPos;
     private:
         rect startPos;
