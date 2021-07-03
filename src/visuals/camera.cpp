@@ -83,7 +83,7 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity, bool snapIfOutsideOfV
 		return;
 	}
 
-    int uSpace = camRect.h / 5;
+    int uSpace = camRect.h / 6;
 	int dSpace = camRect.h / 7;
 	if (camRect.y + camRect.h < pos.y + pos.h + uSpace){
         camRect.y += entity->behavior->ySpeed;

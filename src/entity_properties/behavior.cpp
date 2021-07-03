@@ -114,7 +114,7 @@ void Behavior::behave()
 
 	owner->pos.y += ySpeed;
 
-	bool hasGroundUnder = false;
+	std::shared_ptr<Entity> hasUnder;
 	for (auto& collidee : World::activeLevel->entities){// check y move + check if is grounded
 		
 		if (owner == collidee.get()) continue;
@@ -134,11 +134,15 @@ void Behavior::behave()
 		bellowPos.y += 1;
 		auto intersect2 = Collision::getIntersect(bellowPos, collidee->pos);
 		if (Collision::intersectCollides(intersect2) && !collidee->collision->isNotOrSemiSolid()){
-			hasGroundUnder = true;
+			hasUnder = collidee;
 		}
 	}
 
-	if (!hasGroundUnder){
+	if (!hasUnder){
+		//debug
+		// if (owner->name == "player")
+		// 	std::cout << "DEBUG: player should fall" << std::endl;
+		
 		grounded = false;
 	}
 
@@ -206,7 +210,7 @@ void Behavior::jump()
 	}
 
 	grounded = false;
-	addYSpeed(-13.5);//TODO: get rid of magic number
+	ySpeed =-13.5;//TODO: get rid of magic number
 	owner->graphic->changeState(AnimationState::JUMP);
 }
 
