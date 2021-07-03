@@ -3809,7 +3809,7 @@
         "pos":[220, 1700, 100, 20],
         "behavior":{
             "end_pos":[220, 1500, 100, 20],
-            "speed":1,
+            "speed":0.1,
             "gravity":false
         },
         "graphic":{
