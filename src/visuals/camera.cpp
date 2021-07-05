@@ -72,37 +72,39 @@ bool Camera::partiallyInView(int x, int y, int w, int h)
 
 void Camera::followWithCam(std::shared_ptr<Entity> entity, bool snapIfOutsideOfView)
 {
+    //TODO: use commented out code instead of snapping everytime
+    snapToSanePos(entity);
+
 	//TODO: don't move cam outside of world edges 
 	//TODO: check if entity doesn't fit in cam/work with cam logic because too big, always hits edges?
-    auto pos = entity->pos;
+    // auto pos = entity->pos;
 
-	if (snapIfOutsideOfView &&
-	(!entity->behavior || partiallyInView(pos.x, pos.y, pos.w, pos.h) || !inView(pos.x, pos.y, pos.w, pos.h))
-	){
-		snapToSanePos(entity);
-		return;
-	}
+	// if (snapIfOutsideOfView &&
+	// (!entity->behavior || partiallyInView(pos.x, pos.y, pos.w, pos.h) || !inView(pos.x, pos.y, pos.w, pos.h))
+	// ){
+	// 	snapToSanePos(entity);
+	// 	return;
+	// }
 
-    int uSpace = camRect.h / 6;
-	int dSpace = camRect.h / 7;
-	if (camRect.y + camRect.h < pos.y + pos.h + uSpace){
-        camRect.y += entity->behavior->ySpeed;
-	} else if (camRect.y > pos.y - dSpace){
-		camRect.y += entity->behavior->ySpeed;
-	}
+    // int uSpace = camRect.h / 6;
+	// int dSpace = camRect.h / 7;
+	// if (camRect.y + camRect.h < pos.y + pos.h + uSpace){
+    //     camRect.y += entity->behavior->ySpeed;
+	// } else if (camRect.y > pos.y - dSpace){
+	// 	camRect.y += entity->behavior->ySpeed;
+	// }
 
-	int rSpace = camRect.w / 2;
-	int lSpace = camRect.w / 3;
-	if (camRect.x + camRect.w < pos.x + pos.w + rSpace && entity->behavior->xSpeed > 0){
-		camRect.x += entity->behavior->xSpeed;
-	}else if (camRect.x > pos.x -lSpace && entity->behavior->xSpeed < 0){
-		camRect.x += entity->behavior->xSpeed;
-	}
+	// int rSpace = camRect.w / 2;
+	// int lSpace = camRect.w / 3;
+	// if (camRect.x + camRect.w < pos.x + pos.w + rSpace && entity->behavior->xSpeed > 0){
+	// 	camRect.x += entity->behavior->xSpeed;
+	// }else if (camRect.x > pos.x -lSpace && entity->behavior->xSpeed < 0){
+	// 	camRect.x += entity->behavior->xSpeed;
+	// }
 }
 
 void Camera::snapToSanePos(std::shared_ptr <Entity> entity)
 {
-    std::cout << "DEBUG: camera snap to sane pos" << std::endl;
     camRect.x = entity->pos.x - camRect.w/3; 
-	camRect.y = entity->pos.y - camRect.h + camRect.h / 10;
+	camRect.y = entity->pos.y - camRect.h + camRect.h / 2;
 }

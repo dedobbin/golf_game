@@ -120,12 +120,6 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
                 }
                 break;
             case UP:
-                if (collider->behavior->ySpeed < 0){
-                    //goes up, should keep pushing up
-                    //std::cout << "DEBUG: should keep going up " << std::endl;
-                    break;
-                }
-
                 collider->pos.y += intersect.h;
                 collider->behavior->yAcc = 0;
                 break;

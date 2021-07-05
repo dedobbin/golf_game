@@ -18,15 +18,12 @@ void MovingPlatformBehavior::behave()
     
     if (ySpeed == 0){
         if (curDestination.y < owner->pos.y){
-            std::cout << "should go up " << std::endl;
             yAcc = -speed;
         } else {
-            std::cout << "should go down " << std::endl;
             yAcc = speed;
         }
     } else if ((ySpeed < 0 && curDestination.y >= owner->pos.y)
     || ySpeed > 0 && curDestination.y <= owner->pos.y){
-        std::cout << "arrived" << std::endl;
         ySpeed = 0;
         yAcc = 0;
         //swap curDestinations
