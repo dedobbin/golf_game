@@ -106,8 +106,6 @@ void Behavior::behave()
 			//std::cout << "DEBUG: x collision " << owner->name << " + " << collidee->name << std::endl;
 			collidee->collision->pushout(owner, hDir, intersect);
 			collidee->collision->effect(owner, hDir, intersect);
-			owner->collision->effect(collidee.get(), hDir, intersect);
-			owner->collision->currentColliders.push_back(collidee.get());
 		}
 	}
 
