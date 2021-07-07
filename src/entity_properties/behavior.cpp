@@ -150,12 +150,15 @@ void Behavior::behave()
 		grounded = false;
 	}
 
-	if (gravity && !grounded){
-		//if (owner->name == "elevator") std::cout << "DEBUG applied gravity to elevator" << std::endl;
+	if (gravity){
 		yAcc = World::activeLevel->gravity;
-	} else if (gravity){
-		yAcc = 0;
 	}
+	// if (gravity && !grounded){
+	// 	//if (owner->name == "elevator") std::cout << "DEBUG applied gravity to elevator" << std::endl;
+	// 	yAcc = World::activeLevel->gravity;
+	// } else if (gravity){
+	// 	yAcc = 0;
+	// }
 
 	addXSpeed(xAcc);
 	addYSpeed(yAcc);

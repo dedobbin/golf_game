@@ -83,6 +83,10 @@ bool Collision::isValidPos(rect pos, bool forceSolid)
 
 void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
 {
+    if (collider->name == "player" && owner->name == "elevator"){
+        std::cout << "DEBUG elevator pushes out player" << std::endl; 
+    }
+
     if (!collider->collision){
         return;
     }
