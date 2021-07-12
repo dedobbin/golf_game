@@ -155,6 +155,7 @@ void Behavior::behave()
 	}
 
 	if (hasUnder){
+		//moving up really messes with stuff, entity is ungrounded, so when that happens, make it grounded here
 		if (hasUnder->type == entityType::MOVING_PLATFORM){//TODO: make more generic
 			//std::cout << "DEBUG: has platform under" << std::endl;
 			owner->pos.y = hasUnder->pos.y - owner->pos.h + hasUnder->behavior->ySpeed;
