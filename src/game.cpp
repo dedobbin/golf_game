@@ -10,7 +10,7 @@
 #include <emscripten.h>
 #endif
 
-#define DEBUG_DRAW
+//#define DEBUG_DRAW
 //#define DEBUG_CAMERA
 
 #define DELAY_BEFORE_GAMEOVER 60 //time between player dying and game over screen popping up
@@ -215,7 +215,7 @@ bool Game::tick()
 	}
 
 	//std::cout << "DEBUG: player y speed: " << player->behavior->ySpeed << std::endl;
-	std::cout << "DEBUG: player grounded: " << player->behavior->grounded << std::endl;
+	//std::cout << "DEBUG: player grounded: " << player->behavior->grounded << std::endl;
 
 #ifndef DEBUG_CAMERA
 	visuals->camera->followWithCam(followWithCam);
