@@ -125,7 +125,14 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
                 break;
             case UP:
                 if (collider->type == entityType::MOVING_PLATFORM){//TODO: make more general
-                    //keep going up
+                    //keep going up, while moving other entity
+                    if (owner->behavior){
+                        owner->behavior->ySpeed = collider->behavior->ySpeed;
+                        owner->behavior->yAcc = collider->behavior->yAcc;
+                        owner->behavior->grounded = true;
+                    }
+
+                    //owner->pos.y = collider->pos.y - owner->pos.h -1;
                     return;
                 } 
 
