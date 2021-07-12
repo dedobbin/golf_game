@@ -228,7 +228,7 @@ void Behavior::jump()
 	}
 
 	grounded = false;
-	ySpeed =-13.5;//TODO: get rid of magic number
+	ySpeed -= 13.5;//TODO: get rid of magic number
 	owner->graphic->changeState(AnimationState::JUMP);
 }
 
