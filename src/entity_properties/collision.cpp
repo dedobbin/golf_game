@@ -118,11 +118,6 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
                 collider->pos.y -= intersect.h;
                 //collider->behavior->yAcc = 0;
 
-                if (owner->type == entityType::MOVING_PLATFORM){
-                    std::cout << "DEBUG elevator pushes out player, col dir:" << colliderDir << std::endl; 
-                }
-
-
                 if (collider->behavior->gravity){
                     collider->behavior->grounded = true;
                     collider->behavior->ySpeed = 0;
