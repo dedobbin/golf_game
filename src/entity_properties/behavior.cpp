@@ -135,6 +135,11 @@ void Behavior::behave()
 		// check what is down
 		auto bellowPos = owner->pos;
 		bellowPos.y += 1;
+
+		if (collidee->behavior && collidee->behavior->ySpeed < 0){
+			bellowPos.y -= collidee->behavior->ySpeed;
+		}
+
 		auto intersect2 = Collision::getIntersect(bellowPos, collidee->pos);
 		if (Collision::intersectCollides(intersect2) && !collidee->collision->isNotOrSemiSolid()){
 			hasUnder = collidee;
@@ -156,6 +161,7 @@ void Behavior::behave()
 			if (hasUnder->behavior){
 				ySpeed = hasUnder->behavior->ySpeed;
 				yAcc = hasUnder->behavior->yAcc;
+				grounded = true;
 			}
 		}
 	}

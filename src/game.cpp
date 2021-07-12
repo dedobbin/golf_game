@@ -215,7 +215,7 @@ bool Game::tick()
 	}
 
 	//std::cout << "DEBUG: player y speed: " << player->behavior->ySpeed << std::endl;
-	//std::cout << "DEBUG: player grounded: " << player->behavior->grounded << std::endl;
+	std::cout << "DEBUG: player grounded: " << player->behavior->grounded << std::endl;
 
 #ifndef DEBUG_CAMERA
 	visuals->camera->followWithCam(followWithCam);
