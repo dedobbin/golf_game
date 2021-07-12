@@ -83,9 +83,9 @@ bool Collision::isValidPos(rect pos, bool forceSolid)
 
 void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
 {
-    if (collider->name == "player" && owner->name == "elevator"){
-        std::cout << "DEBUG elevator pushes out player" << std::endl; 
-    }
+    // if (collider->name == "player" && owner->name == "elevator"){
+    //     std::cout << "DEBUG elevator pushes out player, col dir:" << colliderDir << std::endl; 
+    // }
 
     if (!collider->collision){
         return;
@@ -118,12 +118,22 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
                 collider->pos.y -= intersect.h;
                 //collider->behavior->yAcc = 0;
 
+                if (owner->type == entityType::MOVING_PLATFORM){
+                    std::cout << "DEBUG elevator pushes out player, col dir:" << colliderDir << std::endl; 
+                }
+
+
                 if (collider->behavior->gravity){
                     collider->behavior->grounded = true;
                     collider->behavior->ySpeed = 0;
                 }
                 break;
             case UP:
+                if (collider->type == entityType::MOVING_PLATFORM){//TODO: make more general
+                    //keep going up
+                    return;
+                } 
+
                 collider->pos.y += intersect.h;
                 //collider->behavior->yAcc = 0;
                 break;

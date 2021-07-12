@@ -102,7 +102,7 @@ void Behavior::behave()
 		
 		auto intersect = Collision::getIntersect(owner->pos, collidee->pos);
 
-		if (Collision::intersectCollides(intersect)){
+		if (Collision::intersectCollides(intersect) && hDir){
 			//std::cout << "DEBUG: x collision " << owner->name << " + " << collidee->name << std::endl;
 			collidee->collision->pushout(owner, hDir, intersect);
 			collidee->collision->effect(owner, hDir, intersect);
@@ -130,7 +130,6 @@ void Behavior::behave()
 			//std::cout << "DEBUG: y collision " << owner->name << " + " << collidee->name << std::endl;
 			collidee->collision->pushout(owner, vDir, intersect);
 			collidee->collision->effect(owner, vDir, intersect);
-			owner->collision->effect(collidee.get(), vDir, intersect);
 		}
 
 		// check what is down
