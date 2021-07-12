@@ -102,7 +102,7 @@ void Behavior::behave()
 		
 		auto intersect = Collision::getIntersect(owner->pos, collidee->pos);
 
-		if (Collision::intersectCollides(intersect) && hDir){
+		if (Collision::intersectCollides(intersect)){
 			//std::cout << "DEBUG: x collision " << owner->name << " + " << collidee->name << std::endl;
 			collidee->collision->pushout(owner, hDir, intersect);
 			collidee->collision->effect(owner, hDir, intersect);

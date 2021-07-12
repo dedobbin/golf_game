@@ -114,7 +114,7 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
 
     if (collider->behavior){
         switch(colliderDir){
-            case DOWN: case NONE:
+            case DOWN:
                 collider->pos.y -= intersect.h;
                 //collider->behavior->yAcc = 0;
 
