@@ -149,16 +149,16 @@ void Behavior::behave()
 		grounded = false;
 	}
 
-	// if (hasUnder){
-	// 	if (hasUnder->type == entityType::MOVING_PLATFORM){//TODO: make more generic
-	// 		//std::cout << "DEBUG: has platform under" << std::endl;
-	// 		owner->pos.y = hasUnder->pos.y - owner->pos.h;
-	// 		if (hasUnder->behavior){
-	// 			ySpeed = hasUnder->behavior->ySpeed;
-	// 			yAcc = hasUnder->behavior->yAcc;
-	// 		}
-	// 	}
-	// }
+	if (hasUnder){
+		if (hasUnder->type == entityType::MOVING_PLATFORM){//TODO: make more generic
+			//std::cout << "DEBUG: has platform under" << std::endl;
+			owner->pos.y = hasUnder->pos.y - owner->pos.h;
+			if (hasUnder->behavior){
+				ySpeed = hasUnder->behavior->ySpeed;
+				yAcc = hasUnder->behavior->yAcc;
+			}
+		}
+	}
 
 	if (gravity){
 		yAcc = World::activeLevel->gravity;
