@@ -100,6 +100,7 @@ void Behavior::behave()
 			//std::cout << "DEBUG: x collision " << owner->name << " + " << collidee->name << std::endl;
 			collidee->collision->pushout(owner, hDir, intersect);
 			collidee->collision->effect(owner, hDir, intersect);
+			collidee->collision->currentColliders.push_back(owner);
 		}
 	}
 
@@ -122,14 +123,9 @@ void Behavior::behave()
 
 		if (Collision::intersectCollides(intersect)){
 			//std::cout << "DEBUG: y collision " << owner->name << " + " << collidee->name << std::endl;
-			
-			//debug
-			if (owner->name == "player" && collidee->name == "spikes"){
-				std::cout << "DEBUG player and spikes " << std::endl;
-			}
-
 			collidee->collision->pushout(owner, vDir, intersect);
 			collidee->collision->effect(owner, vDir, intersect);
+			collidee->collision->currentColliders.push_back(owner);
 		}
 
 		// check what is down
