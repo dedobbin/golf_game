@@ -133,6 +133,13 @@ HandleInputReturnType Game::handleInput()
 			} else {
 				if (e.key.keysym.scancode == SDL_SCANCODE_C){
 					if (player->collision){
+						//Debug
+						std::cout << "Colliders (" <<  player->collision->currentColliders.size() << "):  ";
+						for(auto c : player->collision->currentColliders){
+							std:: cout << c->name << " - ";
+						}
+						std::cout << std::endl;
+
 						auto i = std::find_if( player->collision->currentColliders.begin(),
 							player->collision->currentColliders.end(), 
 							[&](const auto val){ return val->type == BALL && val->behavior && val->behavior->grounded; } 

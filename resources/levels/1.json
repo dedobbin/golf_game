@@ -3798,6 +3798,60 @@
             100
           ]
        },
+
+       {
+         "name":"golf_club_two",
+         "type":"item",
+         "item_type":"club",
+         "collision":{
+            
+         },
+         "behavior":{
+            
+         },
+         "graphic":{
+            "spritesheet":"spritesheet2",
+            "frame":[
+               0,
+               32,
+               6,
+               20
+            ]
+         },
+         "pos":[
+            942,
+            1640,
+            32,
+            100
+         ]
+      },
+
+      {
+       "name":"ball_two",
+       "type":"ball",
+       "graphic":{
+          "spritesheet":"spritesheet2",
+          "frame":[
+             32,
+             32,
+             6,
+             6
+          ]
+       },
+       "behavior":{
+          "friction_ground":0.05
+       },
+       "collision":{
+          
+       },
+       "pos":[
+         742,
+         1640,
+          20,
+          20
+       ]
+    },
+
        {
          "name":"elevator",
          "type":"moving_platform",
