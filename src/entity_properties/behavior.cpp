@@ -225,13 +225,20 @@ void Behavior::behave()
 
 void Behavior::jump()
 {
+	const float n = 13.5;//TODO: get rid of magic number
 	//TODO: shouldn't be able to jump if something above that is not item etc
 	if (!grounded){
 		return;
 	}
 
 	grounded = false;
-	ySpeed -= 13.5;//TODO: get rid of magic number
+	if (ySpeed > 0){
+		// Player is grounded, yet goes down, so must be on moving entity
+		// taking that speed as base is wonky, just add raw
+		ySpeed =- n;
+	} else {
+		ySpeed -= n;
+	}
 	owner->graphic->changeState(AnimationState::JUMP);
 }
 
