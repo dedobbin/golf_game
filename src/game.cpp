@@ -213,7 +213,8 @@ bool Game::tick()
 			e->behavior->behave();
 		}
 	}
-
+	
+	std::cout << "DEBUG: player pos: " << player->pos.x << "," << player->pos.y << std::endl;
 	//std::cout << "DEBUG: player y speed: " << player->behavior->ySpeed << std::endl;
 	//std::cout << "DEBUG: player grounded: " << player->behavior->grounded << std::endl;
 

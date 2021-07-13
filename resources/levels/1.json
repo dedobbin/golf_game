@@ -3792,13 +3792,54 @@
              ]
           },
           "pos":[
-             270,
-             900,
-             80,
-             100
+            4570,
+            940,
+            80,
+            100
           ]
        },
-
+       {
+         "name":"elevator",
+         "type":"moving_platform",
+         "collision":{
+             "solid":true
+         },
+         "pos":[4720,1040, 100, 20],
+         "behavior":{
+             "end_pos":[4720,440, 100, 20],
+             "speed":0.1,
+             "gravity":false
+         },
+         "graphic":{
+             "spritesheet":"spritesheet2",
+             "frame":[0,0,32,32
+             ],
+             "loop":false
+          }
+         },
+          {
+           "type":"static_solid",
+           "name":"block",
+           "graphic":{
+              "spritesheet":"spritesheet2",
+              "frame":[
+                 0,
+                 0,
+                 32,
+                 32
+              ],
+              "loop":0
+           },
+           "collision":{
+              "solid":true
+           },
+           "pos":[
+              4560,
+              1040,
+              100,
+              100
+           ]
+        },
 
        {
         "name":"elevator",
@@ -3819,6 +3860,29 @@
             "loop":false
          }
         },
+         {
+          "type":"static_solid",
+          "name":"block",
+          "graphic":{
+             "spritesheet":"spritesheet2",
+             "frame":[
+                0,
+                0,
+                32,
+                32
+             ],
+             "loop":0
+          },
+          "collision":{
+             "solid":true
+          },
+          "pos":[
+             4560,
+             1040,
+             100,
+             100
+          ]
+       },
        {
           "type":"static_solid",
           "name":"block",
