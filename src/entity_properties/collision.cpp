@@ -154,13 +154,13 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
 
 bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
 {
-    if (collider->behavior && collider->behavior->destroyed){
+    if (owner->behavior && owner->behavior->destroyed){
         return false;
     }
 
-    if (owner->type == LIVING){
-        auto livingOwner = (LivingEntity*) owner;
-        auto ignored = livingOwner->ignoreEffectsList;
+    if (collider->type == LIVING){
+        auto living = (LivingEntity*) collider;
+        auto ignored = living->ignoreEffectsList;
         if (std::find_if(ignored.begin(), ignored.end(), [collider](auto entity){
             return entity == collider;
         }) != ignored.end()){
@@ -168,47 +168,47 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
             return false;
         }
 
-        switch(collider->type){
+        switch(owner->type){
             case ITEM: {
                 //if not owned by an entity, its on the field
-                auto item = (Item*)collider;
-                if (!item->owner && owner->behavior->pickupItems){
-                    auto living = (LivingEntity*) owner;
+                auto item = (Item*)owner;
+                if (!item->owner && collider->behavior->pickupItems){
+                    auto living = (LivingEntity*) collider;
                     living->give(item);
                 }
                 break;
             }
             case LIVING: {
-                if (owner->behavior){
-                    if ( ((LivingEntity*)collider)->behavior->type == ENEMY_A){
-                        owner->behavior->destroy();
+                if (collider->behavior){
+                    if ( ((LivingEntity*)owner)->behavior->type == ENEMY_A){
+                        collider->behavior->destroy();
                     }
                 }
                 break;
             }
             case BALL: {
-                auto ball = collider;
+                auto ball = owner;
                 
                 const int xKillSpeed = 5;
                 const int yKillSpeed = 2;
 
                 if (ball->behavior->xSpeed > xKillSpeed && colliderDir == RIGHT){
-                    owner->behavior->destroy();
+                    collider->behavior->destroy();
                 } else if (ball->behavior->xSpeed < -xKillSpeed && colliderDir == LEFT){
-                    owner->behavior->destroy();
+                    collider->behavior->destroy();
                 }
 
                 if (ball->behavior->ySpeed > yKillSpeed && colliderDir == DOWN){
-                    owner->behavior->destroy();
+                    collider->behavior->destroy();
                 } else if (ball->behavior->ySpeed < -yKillSpeed && colliderDir == UP){
-                    owner->behavior->destroy();
+                    collider->behavior->destroy();
                 }
 
                 break;
             }
             case SPIKES :{
                 if (colliderDir == DOWN){
-                    owner->behavior->destroy();
+                    collider->behavior->destroy();
                 }
                 break;
             }
