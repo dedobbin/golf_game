@@ -1,8 +1,8 @@
 #include "moving_platform_behavior.hpp"
 #include "iostream"
 
-MovingPlatformBehavior::MovingPlatformBehavior(Entity* owner, rect endPos, float speed)
-: Behavior(owner), endPos(endPos), speed(speed), curDestination(endPos), startPos(owner->pos)
+MovingPlatformBehavior::MovingPlatformBehavior(Entity* owner, rect endPos, float acc)
+: Behavior(owner), endPos(endPos), potentionalAcc(acc), curDestination(endPos), startPos(owner->pos)
 {
     // TODO: move left and right etc
     if (endPos.x != startPos.x){
@@ -18,9 +18,9 @@ void MovingPlatformBehavior::behave()
     
     if (ySpeed == 0){
         if (curDestination.y < owner->pos.y){
-            yAcc = -speed;
+            yAcc = -potentionalAcc;
         } else {
-            yAcc = speed;
+            yAcc = potentionalAcc;
         }
     } else if ((ySpeed < 0 && curDestination.y >= owner->pos.y)
     || ySpeed > 0 && curDestination.y <= owner->pos.y){
@@ -28,7 +28,7 @@ void MovingPlatformBehavior::behave()
         yAcc = 0;
         //swap curDestinations
         curDestination = (curDestination.x == endPos.x && curDestination.y == endPos.y) ? startPos : endPos;
-    }
+    } 
 
     // if (curYDir == NONE){
     //     if (owner->pos.y > curDestination.y){

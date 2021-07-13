@@ -8,9 +8,10 @@
 class MovingPlatformBehavior : public Behavior
 {
 	public: 
-		MovingPlatformBehavior(Entity* owner, rect endPos, float speed);
+		MovingPlatformBehavior(Entity* owner, rect endPos, float potentionalAcc);
 		void behave();
-        float speed;
+        /* acc platform will go on when it moves*/
+        float potentionalAcc;
         rect endPos;
     private:
         rect startPos;

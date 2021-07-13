@@ -173,6 +173,7 @@ void Behavior::behave()
 	// 	yAcc = 0;
 	// }
 
+	//TODO: this should actually mutiply but ok....
 	addXSpeed(xAcc);
 	addYSpeed(yAcc);
 
@@ -226,7 +227,8 @@ void Behavior::behave()
 void Behavior::jump()
 {
 	const float n = 13.5;//TODO: get rid of magic number
-	//TODO: shouldn't be able to jump if something above that is not item etc
+
+	//TODO: shouldn't be able to jump if something above that is not item etc.. i think that work though?
 	if (!grounded){
 		return;
 	}

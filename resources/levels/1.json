@@ -3808,7 +3808,7 @@
          "pos":[4720,1040, 100, 20],
          "behavior":{
              "end_pos":[4720,440, 100, 20],
-             "speed":0.1,
+             "potentional_acc":0.1,
              "gravity":false
          },
          "graphic":{
@@ -3851,7 +3851,7 @@
         "pos":[220, 1700, 100, 20],
         "behavior":{
             "end_pos":[220, 1000, 100, 20],
-            "speed":0.1,
+            "potentional_acc":0.1,
             "gravity":false
         },
         "graphic":{
