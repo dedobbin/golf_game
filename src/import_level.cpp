@@ -108,15 +108,20 @@ void parseBehavior(nlohmann::json jBehavior, Entity* owner)
 
 	if (!jBehavior["walk_acc"].is_null()){
 		behavior->walkAcc = jBehavior["walk_acc"];
-	} else if (!jBehavior["max_x_speed"].is_null()){
+	}
+	if (!jBehavior["max_x_speed"].is_null()){
 		behavior->maxXSpeed = jBehavior["max_x_speed"];
-	} else if (!jBehavior["max_y_speed"].is_null()){
+	} 
+	if (!jBehavior["max_y_speed"].is_null()){
 		behavior->maxYSpeed = jBehavior["max_y_speed"];
-	} else if (!jBehavior["max_walk_speed"].is_null()){
+	} 
+	if (!jBehavior["max_walk_speed"].is_null()){
 		behavior->maxWalkSpeed = jBehavior["max_walk_speed"];
-	} else if (!jBehavior["gravity"].is_null()){
+	} 
+	if (!jBehavior["gravity"].is_null()){
 		behavior->gravity = jBehavior["gravity"];
-	} else if (!jBehavior["friction_ground"].is_null()){
+	} 
+	if(!jBehavior["friction_ground"].is_null()){
 		behavior->frictionGround = jBehavior["friction_ground"];
 	}
 

@@ -3800,49 +3800,6 @@
        },
 
        {
-         "name":"elevator",
-         "type":"moving_platform",
-         "collision":{
-             "solid":true
-         },
-         "pos":[4720,1040, 100, 20],
-         "behavior":{
-             "end_pos":[4720,440, 100, 20],
-             "potentional_acc":0.1,
-             "gravity":false
-         },
-         "graphic":{
-             "spritesheet":"spritesheet2",
-             "frame":[0,0,32,32
-             ],
-             "loop":false
-          }
-         },
-          {
-           "type":"static_solid",
-           "name":"block",
-           "graphic":{
-              "spritesheet":"spritesheet2",
-              "frame":[
-                 0,
-                 0,
-                 32,
-                 32
-              ],
-              "loop":0
-           },
-           "collision":{
-              "solid":true
-           },
-           "pos":[
-              4560,
-              1040,
-              100,
-              100
-           ]
-        },
-
-       {
         "name":"elevator_one",
         "type":"moving_platform",
         "collision":{
@@ -3852,7 +3809,8 @@
         "behavior":{
             "end_pos":[220, 1000, 100, 20],
             "potentional_acc":10,
-            "gravity":false
+            "gravity":false,
+            "max_y_speed":2
         },
         "graphic":{
             "spritesheet":"spritesheet2",

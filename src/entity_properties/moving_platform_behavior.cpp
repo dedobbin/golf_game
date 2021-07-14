@@ -4,6 +4,8 @@
 MovingPlatformBehavior::MovingPlatformBehavior(Entity* owner, rect endPos, float acc)
 : Behavior(owner), endPos(endPos), potentionalAcc(acc), curDestination(endPos), startPos(owner->pos)
 {
+    gravity = false;//Default gravity to false, otherwise platforms wont move
+
     // TODO: move left and right etc
     if (endPos.x != startPos.x){
         std::cout << "MovingPlatformBehavior currently supports going up and down, correcting endPos.x to " << startPos.x << std::endl;
@@ -26,7 +28,7 @@ void MovingPlatformBehavior::behave()
     || ySpeed > 0 && curDestination.y <= owner->pos.y){
         ySpeed = 0;
         yAcc = 0;
-        //swap curDestinations
+        //swap desination
         curDestination = (curDestination.x == endPos.x && curDestination.y == endPos.y) ? startPos : endPos;
     } 
 
