@@ -19,20 +19,22 @@ void MovingPlatformBehavior::behave()
 {
 	Behavior::behave();
     //direction shouldMoveYDir = owner->pos.y == curDestination.y ? NONE : owner->pos.y > curDestination.y ? UP : DOWN; 
-    
+
     if (ySpeed == 0){
-        if (curDestination.y < owner->pos.y){
-            yAcc = -potentionalAcc;
-        } else {
+        yAcc = curDestination.y < owner->pos.y ? -potentionalAcc : potentionalAcc;
+    } 
+
+    if (curDestination.y >= owner->pos.y){
+        if (ySpeed < 0){
+            curDestination = (curDestination.x == endPos.x && curDestination.y == endPos.y) ? startPos : endPos;
             yAcc = potentionalAcc;
         }
-    } else if ((ySpeed < 0 && curDestination.y >= owner->pos.y)
-    || ySpeed > 0 && curDestination.y <= owner->pos.y){
-        ySpeed = 0;
-        yAcc = 0;
-        //swap desination
-        curDestination = (curDestination.x == endPos.x && curDestination.y == endPos.y) ? startPos : endPos;
-    } 
+    } else if (curDestination.y <= owner->pos.y){
+        if (ySpeed > 0){
+            curDestination = (curDestination.x == endPos.x && curDestination.y == endPos.y) ? startPos : endPos;
+            yAcc = -potentionalAcc;
+        }
+    }
 
     // if (curYDir == NONE){
     //     if (owner->pos.y > curDestination.y){

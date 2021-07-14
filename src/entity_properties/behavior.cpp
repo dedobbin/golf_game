@@ -111,10 +111,6 @@ void Behavior::behave()
 		vDir = UP;
 	}
 
-	if (owner->name == "player"){
-		int x = 4;
-	}
-
 	owner->pos.y += ySpeed;
 
 	std::shared_ptr<Entity> hasUnder;
@@ -144,6 +140,7 @@ void Behavior::behave()
 		if (Collision::intersectCollides(intersect2) && !collidee->collision->isNotOrSemiSolid()){
 			hasUnder = collidee;
 		}
+		int debug = 5;
 	}
 
 	if (!hasUnder){
