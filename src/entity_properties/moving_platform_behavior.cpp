@@ -1,11 +1,12 @@
 #include "moving_platform_behavior.hpp"
 #include "iostream"
 
-MovingPlatformBehavior::MovingPlatformBehavior(Entity* owner, rect endPos, float acc)
-: Behavior(owner), endPos(endPos), potentionalAcc(acc), curDestination(endPos), startPos(owner->pos)
+MovingPlatformBehavior::MovingPlatformBehavior(Entity* owner, rect endPos)
+: Behavior(owner), endPos(endPos), curDestination(endPos), startPos(owner->pos)
 {
     gravity = false;//Default gravity to false, otherwise platforms wont move
     maxYSpeed = 5;
+    potentionalAcc = 10;
     
     // TODO: move left and right etc
     if (endPos.x != startPos.x){

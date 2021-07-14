@@ -146,24 +146,6 @@
            ],
            "loop":false
         }
-       },
-       {
-         "type":"static_solid",
-         "name":"block",
-         "graphic":{
-            "spritesheet":"spritesheet2",
-            "frame":[
-               0,
-               0,
-               32,
-               32
-            ],
-            "loop":0
-         },
-         "collision":{
-            "solid":true
-         },
-         "pos":[350, 1500, 100, 20]
-      }
+       }
    ]
 }
