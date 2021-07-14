@@ -148,10 +148,6 @@ void Behavior::behave()
 	}
 
 	if (!hasUnder){
-		//debug
-		// if (owner->name == "player")
-		// 	std::cout << "DEBUG: player should fall" << std::endl;
-		
 		grounded = false;
 	}
 
