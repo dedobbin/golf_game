@@ -24,57 +24,11 @@ void MovingPlatformBehavior::behave()
         yAcc = curDestination.y < owner->pos.y ? -potentionalAcc : potentionalAcc;
     } 
 
-    if (curDestination.y >= owner->pos.y){
-        if (ySpeed < 0){
-            curDestination = (curDestination.x == endPos.x && curDestination.y == endPos.y) ? startPos : endPos;
-            yAcc = potentionalAcc;
-        }
-    } else if (curDestination.y <= owner->pos.y){
-        if (ySpeed > 0){
+    if (curDestination.y >= owner->pos.y && ySpeed < 0){
+        curDestination = (curDestination.x == endPos.x && curDestination.y == endPos.y) ? startPos : endPos;
+        yAcc = potentionalAcc;
+    } else if (curDestination.y <= owner->pos.y && ySpeed > 0){
             curDestination = (curDestination.x == endPos.x && curDestination.y == endPos.y) ? startPos : endPos;
             yAcc = -potentionalAcc;
-        }
     }
-
-    // if (curYDir == NONE){
-    //     if (owner->pos.y > curDestination.y){
-    //         yAcc = -speed;
-    //         curYDir = UP;
-    //         std::cout << "DEBUG platform: should go up:" << yAcc << std::endl;
-    //     } else if (owner->pos.y <= curDestination.y){
-    //         std::cout << "DEBUG platform: should go down" << std::endl;
-    //         yAcc = speed;
-    //         curYDir = DOWN;
-    //     }
-    // } else if (curYDir == UP){
-    //     if (owner->pos.y <= curDestination.y){
-    //         std::cout << "DEBUG platform: reached" << std::endl;
-    //         yAcc = 0;
-    //         ySpeed = 0;
-    //         curYDir = NONE;
-
-    //         //swap curDestinations
-    //         if (curDestination.x == endPos.x && curDestination.y == endPos.y){
-    //             curDestination = startPos;
-    //         } else {
-    //             curDestination = endPos;
-    //         }
-    //     }
-    // } else if (curYDir == DOWN){
-    //     if (owner->pos.y >= curDestination.y){
-    //         std::cout << "DEBUG platform: reached" << std::endl;
-    //         yAcc = 0;
-    //         ySpeed = 0;
-    //         curYDir = NONE;
-    //     }
-
-    //     //swap curDestinations
-    //     if (curDestination.x == endPos.x && curDestination.y == endPos.y){
-    //         curDestination = startPos;
-    //     } else {
-    //         curDestination = endPos;
-    //     }
-
-    // }
-    //std::cout << "DEBUG platform: " << yAcc << " , " << ySpeed << std::endl;
 }
