@@ -3809,8 +3809,7 @@
         "behavior":{
             "end_pos":[220, 1000, 100, 20],
             "potentional_acc":10,
-            "gravity":false,
-            "max_y_speed":2
+            "gravity":false
         },
         "graphic":{
             "spritesheet":"spritesheet2",
