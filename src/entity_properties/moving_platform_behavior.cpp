@@ -28,7 +28,15 @@ void MovingPlatformBehavior::behave()
         curDestination = (curDestination.x == endPos.x && curDestination.y == endPos.y) ? startPos : endPos;
         yAcc = potentionalAcc;
     } else if (curDestination.y <= owner->pos.y && ySpeed > 0){
-            curDestination = (curDestination.x == endPos.x && curDestination.y == endPos.y) ? startPos : endPos;
-            yAcc = -potentionalAcc;
+        curDestination = (curDestination.x == endPos.x && curDestination.y == endPos.y) ? startPos : endPos;
+        yAcc = -potentionalAcc;
     }
+
+    // if (curDestination.y >= owner->pos.y && ySpeed < 0
+    //     || curDestination.y <= owner->pos.y && ySpeed > 0)
+    // {
+    //     curDestination = (curDestination.x == endPos.x && curDestination.y == endPos.y) ? startPos : endPos;
+    //     yAcc = -yAcc;
+    // }
+
 }
