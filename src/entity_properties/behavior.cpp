@@ -132,15 +132,19 @@ void Behavior::behave()
 		auto bellowPos = owner->pos;
 		bellowPos.y += 1;
 
-		if (collidee->behavior && collidee->behavior->ySpeed < 0){
-			bellowPos.y -= collidee->behavior->ySpeed;
+		if (collidee->behavior){
+			if (collidee->behavior->ySpeed < 0){
+				bellowPos.y -= collidee->behavior->ySpeed;
+			} else if (collidee->behavior->ySpeed > 0 && owner->behavior->ySpeed < 0){
+				//So you don't 'hop' up when elevator is at its upper deadpoint and goes down (without this player will be degrounded)
+				bellowPos.y += collidee->behavior->ySpeed * 2;
+			}
 		}
 
 		auto intersect2 = Collision::getIntersect(bellowPos, collidee->pos);
 		if (Collision::intersectCollides(intersect2) && !collidee->collision->isNotOrSemiSolid()){
 			hasUnder = collidee;
 		}
-		int debug = 5;
 	}
 
 	if (!hasUnder){
