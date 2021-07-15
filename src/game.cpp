@@ -11,7 +11,7 @@
 #endif
 
 //#define DEBUG_DRAW
-//#define DEBUG_CAMERA
+#define DEBUG_CAMERA
 
 #define DELAY_BEFORE_GAMEOVER 60 //time between player dying and game over screen popping up
 
@@ -26,6 +26,11 @@ Game::Game()
 #ifdef DEBUG_DRAW
 	fpsTextIndex = visuals->createText("0", 10, 10);
 #endif
+
+#ifdef DEBUG_CAMERA
+	visuals->camera->type = CameraType::NO_FOLLOW;
+#endif
+
 	//v.loadSpritesheet("spritesheet1");
 }
 
@@ -225,9 +230,7 @@ bool Game::tick()
 	//std::cout << "DEBUG: player y speed: " << player->behavior->ySpeed << std::endl;
 	//std::cout << "DEBUG: player grounded: " << player->behavior->grounded << std::endl;
 
-#ifndef DEBUG_CAMERA
 	visuals->camera->followWithCam(followWithCam);
-#endif
 
 	renderEverything();
 

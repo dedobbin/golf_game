@@ -88,8 +88,8 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
         	return;
         }
 
-        int uSpace = camRect.h / 6;
-        int dSpace = camRect.h / 7;
+        int uSpace = camRect.h / 3;
+        int dSpace = camRect.h / 3;
         if (camRect.y + camRect.h < pos.y + pos.h + uSpace){
             camRect.y += entity->behavior->ySpeed;
         } else if (camRect.y > pos.y - dSpace){
