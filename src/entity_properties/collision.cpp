@@ -116,16 +116,12 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
                 break;
             case UP:
                 if (collider->type == entityType::MOVING_PLATFORM){//TODO: make more general
-                    //keep going up, while moving other entity
-                    // if (owner->behavior){
-                    //     std::cout << "DEBUG: push up " << collider->pos.y << std::endl;
-                    //     owner->behavior->ySpeed = collider->behavior->ySpeed;
-                    //     owner->behavior->yAcc = collider->behavior->yAcc;
-                    //     owner->behavior->grounded = true;
-                    // }
-
-                    //owner->pos.y = collider->pos.y - owner->pos.h;
                     return;
+                } else {
+                    /* It's pushed down, check if is grounded yet goes up, means its on plaform, so should squash between solids*/
+                    if (collider->behavior->ySpeed < 0 && collider->behavior->grounded){
+                        collider->behavior->destroy();
+                    }
                 } 
 
                 collider->pos.y += intersect.h;

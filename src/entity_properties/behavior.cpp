@@ -114,6 +114,7 @@ void Behavior::behave()
 	owner->pos.y += ySpeed;
 
 	std::shared_ptr<Entity> hasUnder;
+	
 	for (auto& collidee : World::activeLevel->entities){// check y move + check if is grounded
 		
 		if (owner == collidee.get()) continue;
