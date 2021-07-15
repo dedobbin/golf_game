@@ -118,9 +118,14 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
                 if (collider->type == entityType::MOVING_PLATFORM){//TODO: make more general
                     return;
                 } else {
-                    /* It's pushed down, check if is grounded yet goes up, means its on plaform, so should squash between solids*/
+                    /* It's pushed down, check if is grounded yet goes up, means its on plaform, 
+                       so should squash between solids if living, otherwise just phase through to prevent items from disappearing */
                     if (collider->behavior->ySpeed < 0 && collider->behavior->grounded){
-                        collider->behavior->destroy();
+                        if (collider->type == entityType::LIVING){
+                            collider->behavior->destroy();
+                        } else {
+                            break;
+                        }
                     }
                 } 
 
