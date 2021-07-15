@@ -128,7 +128,7 @@ void Behavior::behave()
 			collidee->collision->currentColliders.push_back(owner);
 		}
 
-		// check what is down
+		// check what is down TODO: wrap in functions, it's is very messy
 		auto bellowPos = owner->pos;
 		bellowPos.y += 1;
 
@@ -167,14 +167,8 @@ void Behavior::behave()
 	if (gravity){
 		yAcc = World::activeLevel->gravity;
 	}
-	// if (gravity && !grounded){
-	// 	//if (owner->name == "elevator") std::cout << "DEBUG applied gravity to elevator" << std::endl;
-	// 	yAcc = World::activeLevel->gravity;
-	// } else if (gravity){
-	// 	yAcc = 0;
-	// }
 
-	//TODO: this should actually mutiply but ok....
+	//This is not how physics work, but yeah
 	addXSpeed(xAcc);
 	addYSpeed(yAcc);
 
@@ -227,7 +221,7 @@ void Behavior::behave()
 
 void Behavior::jump()
 {
-	const float n = 13.5;//TODO: get rid of magic number
+	const float n = 13.5;
 
 	//TODO: shouldn't be able to jump if something above that is not item etc.. i think that work though?
 	if (!grounded){
