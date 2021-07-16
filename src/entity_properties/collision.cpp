@@ -108,6 +108,7 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
             case DOWN:
                 collider->pos.y -= intersect.h;
                 collider->behavior->yAcc = 0;
+                collider->behavior->ySpeed = 0;
 
                 if (collider->behavior->gravity){
                     collider->behavior->grounded = true;
@@ -115,6 +116,11 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
                 }
                 break;
             case UP:
+            	if (collider->name == "player"){
+		            std::cout << "debug: player is pushed out up" << std::endl;
+                    int x = 4;
+	            }
+
                 if (collider->type == entityType::MOVING_PLATFORM){//TODO: make more general
                     return;
                 } else {
@@ -131,14 +137,17 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
 
                 collider->pos.y += intersect.h;
                 collider->behavior->yAcc = 0;
+                collider->behavior->ySpeed = 0;
                 break;
             case LEFT:
                 collider->pos.x += intersect.w;
                 collider->behavior->xAcc = 0;
+                collider->behavior->xSpeed = 0;
                 break;
             case RIGHT:
                 collider->pos.x -= intersect.w;
                 collider->behavior->xAcc = 0;
+                collider->behavior->xSpeed = 0;
                 break;
         }
     }

@@ -77,13 +77,14 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
     } else if (type == CameraType::CENTER){
         snapToSanePos(entity);
     } else if (type == CameraType::FOLLOW){
-        if (entity->pos.y + entity->pos.h > camRect.y + camRect.h - 50){
-            std::cout << "DEBUG: should move down" << rand()%10 << std::endl; 
+        int downSpace = entity->pos.h / 2;
+        int upSpace = entity->pos.h;
+
+        if (entity->pos.y + entity->pos.h > camRect.y + camRect.h - downSpace){
             camRect.y += entity->behavior->ySpeed;   
         }
 
-        else if (entity->pos.y < camRect.y + 100){
-            std::cout << "DEBUG: should move up" << rand()%10 << std::endl; 
+        else if (entity->pos.y < camRect.y + upSpace){
             camRect.y += entity->behavior->ySpeed;   
         }
 
