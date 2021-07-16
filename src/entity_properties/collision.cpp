@@ -107,7 +107,7 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
         switch(colliderDir){
             case DOWN:
                 collider->pos.y -= intersect.h;
-                //collider->behavior->yAcc = 0;
+                collider->behavior->yAcc = 0;
 
                 if (collider->behavior->gravity){
                     collider->behavior->grounded = true;
@@ -130,15 +130,15 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
                 } 
 
                 collider->pos.y += intersect.h;
-                //collider->behavior->yAcc = 0;
+                collider->behavior->yAcc = 0;
                 break;
             case LEFT:
                 collider->pos.x += intersect.w;
-                //collider->behavior->xAcc = 0;
+                collider->behavior->xAcc = 0;
                 break;
             case RIGHT:
                 collider->pos.x -= intersect.w;
-                //collider->behavior->xAcc = 0;
+                collider->behavior->xAcc = 0;
                 break;
         }
     }

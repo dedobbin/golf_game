@@ -72,37 +72,48 @@ bool Camera::partiallyInView(int x, int y, int w, int h)
 
 void Camera::followWithCam(std::shared_ptr<Entity> entity)
 {
-    if (type == CameraType::NO_FOLLOW){
+    if (type == CameraType::NO_FOLLOW){        
         return;
     } else if (type == CameraType::CENTER){
         snapToSanePos(entity);
     } else if (type == CameraType::FOLLOW){
-        //todo
+        if (entity->pos.y + entity->pos.h > camRect.y + camRect.h - 50){
+            std::cout << "DEBUG: should move down" << rand()%10 << std::endl; 
+            camRect.y += entity->behavior->ySpeed;   
+        }
+
+        else if (entity->pos.y < camRect.y + 100){
+            std::cout << "DEBUG: should move up" << rand()%10 << std::endl; 
+            camRect.y += entity->behavior->ySpeed;   
+        }
+
+
+
   
         // TODO: don't move cam outside of world edges 
         // TODO: check if entity doesn't fit in cam/work with cam logic because too big, always hits edges?
-        auto pos = entity->pos;
+        // auto pos = entity->pos;
 
-        if (!entity->behavior || partiallyInView(pos.x, pos.y, pos.w, pos.h) || !inView(pos.x, pos.y, pos.w, pos.h)){
-        	snapToSanePos(entity);
-        	return;
-        }
+        // if (!entity->behavior || partiallyInView(pos.x, pos.y, pos.w, pos.h) || !inView(pos.x, pos.y, pos.w, pos.h)){
+        // 	snapToSanePos(entity);
+        // 	return;
+        // }
 
-        int uSpace = camRect.h / 3;
-        int dSpace = camRect.h / 3;
-        if (camRect.y + camRect.h < pos.y + pos.h + uSpace){
-            camRect.y += entity->behavior->ySpeed;
-        } else if (camRect.y > pos.y - dSpace){
-        	camRect.y += entity->behavior->ySpeed;
-        }
+        // int uSpace = camRect.h / 3;
+        // int dSpace = camRect.h / 3;
+        // if (camRect.y + camRect.h < pos.y + pos.h + uSpace){
+        //     camRect.y += entity->behavior->ySpeed;
+        // } else if (camRect.y > pos.y - dSpace){
+        // 	camRect.y += entity->behavior->ySpeed;
+        // }
 
-        int rSpace = camRect.w / 2;
-        int lSpace = camRect.w / 3;
-        if (camRect.x + camRect.w < pos.x + pos.w + rSpace && entity->behavior->xSpeed > 0){
-        	camRect.x += entity->behavior->xSpeed;
-        }else if (camRect.x > pos.x -lSpace && entity->behavior->xSpeed < 0){
-        	camRect.x += entity->behavior->xSpeed;
-        }
+        // int rSpace = camRect.w / 2;
+        // int lSpace = camRect.w / 3;
+        // if (camRect.x + camRect.w < pos.x + pos.w + rSpace && entity->behavior->xSpeed > 0){
+        // 	camRect.x += entity->behavior->xSpeed;
+        // }else if (camRect.x > pos.x -lSpace && entity->behavior->xSpeed < 0){
+        // 	camRect.x += entity->behavior->xSpeed;
+        // }
     }
 
     //TODO: use commented out code instead of snapping everytime
