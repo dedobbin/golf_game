@@ -63,6 +63,7 @@ void Behavior::addYSpeed(float n, bool clampZero)
 
 void Behavior::behave()
 {
+	// This entire function is a janky mess
 	// TODO: this check all entities for collision 2 times, should optimize by sorting list, static entities on same place
 	// OR only checking entities in view, but that could lead to other problems later
 	
@@ -156,14 +157,14 @@ void Behavior::behave()
 		grounded = false;
 	}
 
+	/***** This is not how physics work, but yeah *****/
 	if (gravity){
 		yAcc = World::activeLevel->gravity;
 	}
 
-	//This is not how physics work, but yeah
 	addXSpeed(xAcc);
-	addYSpeed(yAcc);
 
+	//TODO: refactor this, all pretttty jank
 	if (hasUnder){
 		//moving up really messes with stuff, entity is ungrounded, so when that happens, make it grounded here
 		if (hasUnder->type == entityType::MOVING_PLATFORM){//TODO: make more generic
@@ -174,9 +175,15 @@ void Behavior::behave()
 				yAcc = hasUnder->behavior->yAcc;
 				grounded = true;
 			}
+		}else {
+			ySpeed = 0;
+			grounded = true;
 		} 
+	} else {
+		addYSpeed(yAcc);
 	}
-	
+
+	/***** specific stuff for living entities *****/
 	if (owner->type == LIVING){
 		auto living = (LivingEntity*)owner;
 		//held item is moved with player
@@ -213,6 +220,7 @@ void Behavior::behave()
 		}
 	}
 
+	/***** ground friction *****/
 	if (xSpeed > 0 && xAcc <= 0){
 		if (grounded){
 			addXSpeed(-frictionGround, true);
