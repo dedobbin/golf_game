@@ -156,6 +156,14 @@ void Behavior::behave()
 		grounded = false;
 	}
 
+	if (gravity){
+		yAcc = World::activeLevel->gravity;
+	}
+
+	//This is not how physics work, but yeah
+	addXSpeed(xAcc);
+	addYSpeed(yAcc);
+
 	if (hasUnder){
 		//moving up really messes with stuff, entity is ungrounded, so when that happens, make it grounded here
 		if (hasUnder->type == entityType::MOVING_PLATFORM){//TODO: make more generic
@@ -166,22 +174,9 @@ void Behavior::behave()
 				yAcc = hasUnder->behavior->yAcc;
 				grounded = true;
 			}
-		} else {
-			if (owner->collision && hasUnder->collision && (! (hasUnder->collision->isNotOrSemiSolid() && hasUnder->collision->isNotOrSemiSolid()))){
-				if (owner->name == "player")
-					std::cout << "TODO: y speed is borked" << std::endl;
-			}
-		}
+		} 
 	}
-
-	if (gravity){
-		yAcc = World::activeLevel->gravity;
-	}
-
-	//This is not how physics work, but yeah
-	addXSpeed(xAcc);
-	addYSpeed(yAcc);
-
+	
 	if (owner->type == LIVING){
 		auto living = (LivingEntity*)owner;
 		//held item is moved with player
