@@ -22,7 +22,7 @@ void ItemBehavior::interact(Entity* e)
 		auto holdingEntity = ((Item*)owner)->owner;
 		auto living = (LivingEntity*)holdingEntity;
 		assert(living->golfMode);
-		if(living->behavior->grounded){
+		if(living->behavior->isGrounded()){
 			living->golfMode->activate(e);
 		}
 	}

@@ -9,7 +9,7 @@ void EnemyBehavior::behave()
 {
 	Behavior::behave();
 
-	if (!grounded){
+	if (!isGrounded()){
 		return;
 	}
 

@@ -110,7 +110,7 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
                 collider->behavior->ySpeed = 0;
 
                 if (collider->behavior->gravity){
-                    collider->behavior->grounded = true;
+                    collider->behavior->setGrounded(true);
                     collider->behavior->ySpeed = 0;
                 }
                 break;
@@ -120,7 +120,7 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
                 } else {
                     /* It's pushed down, check if is grounded yet goes up, means its on plaform, 
                        so should squash between solids if living, otherwise just phase through to prevent items from disappearing */
-                    if (collider->behavior->ySpeed < 0 && collider->behavior->grounded){
+                    if (collider->behavior->ySpeed < 0 && collider->behavior->isGrounded()){
                         if (collider->type == entityType::LIVING){
                             collider->behavior->destroy();
                         } else {

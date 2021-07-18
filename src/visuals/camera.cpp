@@ -88,7 +88,7 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
         // }
 
 
-        if (entity->behavior->grounded && entity->behavior->ySpeed == 0){
+        if (entity->behavior->isGrounded() && entity->behavior->ySpeed == 0){
             // on stable ground
             // int a = entity->pos.y + entity->pos.h;
             // int b = camRect.y + camRect.h;
@@ -107,7 +107,7 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
                     camRect.y -= camSpeed;
                 }
             }
-        } else if (entity->behavior->grounded && !entity->behavior->ySpeed == 0 || !entity->behavior->grounded && entity->behavior->ySpeed > 0){
+        } else if (entity->behavior->isGrounded() && !entity->behavior->ySpeed == 0 || !entity->behavior->isGrounded() && entity->behavior->ySpeed > 0){
             // falling or on elevator
             int downSpace = 100;
             int upSpace = 100;
@@ -119,7 +119,7 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
                 camRect.y += entity->behavior->ySpeed;
                 std::cout << "DEBUG: jank when not on elevator" << std::endl;
             }
-        } else if (!entity->behavior->grounded && entity->behavior->ySpeed < 0){
+        } else if (!entity->behavior->isGrounded() && entity->behavior->ySpeed < 0){
             //jumping
             int upSpace = 50;
             if (entity->pos.y < camRect.y - upSpace){

@@ -169,11 +169,11 @@ void Behavior::behave()
 			if (hasUnder->behavior){
 				ySpeed = hasUnder->behavior->ySpeed;
 				yAcc = hasUnder->behavior->yAcc;
-				grounded = true;
+				setGrounded();
 			}
 		}else {
 			ySpeed = 0;
-			grounded = true;
+			setGrounded();
 		} 
 	} else {
 		addYSpeed(yAcc);
@@ -207,11 +207,11 @@ void Behavior::behave()
 		// update some animations
 		// If movement was stopped by wall, dont keep walk animation
 		auto animatedGraphic = owner->graphic.get();
-		if (animatedGraphic->curAnimationState == AnimationState::WALK && owner->behavior->xSpeed == 0){
+		if (animatedGraphic->curAnimationState == AnimationState::WALK && xSpeed == 0){
 			animatedGraphic->changeState(AnimationState::DEFAULT);
 		}
 
-		if (animatedGraphic->curAnimationState == AnimationState::JUMP && owner->behavior->grounded){
+		if (animatedGraphic->curAnimationState == AnimationState::JUMP && grounded){
 			animatedGraphic->changeState(AnimationState::DEFAULT);
 		}
 	}
@@ -245,7 +245,19 @@ void Behavior::jump()
 	} else {
 		ySpeed -= n;
 	}
+	justJumped = true;
 	owner->graphic->changeState(AnimationState::JUMP);
+}
+
+bool Behavior::isGrounded()
+{
+	return grounded;
+}
+
+void Behavior::setGrounded(bool _grounded)
+{
+	justJumped = false;
+	grounded = true;
 }
 
 void Behavior::destroy(bool animation)
