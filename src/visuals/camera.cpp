@@ -96,7 +96,7 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
             int downSpace = 200;
             /* TODO: fix this terrible code */
             if ((camRect.y + camRect.h) - (entity->pos.y + entity->pos.h) < downSpace){
-                //Checks if will overshoot, will cause spazzing, TODO: fix this terrible code
+                //Checks if will overshoot, will cause spazzing
                 if (!((camRect.y + camRect.h + camSpeed) - (entity->pos.y + entity->pos.h) > downSpace)){
                     camRect.y += camSpeed;
                 }
@@ -109,6 +109,11 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
             }
         } else if (!entity->behavior->isGrounded() && entity->behavior->ySpeed > 0){
             // falling
+            int downSpace = 200;
+            int camSpeed = 10;
+            if ((camRect.y + camRect.h) - (entity->pos.y + entity->pos.h) < downSpace){
+                camRect.y += camSpeed;
+            }
 
         } else if(entity->behavior->isGrounded() && !entity->behavior->ySpeed == 0){
             //elevator
