@@ -92,8 +92,8 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
             // on stable ground
             // int a = entity->pos.y + entity->pos.h;
             // int b = camRect.y + camRect.h;
-            int camSpeed = 20;
-            int downSpace = 100;
+            int camSpeed = 10;
+            int downSpace = 200;
             /* TODO: fix this terrible code*/
             if ((camRect.y + camRect.h) - (entity->pos.y + entity->pos.h) < downSpace){
                 //Checks if will overshoot, will cause spazzing, TODO: fix this terrible code
@@ -109,14 +109,15 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
             }
         } else if (entity->behavior->grounded && !entity->behavior->ySpeed == 0 || !entity->behavior->grounded && entity->behavior->ySpeed > 0){
             // falling or on elevator
-            int downSpace = 50;
-            int upSpace = 50;
+            int downSpace = 100;
+            int upSpace = 100;
             if (entity->pos.y + entity->pos.h > camRect.y + camRect.h - downSpace){
                 //std::cout << "DEBUG: camera goes down " << rand() %10 << std::endl;
                 camRect.y += entity->behavior->ySpeed;   
             } else if (entity->pos.y < camRect.y + upSpace){
                 //std::cout << "DEBUG: camera goes up " << rand()%10;
                 camRect.y += entity->behavior->ySpeed;
+                std::cout << "DEBUG: jank when not on elevator" << std::endl;
             }
         } else if (!entity->behavior->grounded && entity->behavior->ySpeed < 0){
             //jumping
