@@ -66,10 +66,6 @@ void Behavior::behave()
 	// This entire function is a janky mess
 	// TODO: this check all entities for collision 2 times, should optimize by sorting list, static entities on same place
 	// OR only checking entities in view, but that could lead to other problems later
-	
-	if (owner->name == "player"){
-		int x = 4;
-	}
 
 	if (owner->pos.y < 0 || owner->pos.y > World::activeLevel->h - owner->pos.h
 	|| owner->pos.x < 0 || owner->pos.x > World::activeLevel->w - owner->pos.w){
@@ -92,7 +88,7 @@ void Behavior::behave()
 	} else if (xSpeed < 0){
 		hDir = LEFT;
 	}
-
+	
 	owner->pos.x += xSpeed;
 
 	for (auto& collidee : World::activeLevel->entities){// check x move

@@ -106,12 +106,6 @@ void Collision::pushout(Entity* collider, direction colliderDir, rect intersect)
     if (collider->behavior){
         switch(colliderDir){
             case DOWN:
-                //debug
-            	if (collider->name == "player"){
-		            std::cout << "debug: player is pushed out up" << std::endl;
-                    int x = 4;
-	            }
-
                 collider->pos.y -= intersect.h;
                 collider->behavior->ySpeed = 0;
 

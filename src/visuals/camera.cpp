@@ -76,16 +76,105 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
         return;
     } else if (type == CameraType::CENTER){
         snapToSanePos(entity);
-    } else if (type == CameraType::FOLLOW){
-        int downSpace = entity->pos.h / 2;
-        int upSpace = entity->pos.h;
+    } else if (type == CameraType::FOLLOW){ 
+        // if (entity->behavior->grounded && entity->behavior->ySpeed == 0){
+        //     std::cout << "DEBUG: on stable ground" << std::endl;
+        // } else if (entity->behavior->grounded && !entity->behavior->ySpeed == 0){
+        //     std::cout << "DEBUG: on elevator" << std::endl;
+        // } else if (!entity->behavior->grounded && entity->behavior->ySpeed > 0){
+        //     std::cout << "DEBUG: falling" << std::endl;
+        // } else if (!entity->behavior->grounded && entity->behavior->ySpeed < 0){
+        //     std::cout << "DEBUG: jumping" << std::endl;
+        // }
 
-        if (entity->pos.y + entity->pos.h > camRect.y + camRect.h - downSpace){
-            camRect.y += entity->behavior->ySpeed;   
+
+        if (entity->behavior->grounded && entity->behavior->ySpeed == 0){
+            // on stable ground
+            // int a = entity->pos.y + entity->pos.h;
+            // int b = camRect.y + camRect.h;
+            int camSpeed = 20;
+            int downSpace = 100;
+            /* TODO: fix this terrible code*/
+            if ((camRect.y + camRect.h) - (entity->pos.y + entity->pos.h) < downSpace){
+                //Checks if will overshoot, will cause spazzing, TODO: fix this terrible code
+                if (!((camRect.y + camRect.h + camSpeed) - (entity->pos.y + entity->pos.h) > downSpace)){
+                    camRect.y += camSpeed;
+                }
+                camRect.y += camSpeed;
+            } else if ((camRect.y + camRect.h) - (entity->pos.y + entity->pos.h) > downSpace){
+                //Checks if will overshoot, will cause spazzing
+                if (!((camRect.y + camRect.h - camSpeed) - (entity->pos.y + entity->pos.h) < downSpace)){
+                    camRect.y -= camSpeed;
+                }
+            }
+        } else if (entity->behavior->grounded && !entity->behavior->ySpeed == 0 || !entity->behavior->grounded && entity->behavior->ySpeed > 0){
+            // falling or on elevator
+            int downSpace = 50;
+            int upSpace = 50;
+            if (entity->pos.y + entity->pos.h > camRect.y + camRect.h - downSpace){
+                //std::cout << "DEBUG: camera goes down " << rand() %10 << std::endl;
+                camRect.y += entity->behavior->ySpeed;   
+            } else if (entity->pos.y < camRect.y + upSpace){
+                //std::cout << "DEBUG: camera goes up " << rand()%10;
+                camRect.y += entity->behavior->ySpeed;
+            }
+        } else if (!entity->behavior->grounded && entity->behavior->ySpeed < 0){
+            //jumping
+            int upSpace = 50;
+            if (entity->pos.y < camRect.y - upSpace){
+                camRect.y += entity->behavior->ySpeed;
+            }
+
         }
 
-        else if (entity->pos.y < camRect.y + upSpace){
-            camRect.y += entity->behavior->ySpeed;   
+
+        //if grounded and y is not moving, on ground
+            //stabilize based on under player == 100, 2 conditionals
+        //if grounded and moving OR falling 
+            //go with flow
+
+
+        // if (!entity->behavior->ySpeed > 0){
+        //     if (b - a < downSpace){
+        //         camRect.y += camSpeed;
+        //     } else {
+        //         std::cout << "player " << a;
+        //         std::cout << ",cam " << b;
+        //         std::cout << "(" << b-a << ")" << std::endl; 
+        //     }
+        // } else if (entity->behavior->grounded){
+        //     int downSpace = 50;
+        //     int upSpace = 50;
+        //     if (entity->pos.y + entity->pos.h > camRect.y + camRect.h - downSpace){
+        //         //std::cout << "DEBUG: camera goes down " << rand() %10 << std::endl;
+        //         camRect.y += entity->behavior->ySpeed;   
+        //     } else if (entity->pos.y < camRect.y + upSpace){
+        //         //std::cout << "DEBUG: camera goes up " << rand()%10;
+        //         camRect.y += entity->behavior->ySpeed;
+        //     }
+        // }
+        
+        
+        // int downSpace = 50;
+        // int upSpace = 50;
+        // if (entity->pos.y + entity->pos.h > camRect.y + camRect.h - downSpace){
+        //     //std::cout << "DEBUG: camera goes down " << rand() %10 << std::endl;
+        //     camRect.y += entity->behavior->ySpeed;   
+        // } else if (entity->pos.y < camRect.y + upSpace){
+        //     //std::cout << "DEBUG: camera goes up " << rand()%10;
+        //     camRect.y += entity->behavior->ySpeed;
+        // }
+
+        int rightSpace = 400;
+        int leftSpace = 200;
+        if (entity->pos.x + entity->pos.w > camRect.x + camRect.w - rightSpace){
+            if (entity->behavior->xSpeed > 0){
+                camRect.x += entity->behavior->xSpeed;
+            }
+        } else if (entity->pos.x < camRect.x + leftSpace){
+            if (entity->behavior->xSpeed < 0){
+                camRect.x += entity->behavior->xSpeed;
+            }
         }
 
 
