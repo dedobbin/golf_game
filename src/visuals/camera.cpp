@@ -124,7 +124,6 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
             //jumping
             int upSpace = 80;
             if (entity->pos.y < camRect.y + upSpace){
-            std::cout << "DEBUG: jumping move" << std::endl;
                 camRect.y += entity->behavior->ySpeed;
             }
 
