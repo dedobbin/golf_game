@@ -110,9 +110,8 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
         } else if (!entity->behavior->isGrounded() && entity->behavior->ySpeed > 0){
             // falling
             int downSpace = 200;
-            int camSpeed = 10;
             if ((camRect.y + camRect.h) - (entity->pos.y + entity->pos.h) < downSpace){
-                camRect.y += camSpeed;
+                camRect.y += entity->behavior->ySpeed;
             }
 
         } else if(entity->behavior->isGrounded() && !entity->behavior->ySpeed == 0){
@@ -125,7 +124,6 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
             } else if (entity->pos.y < camRect.y + upSpace){
                 //std::cout << "DEBUG: camera goes up " << rand()%10;
                 camRect.y += entity->behavior->ySpeed;
-                std::cout << "DEBUG: jank when not on elevator" << std::endl;
             }
         } else if (!entity->behavior->isGrounded() && entity->behavior->ySpeed < 0){
             //jumping
