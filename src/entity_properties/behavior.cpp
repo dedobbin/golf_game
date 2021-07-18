@@ -254,6 +254,11 @@ bool Behavior::isGrounded()
 	return grounded;
 }
 
+bool Behavior::getJustJumped()
+{
+	return justJumped;
+}
+
 void Behavior::setGrounded(bool _grounded)
 {
 	justJumped = false;

@@ -26,12 +26,12 @@ class Behavior
 		/* When slowing down, clampZero should be true so rounds to 0 eventually */
 		void addYSpeed(float n, bool clampZero = false);
 		bool isGrounded();
+		bool getJustJumped();
 		void setGrounded(bool _grounded = true);
 
 		float xAcc = 0;
 		float yAcc = 0;
 
-		int getState();
 		void destroy(bool animation = true);
 		
 		Entity* owner;
@@ -50,10 +50,10 @@ class Behavior
 		float xSpeed = 0; //should be set through addXSpeed(), would be better to properly private but eh
 		float ySpeed = 0; //should be set through addXSpeed(), would be better to properly private but eh 
 		bool destroyed = false;
-		bool justJumped = false; //When didn't touch ground after a jump
 
 	private:
 		bool grounded = false;
+		bool justJumped = false; //When didn't touch ground after a jump
 };
 
 #endif
