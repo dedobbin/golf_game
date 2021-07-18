@@ -92,7 +92,7 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
             // on stable ground
             // int a = entity->pos.y + entity->pos.h;
             // int b = camRect.y + camRect.h;
-            int camSpeed = 10;
+            int camSpeed = 4;
             int downSpace = 200;
             /* TODO: fix this terrible code */
             if ((camRect.y + camRect.h) - (entity->pos.y + entity->pos.h) < downSpace){
@@ -127,8 +127,9 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
             }
         } else if (!entity->behavior->isGrounded() && entity->behavior->ySpeed < 0){
             //jumping
-            int upSpace = 50;
-            if (entity->pos.y < camRect.y - upSpace){
+            int upSpace = 80;
+            if (entity->pos.y < camRect.y + upSpace){
+            std::cout << "DEBUG: jumping move" << std::endl;
                 camRect.y += entity->behavior->ySpeed;
             }
 
