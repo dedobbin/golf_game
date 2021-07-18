@@ -94,14 +94,17 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
             // int b = camRect.y + camRect.h;
             int camSpeed = 4;
             int downSpace = 200;
+            int treshold = 100; //if pos was moved less than this, dont move with entity, restore later if get near borders
+            int diff = ((camRect.y + camRect.h) - (entity->pos.y + entity->pos.h)) - downSpace;
             /* TODO: fix this terrible code */
-            if ((camRect.y + camRect.h) - (entity->pos.y + entity->pos.h) < downSpace){
+            // TODO: don't do this, if change is small - then do another check, to check of many small changes didn't mess with camera
+            if (diff < -treshold){
                 //Checks if will overshoot, will cause spazzing
                 if (!((camRect.y + camRect.h + camSpeed) - (entity->pos.y + entity->pos.h) > downSpace)){
                     camRect.y += camSpeed;
                 }
                 camRect.y += camSpeed;
-            } else if ((camRect.y + camRect.h) - (entity->pos.y + entity->pos.h) > downSpace){
+            } else if (diff > treshold){
                 //Checks if will overshoot, will cause spazzing
                 if (!((camRect.y + camRect.h - camSpeed) - (entity->pos.y + entity->pos.h) < downSpace)){
                     camRect.y -= camSpeed;
