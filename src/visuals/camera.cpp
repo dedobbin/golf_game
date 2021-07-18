@@ -87,14 +87,14 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
         //     std::cout << "DEBUG: jumping" << std::endl;
         // }
 
-
+        //TODO: make wrapper functions to get these 'states'
         if (entity->behavior->isGrounded() && entity->behavior->ySpeed == 0){
             // on stable ground
             // int a = entity->pos.y + entity->pos.h;
             // int b = camRect.y + camRect.h;
             int camSpeed = 10;
             int downSpace = 200;
-            /* TODO: fix this terrible code*/
+            /* TODO: fix this terrible code */
             if ((camRect.y + camRect.h) - (entity->pos.y + entity->pos.h) < downSpace){
                 //Checks if will overshoot, will cause spazzing, TODO: fix this terrible code
                 if (!((camRect.y + camRect.h + camSpeed) - (entity->pos.y + entity->pos.h) > downSpace)){
@@ -107,8 +107,11 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
                     camRect.y -= camSpeed;
                 }
             }
-        } else if (entity->behavior->isGrounded() && !entity->behavior->ySpeed == 0 || !entity->behavior->isGrounded() && entity->behavior->ySpeed > 0){
-            // falling or on elevator
+        } else if (!entity->behavior->isGrounded() && entity->behavior->ySpeed > 0){
+            // falling
+
+        } else if(entity->behavior->isGrounded() && !entity->behavior->ySpeed == 0){
+            //elevator
             int downSpace = 100;
             int upSpace = 100;
             if (entity->pos.y + entity->pos.h > camRect.y + camRect.h - downSpace){
