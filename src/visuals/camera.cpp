@@ -77,40 +77,32 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
     } else if (type == CameraType::CENTER){
         snapToSanePos(entity);
     } else if (type == CameraType::FOLLOW){ 
-        // if (entity->behavior->grounded && entity->behavior->ySpeed == 0){
-        //     std::cout << "DEBUG: on stable ground" << std::endl;
-        // } else if (entity->behavior->grounded && !entity->behavior->ySpeed == 0){
-        //     std::cout << "DEBUG: on elevator" << std::endl;
-        // } else if (!entity->behavior->grounded && entity->behavior->ySpeed > 0){
-        //     std::cout << "DEBUG: falling" << std::endl;
-        // } else if (!entity->behavior->grounded && entity->behavior->ySpeed < 0){
-        //     std::cout << "DEBUG: jumping" << std::endl;
-        // }
-
         //TODO: make wrapper functions to get these 'states'
-        if (entity->behavior->isGrounded() && entity->behavior->ySpeed == 0){
-            // on stable ground
-            // int a = entity->pos.y + entity->pos.h;
-            // int b = camRect.y + camRect.h;
-            int camSpeed = 4;
-            int downSpace = 200;
-            int treshold = 100; //if pos was moved less than this, dont move with entity, restore later if get near borders
-            int diff = ((camRect.y + camRect.h) - (entity->pos.y + entity->pos.h)) - downSpace;
-            /* TODO: fix this terrible code */
-            // TODO: don't do this, if change is small - then do another check, to check of many small changes didn't mess with camera
-            if (diff < -treshold){
-                //Checks if will overshoot, will cause spazzing
-                if (!((camRect.y + camRect.h + camSpeed) - (entity->pos.y + entity->pos.h) > downSpace)){
-                    camRect.y += camSpeed;
-                }
-                camRect.y += camSpeed;
-            } else if (diff > treshold){
-                //Checks if will overshoot, will cause spazzing
-                if (!((camRect.y + camRect.h - camSpeed) - (entity->pos.y + entity->pos.h) < downSpace)){
-                    camRect.y -= camSpeed;
-                }
-            }
-        } else if (!entity->behavior->isGrounded() && entity->behavior->ySpeed > 0){
+        
+        // if (entity->behavior->isGrounded() && entity->behavior->ySpeed == 0){
+        //     // on stable ground, alot of junk, luckily we dont use it anymore
+        //     int a = entity->pos.y + entity->pos.h;
+        //     int b = camRect.y + camRect.h;
+        //     int camSpeed = 4;
+        //     int downSpace = 200;
+        //     int treshold = 100; //if pos was moved less than this, ignore otherwise snaps with alot of jumps..
+        //     int diff = ((camRect.y + camRect.h) - (entity->pos.y + entity->pos.h)) - downSpace;
+        //     /* TODO: fix this terrible code */
+        //     // TODO: don't do this, if change is small - then do another check, to check of many small changes didn't mess with camera
+        //     if (diff < -treshold){
+        //         //Checks if will overshoot, will cause spazzing
+        //         if (!((camRect.y + camRect.h + camSpeed) - (entity->pos.y + entity->pos.h) > downSpace)){
+        //             camRect.y += camSpeed;
+        //         }
+        //         camRect.y += camSpeed;
+        //     } else if (diff > treshold){
+        //         //Checks if will overshoot, will cause spazzing
+        //         if (!((camRect.y + camRect.h - camSpeed) - (entity->pos.y + entity->pos.h) < downSpace)){
+        //             camRect.y -= camSpeed;
+        //         }
+        //     }
+        // }  
+        if (!entity->behavior->isGrounded() && entity->behavior->ySpeed > 0){
             // falling
             int downSpace = 200;
             if ((camRect.y + camRect.h) - (entity->pos.y + entity->pos.h) < downSpace){
