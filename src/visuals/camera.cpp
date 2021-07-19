@@ -78,12 +78,14 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
         snapToSanePos(entity);
     } else if (type == CameraType::FOLLOW){ 
         //TODO: make wrapper functions to get these 'states'
-         
+        
+        int fallFromJumpTreshold = 50;
         if (!entity->behavior->isGrounded() && entity->behavior->ySpeed > 0){
             // falling
             int downSpace = 100;
             if ((camRect.y + camRect.h) - (entity->pos.y + entity->pos.h) < downSpace
-            || (entity->behavior->getJustJumped() && entity->behavior->getLastJumpedFrom().y < entity->pos.y)){
+            || (entity->behavior->getJustJumped() 
+            && entity->pos.y - entity->behavior->getLastJumpedFrom().y > fallFromJumpTreshold)){
                 camRect.y += entity->behavior->ySpeed;
             }
 
@@ -142,6 +144,7 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
                 camRect.x += entity->behavior->xSpeed;
             }
         }
+    }
 
 }
 
