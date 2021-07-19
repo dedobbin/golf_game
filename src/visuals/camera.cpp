@@ -78,30 +78,7 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
         snapToSanePos(entity);
     } else if (type == CameraType::FOLLOW){ 
         //TODO: make wrapper functions to get these 'states'
-        
-        // if (entity->behavior->isGrounded() && entity->behavior->ySpeed == 0){
-        //     // on stable ground, alot of junk, luckily we dont use it anymore
-        //     int a = entity->pos.y + entity->pos.h;
-        //     int b = camRect.y + camRect.h;
-        //     int camSpeed = 4;
-        //     int downSpace = 200;
-        //     int treshold = 100; //if pos was moved less than this, ignore otherwise snaps with alot of jumps..
-        //     int diff = ((camRect.y + camRect.h) - (entity->pos.y + entity->pos.h)) - downSpace;
-        //     /* TODO: fix this terrible code */
-        //     // TODO: don't do this, if change is small - then do another check, to check of many small changes didn't mess with camera
-        //     if (diff < -treshold){
-        //         //Checks if will overshoot, will cause spazzing
-        //         if (!((camRect.y + camRect.h + camSpeed) - (entity->pos.y + entity->pos.h) > downSpace)){
-        //             camRect.y += camSpeed;
-        //         }
-        //         camRect.y += camSpeed;
-        //     } else if (diff > treshold){
-        //         //Checks if will overshoot, will cause spazzing
-        //         if (!((camRect.y + camRect.h - camSpeed) - (entity->pos.y + entity->pos.h) < downSpace)){
-        //             camRect.y -= camSpeed;
-        //         }
-        //     }
-        // }  
+         
         if (!entity->behavior->isGrounded() && entity->behavior->ySpeed > 0){
             // falling
             int downSpace = 100;
@@ -130,43 +107,29 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
 
         }
 
-
-        //if grounded and y is not moving, on ground
-            //stabilize based on under player == 100, 2 conditionals
-        //if grounded and moving OR falling 
-            //go with flow
-
-
-        // if (!entity->behavior->ySpeed > 0){
-        //     if (b - a < downSpace){
+        // else if (entity->behavior->isGrounded() && entity->behavior->ySpeed == 0){
+        //     // on stable ground, alot of junk, luckily we dont use it anymore
+        //     int a = entity->pos.y + entity->pos.h;
+        //     int b = camRect.y + camRect.h;
+        //     int camSpeed = 4;
+        //     int downSpace = 200;
+        //     int treshold = 100; //if pos was moved less than this, ignore otherwise snaps with alot of jumps..
+        //     int diff = ((camRect.y + camRect.h) - (entity->pos.y + entity->pos.h)) - downSpace;
+        //     /* TODO: fix this terrible code */
+        //     // TODO: don't do this, if change is small - then do another check, to check of many small changes didn't mess with camera
+        //     if (diff < -treshold){
+        //         //Checks if will overshoot, will cause spazzing
+        //         if (!((camRect.y + camRect.h + camSpeed) - (entity->pos.y + entity->pos.h) > downSpace)){
+        //             camRect.y += camSpeed;
+        //         }
         //         camRect.y += camSpeed;
-        //     } else {
-        //         std::cout << "player " << a;
-        //         std::cout << ",cam " << b;
-        //         std::cout << "(" << b-a << ")" << std::endl; 
+        //     } else if (diff > treshold){
+        //         //Checks if will overshoot, will cause spazzing
+        //         if (!((camRect.y + camRect.h - camSpeed) - (entity->pos.y + entity->pos.h) < downSpace)){
+        //             camRect.y -= camSpeed;
+        //         }
         //     }
-        // } else if (entity->behavior->grounded){
-        //     int downSpace = 50;
-        //     int upSpace = 50;
-        //     if (entity->pos.y + entity->pos.h > camRect.y + camRect.h - downSpace){
-        //         //std::cout << "DEBUG: camera goes down " << rand() %10 << std::endl;
-        //         camRect.y += entity->behavior->ySpeed;   
-        //     } else if (entity->pos.y < camRect.y + upSpace){
-        //         //std::cout << "DEBUG: camera goes up " << rand()%10;
-        //         camRect.y += entity->behavior->ySpeed;
-        //     }
-        // }
-        
-        
-        // int downSpace = 50;
-        // int upSpace = 50;
-        // if (entity->pos.y + entity->pos.h > camRect.y + camRect.h - downSpace){
-        //     //std::cout << "DEBUG: camera goes down " << rand() %10 << std::endl;
-        //     camRect.y += entity->behavior->ySpeed;   
-        // } else if (entity->pos.y < camRect.y + upSpace){
-        //     //std::cout << "DEBUG: camera goes up " << rand()%10;
-        //     camRect.y += entity->behavior->ySpeed;
-        // }
+        // } 
 
         int rightSpace = 400;
         int leftSpace = 200;
@@ -180,64 +143,6 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
             }
         }
 
-
-
-  
-        // TODO: don't move cam outside of world edges 
-        // TODO: check if entity doesn't fit in cam/work with cam logic because too big, always hits edges?
-        // auto pos = entity->pos;
-
-        // if (!entity->behavior || partiallyInView(pos.x, pos.y, pos.w, pos.h) || !inView(pos.x, pos.y, pos.w, pos.h)){
-        // 	snapToSanePos(entity);
-        // 	return;
-        // }
-
-        // int uSpace = camRect.h / 3;
-        // int dSpace = camRect.h / 3;
-        // if (camRect.y + camRect.h < pos.y + pos.h + uSpace){
-        //     camRect.y += entity->behavior->ySpeed;
-        // } else if (camRect.y > pos.y - dSpace){
-        // 	camRect.y += entity->behavior->ySpeed;
-        // }
-
-        // int rSpace = camRect.w / 2;
-        // int lSpace = camRect.w / 3;
-        // if (camRect.x + camRect.w < pos.x + pos.w + rSpace && entity->behavior->xSpeed > 0){
-        // 	camRect.x += entity->behavior->xSpeed;
-        // }else if (camRect.x > pos.x -lSpace && entity->behavior->xSpeed < 0){
-        // 	camRect.x += entity->behavior->xSpeed;
-        // }
-    }
-
-    //TODO: use commented out code instead of snapping everytime
-    // snapToSanePos(entity);
-
-	//TODO: don't move cam outside of world edges 
-	//TODO: check if entity doesn't fit in cam/work with cam logic because too big, always hits edges?
-    // auto pos = entity->pos;
-
-	// if (snapIfOutsideOfView &&
-	// (!entity->behavior || partiallyInView(pos.x, pos.y, pos.w, pos.h) || !inView(pos.x, pos.y, pos.w, pos.h))
-	// ){
-	// 	snapToSanePos(entity);
-	// 	return;
-	// }
-
-    // int uSpace = camRect.h / 6;
-	// int dSpace = camRect.h / 7;
-	// if (camRect.y + camRect.h < pos.y + pos.h + uSpace){
-    //     camRect.y += entity->behavior->ySpeed;
-	// } else if (camRect.y > pos.y - dSpace){
-	// 	camRect.y += entity->behavior->ySpeed;
-	// }
-
-	// int rSpace = camRect.w / 2;
-	// int lSpace = camRect.w / 3;
-	// if (camRect.x + camRect.w < pos.x + pos.w + rSpace && entity->behavior->xSpeed > 0){
-	// 	camRect.x += entity->behavior->xSpeed;
-	// }else if (camRect.x > pos.x -lSpace && entity->behavior->xSpeed < 0){
-	// 	camRect.x += entity->behavior->xSpeed;
-	// }
 }
 
 void Camera::snapToSanePos(std::shared_ptr <Entity> entity)
