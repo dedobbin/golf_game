@@ -104,8 +104,9 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
         // }  
         if (!entity->behavior->isGrounded() && entity->behavior->ySpeed > 0){
             // falling
-            int downSpace = 200;
-            if ((camRect.y + camRect.h) - (entity->pos.y + entity->pos.h) < downSpace){
+            int downSpace = 100;
+            if ((camRect.y + camRect.h) - (entity->pos.y + entity->pos.h) < downSpace
+            || (entity->behavior->getJustJumped() && entity->behavior->getLastJumpedFrom().y < entity->pos.y)){
                 camRect.y += entity->behavior->ySpeed;
             }
 

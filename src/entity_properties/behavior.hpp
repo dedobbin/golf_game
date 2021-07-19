@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 #include "../utils/direction.hpp"
+#include "../utils/rect.hpp"
 
 // circ dep
 class Entity;
@@ -28,6 +29,7 @@ class Behavior
 		bool isGrounded();
 		bool getJustJumped();
 		void setGrounded(bool _grounded = true);
+		rect getLastJumpedFrom();
 
 		float xAcc = 0;
 		float yAcc = 0;
@@ -54,6 +56,7 @@ class Behavior
 	private:
 		bool grounded = false;
 		bool justJumped = false; //When didn't touch ground after a jump
+		rect lastJumpedFrom;
 };
 
 #endif

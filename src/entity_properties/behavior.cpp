@@ -246,6 +246,7 @@ void Behavior::jump()
 		ySpeed -= n;
 	}
 	justJumped = true;
+	lastJumpedFrom = owner->pos;
 	owner->graphic->changeState(AnimationState::JUMP);
 }
 
@@ -257,6 +258,11 @@ bool Behavior::isGrounded()
 bool Behavior::getJustJumped()
 {
 	return justJumped;
+}
+
+rect Behavior::getLastJumpedFrom()
+{
+	return lastJumpedFrom;
 }
 
 void Behavior::setGrounded(bool _grounded)
