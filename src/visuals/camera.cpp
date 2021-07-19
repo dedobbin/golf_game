@@ -79,10 +79,10 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
     } else if (type == CameraType::FOLLOW){ 
         //TODO: make wrapper functions to get these 'states'
         
-        int fallFromJumpTreshold = 50;
+        int fallFromJumpTreshold = entity->pos.h / 2;
         if (!entity->behavior->isGrounded() && entity->behavior->ySpeed > 0){
             // falling
-            int downSpace = 100;
+            int downSpace = entity->pos.h;
             if ((camRect.y + camRect.h) - (entity->pos.y + entity->pos.h) < downSpace
             || (entity->behavior->getJustJumped() 
             && entity->pos.y - entity->behavior->getLastJumpedFrom().y > fallFromJumpTreshold)){
@@ -91,8 +91,8 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
 
         } else if(entity->behavior->isGrounded() && !entity->behavior->ySpeed == 0){
             //elevator
-            int downSpace = 100;
-            int upSpace = 100;
+            int downSpace = entity->pos.h;
+            int upSpace = entity->pos.h;
             if (entity->pos.y + entity->pos.h > camRect.y + camRect.h - downSpace){
                 //std::cout << "DEBUG: camera goes down " << rand() %10 << std::endl;
                 camRect.y += entity->behavior->ySpeed;   
@@ -102,7 +102,7 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
             }
         } else if (!entity->behavior->isGrounded() && entity->behavior->ySpeed < 0){
             //jumping
-            int upSpace = 80;
+            int upSpace = entity->pos.h;
             if (entity->pos.y < camRect.y + upSpace){
                 camRect.y += entity->behavior->ySpeed;
             }
@@ -133,8 +133,8 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
         //     }
         // } 
 
-        int rightSpace = 400;
-        int leftSpace = 200;
+        int rightSpace = entity->pos.w * 4;
+        int leftSpace = entity->pos.w * 4;
         if (entity->pos.x + entity->pos.w > camRect.x + camRect.w - rightSpace){
             if (entity->behavior->xSpeed > 0){
                 camRect.x += entity->behavior->xSpeed;
