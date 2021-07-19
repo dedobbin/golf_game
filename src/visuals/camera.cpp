@@ -77,6 +77,11 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
     } else if (type == CameraType::CENTER){
         snapToSanePos(entity);
     } else if (type == CameraType::FOLLOW){ 
+        if (!inView(entity->pos.x, entity->pos.y, entity->pos.w, entity->pos.h) || partiallyInView(entity->pos.x, entity->pos.y, entity->pos.w, entity->pos.h)){
+            snapToSanePos(entity);
+            return;
+        }
+        
         //TODO: make wrapper functions to get these 'states'
         
         int fallFromJumpTreshold = entity->pos.h / 2;
