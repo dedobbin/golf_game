@@ -101,6 +101,7 @@ void GolfMode::shoot()
 	_ball->behavior->addYSpeed(-heightCursor);
 
 	((LivingEntity*)owner)->ignoreEffectsList.push_back(_ball); // so don't kill myself
+	std::cout << "DEBUG: " << owner->name << " will ignore " << _ball->name << std::endl; 
 
 	reset();
 	active = false;

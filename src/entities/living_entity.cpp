@@ -16,7 +16,7 @@ void LivingEntity::give(Item* item)
 	assert(item->behavior);
 	item->behavior->xSpeed = 0;
 	item->behavior->ySpeed = 0;
-	std::cout << "DEBUG: " << this->name << " picked up " << item->name << std::endl;
+	//std::cout << "DEBUG: " << this->name << " picked up " << item->name << std::endl;
 	item->owner = this;
 	this->heldItem = item;
 }

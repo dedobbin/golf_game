@@ -104,7 +104,7 @@ void Game::renderEverything()
 }
 
 HandleInputReturnType Game::handleInput()
-{
+{	
 	SDL_Event e;
 	while( SDL_PollEvent( &e ) != 0 ){
 		if (e.type == SDL_QUIT){
@@ -117,6 +117,9 @@ HandleInputReturnType Game::handleInput()
 					return HandleInputReturnType::RESET;
 				}
 			}
+
+			if (player->behavior->destroyed)	
+				return CONTINUE;
 
 			if (player->golfMode && player->golfMode->active){
 				if (player->golfMode->state == AIMING_POWER){

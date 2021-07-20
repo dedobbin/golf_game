@@ -198,6 +198,7 @@ void Behavior::behave()
 			if (std::find_if(owner->collision->currentColliders.begin(), owner->collision->currentColliders.end(), [iter](auto entity){
 				return  *iter == entity;
 			}) == owner->collision->currentColliders.end()){
+				std::cout << "DEBUG: removing " << (*iter)->name << " from effect list of " << living->name << std::endl;
 				iter = living->ignoreEffectsList.erase(iter);
 			} else {
 				++iter;

@@ -153,6 +153,13 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
     if (collider->type == LIVING){
         auto living = (LivingEntity*) collider;
         auto ignored = living->ignoreEffectsList;
+
+        //debug:
+        if (living->ignoreEffectsList.size()){
+            std::cout << living->name << " has ignore list" << std::endl;
+        }
+
+
         if (std::find_if(ignored.begin(), ignored.end(), [collider](auto entity){
             return entity == collider;
         }) != ignored.end()){
