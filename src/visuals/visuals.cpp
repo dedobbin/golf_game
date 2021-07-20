@@ -175,7 +175,7 @@ int Visuals::createText(std::string text, int x, int y, SDL_Color color, bool be
 {
 	if (!behindCamera){
 		std::cout << "DEBUG: Drawing text in front of camera currently not supported" << std::endl;
-		return - 1;
+		return;
 	}
 
 	SDL_Surface* surface = TTF_RenderText_Solid(gFont, text.c_str(), color);

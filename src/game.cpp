@@ -10,8 +10,8 @@
 #include <emscripten.h>
 #endif
 
-//#define DEBUG_DRAW
-//#define DEBUG_CAMERA
+#define DEBUG_DRAW
+#define DEBUG_CAMERA
 
 #define DELAY_BEFORE_GAMEOVER 60 //time between player dying and game over screen popping up
 
@@ -65,6 +65,12 @@ void Game::setupWorld(nlohmann::json data)
 	visuals->camera->snapToSanePos(followWithCam);
 
 	ticksAfterPlayedDied = 0;
+
+	/* Hard coded for demo level, TODO: should be part of current level, and editor */
+	//int Visuals::createText(std::string text, int x, int y, SDL_Color color, bool behindCamera)
+	// if (World::activeLevel->name == "level 7"){
+	// 	visuals->createText("test", 0, 0, {255, 255, 255}, false);
+	// }
 }
 
 void Game::renderEverything()

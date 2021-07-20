@@ -207,6 +207,7 @@ Entity* parseEntity(nlohmann::json jEntity)
 
 void fillWorld(nlohmann::json j, std::shared_ptr<LevelData> level)
 {
+	level->name = j["name"];
 	level->w = j["world_w"];
 	level->h = j["world_h"];
 	level->gravity = j["world_gravity"];
