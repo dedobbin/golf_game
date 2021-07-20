@@ -118,10 +118,7 @@ HandleInputReturnType Game::handleInput()
 				}
 			}
 
-			if (player->behavior->destroyed)	
-				return CONTINUE;
-
-			if (player->golfMode && player->golfMode->active){
+			if (!player->behavior->destroyed && player->golfMode && player->golfMode->active){
 				if (player->golfMode->state == AIMING_POWER){
 					if (e.key.keysym.scancode == SDL_SCANCODE_RIGHT){
 						player->golfMode->setDirection(RIGHT);
@@ -140,7 +137,7 @@ HandleInputReturnType Game::handleInput()
 				} 
 			} else {
 				if (e.key.keysym.scancode == SDL_SCANCODE_C){
-					if (player->collision){
+					if (!player->behavior->destroyed && player->collision){
 						auto i = std::find_if( player->collision->currentColliders.begin(),
 							player->collision->currentColliders.end(), 
 							[&](const auto val){ return val->type == BALL && val->behavior && val->behavior->isGrounded(); } 
@@ -161,7 +158,7 @@ HandleInputReturnType Game::handleInput()
 			keysPressed[e.key.keysym.scancode] = false;
 		}
 	}
-	if (player->golfMode && !player->golfMode->active){
+	if (!player->behavior->destroyed && player->golfMode && !player->golfMode->active){
 		if (keysPressed[SDL_SCANCODE_RIGHT]){
 			player->behavior->xAcc = player->behavior->walkAcc;
 			player->golfMode->setDirection(direction::RIGHT);
