@@ -10,8 +10,8 @@
 #include <emscripten.h>
 #endif
 
-#define DEBUG_DRAW
-#define DEBUG_CAMERA
+// #define DEBUG_DRAW
+// #define DEBUG_CAMERA
 
 #define DELAY_BEFORE_GAMEOVER 60 //time between player dying and game over screen popping up
 
@@ -19,6 +19,8 @@
 const int NATIVE_SCREEN_FPS = 60;
 const int NATIVE_SCREEN_TICK_PER_FRAME = 1000 / NATIVE_SCREEN_FPS;
 #endif
+
+int golfInstructionTextId = -1;
 
 Game::Game()
 {
@@ -68,7 +70,9 @@ void Game::setupWorld(nlohmann::json data)
 
 	/* Hard coded for demo level, TODO: should be part of current level, and editor */
 	if (World::activeLevel->name == "level 7"){
-		visuals->createText("test", 415, 940, {255, 255, 255}, false);
+		visuals->createText("Use arrow keys to walk and z to jump", 380, 750, {0, 0, 0}, false);
+		visuals->createText("Walk over the golf club to pick it up", 1381, 730, {0, 0, 0}, false);
+		golfInstructionTextId = visuals->createText("Press c in near the ball to swing", 2850, 740, {0, 0, 0}, false);
 	}
 }
 
@@ -134,6 +138,12 @@ HandleInputReturnType Game::handleInput()
 					
 					if (e.key.keysym.scancode == SDL_SCANCODE_C){
 						player->golfMode->state = AIMING_HEIGHT;
+
+						//hardcoded instruction stuff, should go
+						if (golfInstructionTextId > 0){
+							visuals->updateText("Press c again to lock how HIGH you will hit", golfInstructionTextId);
+						}
+
 					}
 				} else if (player->golfMode->state == AIMING_HEIGHT){
 					if (e.key.keysym.scancode == SDL_SCANCODE_C){
@@ -152,6 +162,11 @@ HandleInputReturnType Game::handleInput()
 							if (player->heldItem){
 								auto itemBehavior = (ItemBehavior*)player->heldItem->behavior.get();
 								itemBehavior->interact(*i);
+
+								//hardcoded instruction stuff, should go
+								if (golfInstructionTextId > 0){
+									visuals->updateText("Press c again to lock how HARD you will hit", golfInstructionTextId);
+								}
 							}
 						}
 					}
