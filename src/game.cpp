@@ -65,11 +65,6 @@ void Game::setupWorld(nlohmann::json data)
 	visuals->camera->snapToSanePos(followWithCam);
 
 	ticksAfterPlayedDied = 0;
-
-	/* Hard coded for demo level, TODO: should be part of current level, and editor */
-	if (World::activeLevel->name == "level 7"){
-		visuals->createText("test", 415, 940, {255, 255, 255}, false);
-	}
 }
 
 void Game::renderEverything()
