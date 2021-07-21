@@ -36,6 +36,7 @@ struct Text
 	SDL_Texture* texture = NULL;
 	SDL_Color color = {255, 0, 255, 255};
 	bool display = true;
+	bool behindCamera = false;
 };
 
 class Visuals

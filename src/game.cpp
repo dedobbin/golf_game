@@ -67,10 +67,9 @@ void Game::setupWorld(nlohmann::json data)
 	ticksAfterPlayedDied = 0;
 
 	/* Hard coded for demo level, TODO: should be part of current level, and editor */
-	//int Visuals::createText(std::string text, int x, int y, SDL_Color color, bool behindCamera)
-	// if (World::activeLevel->name == "level 7"){
-	// 	visuals->createText("test", 0, 0, {255, 255, 255}, false);
-	// }
+	if (World::activeLevel->name == "level 7"){
+		visuals->createText("test", 415, 940, {255, 255, 255}, false);
+	}
 }
 
 void Game::renderEverything()
