@@ -69,10 +69,12 @@ void Game::setupWorld(nlohmann::json data)
 	ticksAfterPlayedDied = 0;
 
 	/* Hard coded for demo level, TODO: should be part of current level, and editor */
-	if (World::activeLevel->name == "level 7"){
+	if (World::activeLevel->name == "demo 1"){
 		visuals->createText("Use arrow keys to walk and z to jump", 380, 750, {0, 0, 0}, false);
-		visuals->createText("Walk over the golf club to pick it up", 1381, 730, {0, 0, 0}, false);
-		golfInstructionTextId = visuals->createText("Press c in near the ball to swing", 2850, 740, {0, 0, 0}, false);
+		visuals->createText("Walk over the golf club to pick it up", 2807, 730, {0, 0, 0}, false);
+		golfInstructionTextId = visuals->createText("Press c in near the ball to swing", 3620, 730, {0, 0, 0}, false);
+		visuals->createText("< < < go that way < < <", 4838, 1440, {0, 0, 0}, false);
+
 	}
 }
 
