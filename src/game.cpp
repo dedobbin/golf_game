@@ -73,7 +73,7 @@ void Game::setupWorld(nlohmann::json data)
 		visuals->createText("Use arrow keys to walk and z to jump", 380, 750, {0, 0, 0}, false);
 		visuals->createText("Walk over the golf club to pick it up", 2807, 730, {0, 0, 0}, false);
 		golfInstructionTextId = visuals->createText("Press c in near the ball to swing", 3620, 730, {0, 0, 0}, false);
-		visuals->createText("< < < go that way < < <", 5000, 1440, {0, 0, 0}, false);
+		visuals->createText("< < < go that way < < <", 4920, 1440, {0, 0, 0}, false);
 
 	}
 }
@@ -241,7 +241,7 @@ bool Game::tick()
 		}
 	}
 	
-	//std::cout << "DEBUG: player pos: " << player->pos.x << "," << player->pos.y << std::endl;
+	std::cout << "DEBUG: player pos: " << player->pos.x << "," << player->pos.y << std::endl;
 	//std::cout << "DEBUG: player y speed: " << player->behavior->ySpeed << std::endl;
 	//std::cout << "DEBUG: player x speed: " << player->behavior->xSpeed << std::endl;
 	//std::cout << "DEBUG: player grounded: " << player->behavior->isGrounded() << std::endl;
