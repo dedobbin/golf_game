@@ -246,7 +246,7 @@ bool Game::tick()
 		}
 	}
 	
-	//std::cout << "DEBUG: player pos: " << player->pos.x << "," << player->pos.y << std::endl;
+	std::cout << "DEBUG: player pos: " << player->pos.x << "," << player->pos.y << std::endl;
 	//std::cout << "DEBUG: player y speed: " << player->behavior->ySpeed << std::endl;
 	//std::cout << "DEBUG: player x speed: " << player->behavior->xSpeed << std::endl;
 	//std::cout << "DEBUG: player grounded: " << player->behavior->isGrounded() << std::endl;
