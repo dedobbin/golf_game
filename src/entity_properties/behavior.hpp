@@ -46,7 +46,7 @@ class Behavior
 		float maxWalkSpeed = 5.5;
 		float maxYSpeed = 20.0;
 		bool gravity = true;
-		float frictionGround = 0.35;
+		float frictionGround = 0.25;
 
 		/* state */
 		float xSpeed = 0; //should be set through addXSpeed(), would be better to properly private but eh
