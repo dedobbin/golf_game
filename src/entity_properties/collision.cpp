@@ -154,12 +154,6 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
         auto living = (LivingEntity*) collider;
         auto ignored = living->ignoreEffectsList;
 
-        //debug:
-        if (living->ignoreEffectsList.size()){
-            std::cout << living->name << " has ignore list" << std::endl;
-        }
-
-
         if (std::find_if(ignored.begin(), ignored.end(), [collider](auto entity){
             return entity == collider;
         }) != ignored.end()){
@@ -197,9 +191,9 @@ bool Collision::effect(Entity* collider, direction colliderDir, rect intersect)
                     collider->behavior->destroy();
                 }
 
-                if (ball->behavior->ySpeed > yKillSpeed && colliderDir == DOWN){
+                if (!ball->behavior->isGrounded() && ball->behavior->ySpeed > yKillSpeed && colliderDir == DOWN){
                     collider->behavior->destroy();
-                } else if (ball->behavior->ySpeed < -yKillSpeed && colliderDir == UP){
+                } else if (!ball->behavior->isGrounded() && ball->behavior->ySpeed < -yKillSpeed && colliderDir == UP){
                     collider->behavior->destroy();
                 }
 
