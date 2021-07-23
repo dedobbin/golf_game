@@ -155,6 +155,6 @@ void Camera::followWithCam(std::shared_ptr<Entity> entity)
 
 void Camera::snapToSanePos(std::shared_ptr <Entity> entity)
 {
-    camRect.x = entity->pos.x - entity->pos.w*5;
+    camRect.x = entity->pos.x - entity->pos.w*3;
 	camRect.y = entity->pos.y - camRect.h + entity->pos.h*2;
 }
