@@ -1430,52 +1430,6 @@
                 "solid": true
             },
             "pos": [
-                3220,
-                620,
-                100,
-                100
-            ]
-        },
-        {
-            "type": "static_solid",
-            "name": "block",
-            "graphic": {
-                "spritesheet": "spritesheet2",
-                "frame": [
-                    0,
-                    0,
-                    32,
-                    32
-                ],
-                "loop": 0
-            },
-            "collision": {
-                "solid": true
-            },
-            "pos": [
-                3110,
-                630,
-                100,
-                100
-            ]
-        },
-        {
-            "type": "static_solid",
-            "name": "block",
-            "graphic": {
-                "spritesheet": "spritesheet2",
-                "frame": [
-                    0,
-                    0,
-                    32,
-                    32
-                ],
-                "loop": 0
-            },
-            "collision": {
-                "solid": true
-            },
-            "pos": [
                 2880,
                 620,
                 100,
@@ -1800,29 +1754,6 @@
             "pos": [
                 2540,
                 610,
-                100,
-                100
-            ]
-        },
-        {
-            "type": "static_solid",
-            "name": "block",
-            "graphic": {
-                "spritesheet": "spritesheet2",
-                "frame": [
-                    0,
-                    0,
-                    32,
-                    32
-                ],
-                "loop": 0
-            },
-            "collision": {
-                "solid": true
-            },
-            "pos": [
-                2650,
-                620,
                 100,
                 100
             ]
@@ -3181,7 +3112,7 @@
                 ]
             },
             "pos": [
-                410,
+                590,
                 940,
                 80,
                 100
@@ -4760,29 +4691,6 @@
             ]
         },
         {
-            "type": "static_solid",
-            "name": "block",
-            "graphic": {
-                "spritesheet": "spritesheet2",
-                "frame": [
-                    0,
-                    0,
-                    32,
-                    32
-                ],
-                "loop": 0
-            },
-            "collision": {
-                "solid": true
-            },
-            "pos": [
-                3000,
-                610,
-                100,
-                100
-            ]
-        },
-        {
             "name": "elevator_one",
             "type": "moving_platform",
             "collision": {
@@ -4879,6 +4787,52 @@
             "pos": [
                 2500,
                 1130,
+                100,
+                100
+            ]
+        },
+        {
+            "type": "static_solid",
+            "name": "block",
+            "graphic": {
+                "spritesheet": "spritesheet2",
+                "frame": [
+                    0,
+                    0,
+                    32,
+                    32
+                ],
+                "loop": 0
+            },
+            "collision": {
+                "solid": true
+            },
+            "pos": [
+                3240,
+                640,
+                100,
+                100
+            ]
+        },
+        {
+            "type": "static_solid",
+            "name": "block",
+            "graphic": {
+                "spritesheet": "spritesheet2",
+                "frame": [
+                    0,
+                    0,
+                    32,
+                    32
+                ],
+                "loop": 0
+            },
+            "collision": {
+                "solid": true
+            },
+            "pos": [
+                3140,
+                670,
                 100,
                 100
             ]
