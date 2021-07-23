@@ -56,7 +56,7 @@ export-wasm-with-editor:
 	@# Spritesheets are also embedded in the WASM module, but needs to be duplicated here so level editor JS can also use them
 	mkdir -p build/web/resources/spritesheets
 	cp resources/spritesheets/* build/web/resources/spritesheets
-	cp resources/levels/1.json build/web/resources/level_data.json
+	cp resources/levels/demo-1.json build/web/resources/level_data.json
 
 clean:
 	$(MAKE) clean -C src/entities
