@@ -76,7 +76,7 @@ window.onload = function(e){
 	if (url.searchParams.get("editor")){
 		switchView(ViewEnum.EDITOR);
 	} else {
-		fetch('resources/demo-1.json')
+		fetch('resources/level_data.json')
 		.then(response => {
 			if (response.status != 404){
 				response.json().then(json=>{

@@ -10,7 +10,7 @@
 #include <emscripten.h>
 #endif
 
-// #define DEBUG_DRAW
+#define DEBUG_DRAW
 // #define DEBUG_CAMERA
 
 #define DELAY_BEFORE_GAMEOVER 60 //time between player dying and game over screen popping up
