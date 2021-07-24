@@ -1,8 +1,12 @@
 # GOLF_GAME
 
-**Warning: Jank code**
+**Warning: Jank code**   
 Project is bit of a mess. It was used to experiment on running a platforming game in browser using Emscripten, but got a bit of of hand. Had alot of fun working and experimenting with it though.
-**Known problems**
+
+![screenshot](https://nop.koindozer.org/gh/golf_game/golf_screenshot.png)
+
+
+**Known problems:**   
 
 - Shooting ball on an elevator that moves up will kill you.
 - With very high horizontal speed, spikes sometimes don't kill you?
