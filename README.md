@@ -1,7 +1,11 @@
 # GOLF_GAME
 
-**Warning: Jank code**   
-Project is bit of a mess. It was used to experiment on running a platforming game in browser using Emscripten, but got a bit of of hand. Had alot of fun working and experimenting with it though.
+This project start as an experiment to run a platforming/golf physics game in browser using Emscripten.   
+Since i was running a (self-imposed) deadline, there are quite messy parts in the codebase, and the game needs finetuning to actually be fun.    
+
+I decided to keep it here in all it's delicious hackyness, because it learned me alot, it was fun, and perhaps others can take from it what they need.  
+
+Also the graphics are classic "programmer art" :^)
 
 ![screenshot](https://nop.koindozer.org/gh/golf_game/golf_screenshot.png)
 
