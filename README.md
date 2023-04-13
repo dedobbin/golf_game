@@ -1,9 +1,7 @@
 # GOLF_GAME
 
 This project start as an experiment to run a platforming/golf physics game in browser using Emscripten.   
-Since i was running a (self-imposed) deadline, there are quite messy parts in the codebase, and the game needs finetuning to actually be fun.    
-
-I decided to keep it here in all it's delicious hackyness, because it learned me alot, it was fun, and perhaps others can take from it what they need.  
+Since i was running a (self-imposed) deadline the game needs finetuning to actually be fun, but fun is secondary anyway right.    
 
 Also the graphics are classic "programmer art" :^)
 
